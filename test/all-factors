@@ -1,0 +1,31 @@
+#!/usr/bin/perl
+
+$target{5}=1;
+$target{2}=3;
+$target{3}=2;
+
+$target = 1;
+for my $p (keys %target) {
+    for (1..$target{$p}) {
+	$target *= $p;
+    }
+}
+print "target=$target\n";
+
+$st = int(.9999999+sqrt($target));
+
+print "target=$target sqrt=$st\n";
+
+$a = 5;
+for $aa (0..$target{$a}) {
+    $b = 3;
+    for $bb (0..$target{$b}) {
+	$c = 2;
+	for $cc (0..$target{$c}) {
+	    $t = $a**$aa * $b**$bb * $c**$cc;
+	    $y = $t < $st ? "yes" : "no";
+	    print "$a^$aa * $b^$bb * $c^$cc = $t $y\n";
+	}
+    }
+}
+

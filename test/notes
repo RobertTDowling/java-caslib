@@ -247,3 +247,17 @@ Serialize=fi1;pvx+s4607182418800017408,e1:1+s4613937818241073152,e0:0*i2;pvx:y+s
 
 [x] Can't make Scalar take 0xhex, because unsigned parser is broken
 
+------------------------------------------------------------------------------
+
+Sun May  3 13:43:48 PDT 2015
+
+Factory a multivariable polynomial using rational root theorem
+
+	http://en.wikipedia.org/wiki/Rational_root_theorem
+
+If the polynomial to be factored is a_nx^n + ... + a_0, then all
+possible linear factors are of the form b_1x-b_0, where b_1 is an
+integer factor of a_n and b_0 is an integer factor of a_0.
+
+(x+y+6)^3 = x³+3x²y+3xy²+y³+18x²+36xy+18y²+108x+108y+216
+

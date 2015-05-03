@@ -334,20 +334,53 @@ public class Polynomial extends Stackable {
 	public Polynomial expand () { return new Polynomial (this); }
 	// Public one
 	public Polynomial [] factorInZ () {
+		// Early out if degree 1 or less
 		if (degree() < 2)
 			return new Polynomial [] { this };
-		// Pick a variable to factor in
+		// Use the theorem that says that any factor of
+		// ax^n+...+z will be in the form (bx+y) where b is a factor
+		// of a and y is a factor of z.
+		//
+		// So can we apply this theorem yet?  Or must we simplify
+		// what we got?
+
+		// Pick a variable to factor in.  Pick the first
 		Variable v = vs.var(1);
-		// System.out.print (String.format ("v=%s\n", v.toString()));
-		// Factor...
-		ArrayList<Polynomial> l = new ArrayList<Polynomial>();
-		factorInZ (v, l);
-		// Construct array from arraylist
-		Polynomial [] a = new Polynomial[l.size()];
-		for (int i=0; i<l.size(); i++)
-			a[i] = l.get(i);
-		return a;
+		int degLastTerm = ts.get(ts.size()-1).degree();
+
+		// Is this polynomial either in 2 vars or in 1 var with a
+		// a scalar term?  If so, we can make a (x-k) type attempt.
+		if (vs.order() == 1 && degLastTerm == 0 ||
+		    vs.order() == 2 && degLastTerm != 0) {
+			// Yes, we can try to find a x-k type of factor
+
+			// System.out.print (String.format ("v=%s\n", v.toString()));
+			// Factor...
+			ArrayList<Polynomial> l = new ArrayList<Polynomial>();
+			factorInZ (v, l);
+			// Construct array from arraylist
+			Polynomial [] a = new Polynomial[l.size()];
+			for (int i=0; i<l.size(); i++)
+				a[i] = l.get(i);
+			return a;
+		} else {
+			// We need to simplify
+			System.out.print ("We need to remove variable " + v.toString() + " to do this...\n");
+			System.out.print (String.format ("vs.order=%d last term=%s degree=%d\n",
+							 vs.order(), ts.get(ts.size()-1).toString(),
+							 degLastTerm));
+			
+			Polynomial [] pInVar1 = expressIn (v);
+			// Subfactor last (lowest power in v) term
+			Polynomial last = pInVar1[0];
+			System.out.print ("  ... last=" +last.toString()+ "\n");
+			Polynomial [] lastFactored = last.factorInZ ();
+			
+			// Oy!  These factors serve as "k" in x-k type expressions
+			return lastFactored; // FIXME: this is not real answer
+		}
 	}
+	
 	// Worker, not public
 	private void factorInZ (Variable v, ArrayList<Polynomial> l) {
 		Polynomial f = this;
@@ -444,8 +477,16 @@ public class Polynomial extends Stackable {
 			// Failed,so whole polynomial is answer
 			return this;
 		}
+		return this; // Not done
+	}
+	public Polynomial [ ] expressIn (Variable v) {
 		// Find the highest power of that variable
 		// System.out.print (String.format ("expressIn pi=%s this=%s, v=%s ix=%d\n", pi.toString(), this.toString(), v.toString(), index));
+		int index = vs.index (v);
+		if (index < 1) {
+			// Failed,so whole polynomial is answer
+			return new Polynomial [] { this };
+		}
 		int maxPower = 0;
 		for (Term t: ts) {
 			Evec te = t.evec();
@@ -488,7 +529,7 @@ public class Polynomial extends Stackable {
 		}
 		System.out.print("\n");
 		// Finally, create new Sum object...uh, I don't have this yet!
-		return new Scalar (3.14);
+		return np;
 	}
 
 	public String serialize () {
