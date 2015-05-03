@@ -24,8 +24,10 @@
 
 all:	clean
 	cd ../templates; make; mv *.java ../cas
+	cd ../doc; make; make
 	javac StackApp.java
 
 clean:
 	cd ../templates; make clean
+	cd ../doc; make clean
 	rm -f *.class *~ ../cas/*.class ../cas/*~ ../templates/*.java ../templates/*~

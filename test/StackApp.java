@@ -48,6 +48,8 @@ class StackApp {
 		return c;
 	}
 	public static void main(String[] args) {	
+		if (System.console() != null)
+			System.out.print (Stackable.version + "\n");
 		new Profile ();
 		stack = new MyStack ();
 		Scanner in = new Scanner(System.in);

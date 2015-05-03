@@ -28,6 +28,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 public abstract class Stackable implements IStackable {
 
+	public final static String version = "java-caslib 1.11";
+
 	// boilerplate
 
 	public Stackable [] factorInZ() { return new Stackable [] { new DomainErr ("factorInZ")}; }
