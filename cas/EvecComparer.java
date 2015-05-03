@@ -1,3 +1,4 @@
+package com.rtdti.cas;
 /*****************************************************************************"
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
@@ -23,3 +24,17 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
+
+import java.util.Comparator;
+
+public class EvecComparer implements Comparator<Evec> {
+	@Override
+	public int compare(Evec x, Evec y) {
+		int [] ex = x.getE();
+		int [] ey = y.getE();
+		int i=0, c=0;
+		while (i < ex.length && (c=ex[i]-ey[i]) == 0)
+			i++;
+		return -c;
+	}
+}

@@ -1,0 +1,17 @@
+package com.rtdti.calc15.cas;
+
+public class Scalar {
+	private double d;
+	public Scalar add (Scalar b) { return new Scalar (d + b.d); }
+	public Scalar sub (Scalar b) { return new Scalar (d - b.d); }
+	public Scalar mul (Scalar b) { return new Scalar (d * b.d); }
+	public Scalar div (Scalar b) { return new Scalar (d / b.d); }
+	public Scalar neg () { return new Scalar (-d); }
+	public boolean isZero () { return d == 0; }
+	public boolean isNeg () { return d < 0; }
+	public boolean isNotBad () {
+		return !(Double.isNaN(d) || Double.isInfinite(d));
+	}
+	public double get () { return d; }
+
+}

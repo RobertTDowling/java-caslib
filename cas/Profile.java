@@ -1,3 +1,4 @@
+package com.rtdti.cas;
 /*****************************************************************************"
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
@@ -23,3 +24,34 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
+
+import java.util.HashMap;
+import java.util.TreeSet;
+
+public class Profile {
+	static private HashMap<String,Integer> h;
+	public Profile () {
+		h = new HashMap<String,Integer> ();
+	}
+	static public void tick (String k) {
+        if (h == null)
+            return;
+		if (h.containsKey (k))
+			h.put(k, 1+h.get(k));
+		else
+			h.put(k, 1);
+	}
+	static public TreeSet<String> sortKeys () {
+		TreeSet<String> t = new TreeSet<String>(new ProfileComparer(h));
+		for (String s: h.keySet()) {
+			t.add (s);
+		}
+		return t;
+	}
+	static public void stats () {
+		for (String s: sortKeys()) {
+			System.out.print (String.format ("%8d %s\n",
+							 h.get(s), s));
+		}
+	}
+}

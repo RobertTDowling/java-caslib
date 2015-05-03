@@ -1,0 +1,61 @@
+Variable {
+    private String v;
+	public Variable () {
+	public Variable (String s) {
+	public Variable (Variable a) {
+VarSet {
+    private final int order;
+    private final ArrayList<Variable> vs; // ref
+    private final VarMap vm; // embed
+	public VarSet () {
+	public VarSet (VarSet v) {
+	public VarSet (Variable v) {
+	public VarSet (VarMap m) {
+	public VarSet (Variable[] a) {
+	public VarSet (EvecMap l) {
+	public VarSet union (VarSet b) {
+VarMap {
+    private HashMap<String,Integer> pm;
+    private HashMap<String,Variable> vm;
+	public VarMap () {
+	public VarMap (VarMap m) {
+Evec {
+    private int[] e; 
+    private VarSet vs; // ref
+	public Evec (VarSet s, VarMap m) {
+	public Evec (Evec a) {
+EvecMap {
+    private HashMap<String,Scalar> sm; // embed
+    private HashMap<String,Evec> em; // embed
+	public EvecMap () {
+Scalar {
+    private double d;
+	public Scalar () {
+	public Scalar (double a) {
+	public Scalar (Scalar a) {
+Term {
+    private Scalar coef; // embed
+    private Evec evec; // embed, kind of
+	public Term (Scalar coef, Evec evec) {
+	public Term (Term t) {
+Polynomial {
+    private VarSet vs; // embed
+    private ArrayList<Term> ts; // embed
+	public Polynomial () {
+	public Polynomial (Scalar s) {
+	public Polynomial (Variable v) {
+	public Polynomial (VarSet v, Term t) {
+	public Polynomial (Polynomial a) {
+
+
+All
+
+  Variable:   Variable                                                                             
+    VarSet:   Variable     VarSet     VarMap       Evec    EvecMap                  Term           
+    VarMap:   Variable                VarMap                                                       
+      Evec:   Variable     VarSet     VarMap       Evec                Scalar          
+   EvecMap:                                        Evec    EvecMap     Scalar                      
+    Scalar:                                                            Scalar                      
+      Term:   Variable     VarSet     VarMap       Evec                Scalar       Term           
+Polynomial:   Variable     VarSet     VarMap       Evec    EvecMap     Scalar       Term Polynomial
+

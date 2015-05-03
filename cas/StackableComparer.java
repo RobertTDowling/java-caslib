@@ -1,3 +1,4 @@
+package com.rtdti.cas;
 /*****************************************************************************"
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
@@ -23,3 +24,13 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
+
+import java.util.Comparator;
+
+public class StackableComparer implements Comparator<Stackable> {
+	@Override
+	public int compare(Stackable x, Stackable y) {
+		// But for now, use string compare
+		return x.toString().compareTo(y.toString());
+	}
+}

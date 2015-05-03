@@ -1,0 +1,3 @@
+30 :d2r :sin
+:multinv :floor :multinv U .
+:acos :r2d :round .

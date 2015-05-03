@@ -1,0 +1,52 @@
+public class VarMap {
+	private HashMap<String,Integer> pm;
+	private HashMap<String,Variable> vm;
+		pm = new HashMap<String,Integer> ();
+		vm = new HashMap<String,Variable> ();
+	}
+		pm = new HashMap<String,Integer> ();
+		vm = new HashMap<String,Variable> ();
+		for (String s: m.pm.keySet()) {
+			pm.put (s, m.pm.get(s));
+			vm.put (s, m.vm.get(s));
+		}
+	}
+	public void addTo (Variable v) {
+		Profile.tick ("VarMap.addTo");
+		addTo (v, 1);
+	}
+	public void addTo (Variable v, int p) {
+		Profile.tick ("VarMap.addTo");
+		String k = v.toString();
+		if (pm.containsKey (k))
+			pm.put(k, p+pm.get(k));
+		else {
+			pm.put(k, p);
+			vm.put(k, v);
+		}
+	}
+	public void put (Variable v, int i) {
+		Profile.tick ("VarMap.put");
+		String k = v.toString();
+		pm.put (k, i);
+		vm.put (k, v);
+	}
+	public int get (Variable v) {
+		Profile.tick ("VarMap.get");
+		String k = v.toString();
+		if (pm.containsKey (k)) {
+			return pm.get(k);
+		}
+		return 0;
+	}
+	public Set<Variable> keys () {
+		return sortKeys ();
+	}
+	public TreeSet<Variable> sortKeys () {
+		Profile.tick ("VarMap.sortKeys");
+		TreeSet<Variable> t = new TreeSet<Variable>(new VarComparer());
+		for (String s: pm.keySet()) {
+			t.add (vm.get(s));
+		}
+		return t;
+	}

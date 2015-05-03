@@ -1,0 +1,57 @@
+class VarSet
+	VarSet (VarSet v)
+	VarSet (Variable v)
+	VarSet (VarMap m)
+	VarSet (Variable[] a)
+	VarSet (EvecMap l)
+	VarSet union (VarSet b)
+	int order ()
+	int index (Variable v)
+	Variable var (int index)
+	ArrayList<Variable> vars ()
+	Evec remap (Evec src)
+	Term remap (Term tsrc)
+	boolean equals (VarSet other)
+class VarMap
+	VarMap (VarMap m)
+	void addTo (Variable v)
+	void addTo (Variable v, int p)
+	void put (Variable v, int i)
+	int get (Variable v)
+	Set<Variable> keys ()
+	TreeSet<Variable> sortKeys ()
+class Evec
+	Evec (VarSet s, VarMap m)
+	Evec (Evec a)
+	VarMap unpack ()
+	int degree ()
+	boolean isScalar ()
+	Evec mul (Evec other)  // Used by Polynomial mul only
+	VarSet getVarSet ()
+	int [] getE ()
+class EvecMap
+	void addTo (Scalar s, Evec e)
+	void put (Scalar s, Evec e)
+	Scalar get (Evec e)
+	Set<Evec> keys ()
+	TreeSet<Evec> sortKeys ()
+	void remove (Evec e)
+class Scalar extends Stackable
+	boolean isScalar ()
+	double scalar ()
+	Stackable copy ()
+	Scalar () d = 0; }
+	Scalar (double a) d = a; }
+	boolean isZero () return d == 0; }
+	boolean isNeg () return d < 0; }
+	boolean isNotBad ()
+	double get () return d; }
+	Scalar [] factorInZ ()
+class Term
+	Term (Scalar coef, Evec evec)
+	Term (Term t)
+	Scalar coef () return coef; }
+	Evec evec () return evec; }
+	int degree () return evec.degree(); }
+	Term mul (VarSet v, Term other)
+	Term div (VarSet v, Term other)

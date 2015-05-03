@@ -1,0 +1,18 @@
+digraph foo {
+// ℂℕℚℝℤℿ⅀ℾ
+   Z [ label="ℤ\nlong" ]
+   Q [ label="ℚ\nlong,long" ]
+   R [ label="ℝ\ndouble" ]
+   C [ label="ℂ\ndouble,double" ]
+
+   Z -> Q
+   Q -> R [ style=dotted ]
+   R -> C
+}
+
+/*
+Z+-*Z -> Z
+Z/Z -> Q
+trans(Z) -> R or C
+root(Z) -> C
+*/

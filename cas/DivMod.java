@@ -1,3 +1,4 @@
+package com.rtdti.cas;
 /*****************************************************************************"
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
@@ -23,3 +24,18 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
+
+public class DivMod extends BinOp2 {
+	public Stackable [] args;
+	public DivMod () { }
+	public Stackable [] binOp2 (SFactory f) { 
+		Stackable aa = f.makeFrom (f.args[0]);
+		Stackable bb = f.makeFrom (f.args[1]);
+		return bb.divModTo(aa);
+	}
+	public SFactory binOp2ResultFactory (Stackable x, Stackable y) {
+		SFactory f = x.divResultFactory (y);
+		args = new Stackable [] { x, y };
+		return f;
+	}
+}

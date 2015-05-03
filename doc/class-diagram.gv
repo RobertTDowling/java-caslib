@@ -1,0 +1,6 @@
+digraph uml {
+	rankdir = LR
+	class11 -> class21 [ label="obj ref -- one" ]
+	class12 -> class22 [ label="aggreg -- many" dir=both arrowtail=odiamond arrowhead=dotnormal ]
+	class13 -> class23 [ label="creates" dir=none style=dashed ]
+}

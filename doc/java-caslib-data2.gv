@@ -1,0 +1,62 @@
+digraph foo
+{
+	"Scalar" -> "Term" [ weight=1 ]
+	"Variable" -> "VarSet" -> "Evec"
+	"Variable" -> "VarMap"
+	"VarSet" -> "Polynomial" [ dir=back ]
+	{ rank=same "Evec" -> "VarMap" [dir=none style=dashed] } 
+	"Evec" -> "Term" [ weight=5 ]
+	{ rank=same "Polynomial" -> "EvecMap" [dir=none style=dashed] } 
+	"Term" -> "Polynomial" [ weight=5 ]
+	"Polynomial"
+	
+	"VarMap" -> "EvecMap" [ style=invis weight=5 ]
+
+	"VarSet" [ label="VarSet\n{ AL<Variable> }\nVar Ordering" ]
+	"Evec" [ label="Evec\n{ int [], VarSet }\nΠ Var^Power" ]
+	"Polynomial" [ label="Polynomial\n{ VarSet, AL<Term> }\nΣ Terms" ]
+	"Term" [ label="Term\n{ Coef, Evec }\nCoef · Π Var^Power" ]
+	"EvecMap" [ label= "EvecMap\n{ Map(Evec->Coef) }\nΣ Terms" ]
+	"VarMap" [ label="VarMap\n{ Map(Variable->Int) }\nΠ Var^Power" ]
+
+/*
+	"Evec\nΠ Var^Power" -> 
+	"Term\nCoef · Π Var^Power" ->
+	"Polynomial\nΣ Terms"
+	"VarMap\nΠ Var^Power" ->
+	"EvecMap\nΣ Terms"
+
+	{ rank=same "Evec" "Evec\nΠ Var^Power" "VarMap\nΠ Var^Power" }
+	{ rank=same "Polynomial" "Polynomial\nΣ Terms" "EvecMap\nΣ Terms" }
+*/
+
+//	"Evec 3210\nx²y"
+//	"Evec 2011\nyz"
+
+//	"Scalar"
+//	"Variable"
+/*
+	"VarMap\n{x}=2,{y}=1"
+	"VarSet\nx=1,y=2,z=3" -> "Polynomial\nTerm(3x²y)+Term(yz)"
+	"VarSet\nx=1,y=2,z=3" -> "Evec\n3210" [ constraint=false ]
+	"Evec\n3210"-> "Term\n3,Evec(3210)"
+	"EvecMap\n{3210}=3,{2011}=1"
+	"Term\n3,Evec(3210)" -> "Polynomial\nTerm(3x²y)+Term(yz)"
+	"Term\n1,Evec(2011)" -> "Polynomial\nTerm(3x²y)+Term(yz)"
+
+	"Polynomial\nTerm(3x²y)+Term(yz)" -> "EvecMap\n{3210}=3,{2011}=1"
+					   [ constraint=false dir=both ]
+
+	"VarMap\n{x}=2,{y}=1" -> "Evec\n3210"
+					   [ constraint=false dir=both ]
+
+	{ rank=same
+	"Polynomial\nTerm(3x²y)+Term(yz)"
+	"EvecMap\n{3210}=3,{2011}=1"
+	}
+	{ rank=same
+	"Evec\n3210"
+	"VarMap\n{x}=2,{y}=1"
+	}
+*/
+}

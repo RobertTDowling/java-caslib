@@ -1,0 +1,41 @@
+digraph foo
+{
+	"Scalar"
+	"Variable"
+	"VarMap"
+	"VarSet"
+	"Evec"
+	"EvecMap"
+	"Term"
+	"Polynomial"
+
+	"Integer{VarString}" -> "VarMap"
+	"Variable{VarString}" -> "VarMap"
+
+	order -> "VarSet"
+	"AL<Variable>" -> "VarSet"
+	"VarMap" -> "VarSet"
+
+	"int[]" -> "Evec"
+	"VarSet" -> "Evec"
+
+	"Scalar{EvecString}" -> "EvecMap"
+	"Evec{EvecString}" -> "EvecMap"
+
+	"Scalar" -> "Term"
+	"Evec" -> "Term"
+
+	"VarSet" -> "Polynomial"
+	"AL<Term>" -> "Polynomial"
+
+	"Term" -> "AL<Term>"
+	"Variable" -> "AL<Variable>"
+	"Variable" -> "Variable{VarString}"
+	"Evec" -> "Evec{EvecString}"
+/*
+	"EvecComparer"
+	"VarComparer"
+	"ProfileComparer"
+	"Profile"
+*/
+}

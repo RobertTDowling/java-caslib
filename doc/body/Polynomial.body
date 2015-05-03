@@ -1,0 +1,239 @@
+		vs = new VarSet();
+		ts = new ArrayList<Term> ();
+	}
+		vs = new VarSet();
+		VarMap m = new VarMap();
+		Evec e = new Evec(vs, m);
+		Term t = new Term(s, e);
+		ts = new ArrayList<Term> ();
+		ts.add (t);
+	}
+		vs = new VarSet(v);
+		VarMap m = new VarMap();
+		m.addTo (v);
+		Evec e = new Evec(vs, m);
+		Scalar s = new Scalar(1);
+		Term t = new Term(s, e);
+		ts = new ArrayList<Term> ();
+		ts.add (t);
+	}
+		vs = v;
+		ts = new ArrayList<Term> ();
+		ts.add (t);
+	}
+		vs = a.vs;
+		ts = new ArrayList<Term> ();
+		for (Term t: a.ts)
+			ts.add(new Term(t));
+	}
+	public int degree () {
+		if (ts.size()>0)
+			return ts.get(0).degree();
+		return 0;
+	}
+	public double scalar () {
+		for (Term t: ts) {
+			Evec te = t.evec();
+			if (te.toString().equals ("0"))
+				return t.coef().get();
+		}
+		return 0;
+	}
+	public boolean isScalar () {
+		for (Term t: ts) {
+			Evec te = t.evec();
+			if (!te.toString().equals ("0"))
+				return false;
+		}
+		return true;
+	}
+	public boolean isZero () { return isScalar() && scalar() == 0; }
+	public boolean isNotBad () {
+		for (Term t: ts) {
+			if (!t.coef().isNotBad())
+				return false;
+		}
+		return true;
+	}
+	public Polynomial add (Polynomial b) {
+		Polynomial a = this;
+		VarSet vu = a.vs.union (b.vs);
+		EvecMap m = new EvecMap();
+		for (Term t: a.ts) {
+			Evec te = t.evec();
+			Scalar tc = t.coef();
+			Evec me = vu.remap (te);
+			m.addTo (tc, me);
+		}
+		for (Term t: b.ts) {
+			Evec te = t.evec();
+			Scalar tc = t.coef();
+			Evec me = vu.remap (te);
+			m.addTo (tc, me);
+		}
+		return cleanup (vu, m);
+	}
+	public Polynomial sub (Polynomial b) {
+		Polynomial a = this;
+		VarSet vu = a.vs.union (b.vs);
+		EvecMap m = new EvecMap();
+		for (Term t: a.ts) {
+			Evec te = t.evec();
+			Scalar tc = t.coef();
+			Evec me = vu.remap (te);
+			m.addTo (tc, me);
+		}
+		for (Term t: b.ts) {
+			Evec te = t.evec();
+			Scalar tc = t.coef();
+			Evec me = vu.remap (te);
+			m.addTo (tc.neg(), me);
+		}
+		return cleanup (vu, m);
+	}
+	public Polynomial mul (Polynomial b) {
+		Polynomial a = this;
+		VarSet vu = a.vs.union (b.vs);
+		EvecMap m = new EvecMap();
+		for (Term t: a.ts) {
+			Evec te = t.evec();
+			Scalar tc = t.coef();
+			Evec tu = vu.remap (te);
+			for (Term u: b.ts) {
+				Evec ue = u.evec();
+				Scalar uc = u.coef();
+				Evec uu = vu.remap (ue);
+				m.addTo (tc.mul(uc), tu.mul(uu));
+			}
+		}
+		return cleanup (vu, m);
+	}
+	public Polynomial [] div (Polynomial denom) {
+		Polynomial num = this;
+		Polynomial rem;
+		Polynomial quot;
+
+		if (denom.isScalar()) {
+			rem = new Polynomial(new Scalar(0));
+			quot = num.mul(new Polynomial(new Scalar(1 / denom.scalar())));
+		} else {
+			rem = new Polynomial(num);
+			quot = new Polynomial(new Scalar(0));
+			VarSet vu = num.vs.union(denom.vs);
+
+			Term dlt = vu.remap(denom.ts.get(0));
+			boolean all = true;
+			int count = 10000;
+			while (all && count-- > 0) {
+				all = false;
+				for (Term rt : rem.ts) {
+					Term qt = vu.remap(rt).div(vu, dlt);
+					if (qt != null) {
+						all = true;
+						Polynomial a = new Polynomial(vu, qt);
+						Polynomial s = denom.mul(a);
+						if (!s.isNotBad()) {
+							count = 0;
+							break;
+						}
+						Polynomial rr = rem.sub(s);
+						rem = rr;
+						quot = quot.add(a);
+						break;
+					}
+				}
+			}
+			if (count <= 0) { // failure
+				quot = new Polynomial (new Variable ("x"));
+				rem = new Polynomial (new Variable ("y"));
+			}
+		}
+		return new Polynomial[]{quot, rem};
+	}
+	public Polynomial cleanup (VarSet vs, EvecMap m) {
+		// Remove 0 terms
+		for (Evec e: m.keys())
+			if (m.get(e).isZero())
+				m.remove(e);
+		// Remap again in  any terms went away
+		VarSet nvu = new VarSet(m);
+		if (!nvu.equals(vs)) {
+			// Need to remap
+			EvecMap m1 = new EvecMap();
+			for (Evec e: m.keys())
+				m1.addTo (m.get(e), nvu.remap(e));
+			m = m1;
+			vs = nvu;
+		}
+
+		// Turn back in to terms
+		Polynomial c = new Polynomial ();
+		c.vs = vs;
+		for (Evec e: m.sortKeys())
+			c.ts.add (new Term(m.get(e), e));
+		return c;
+	}
+	// Public one
+	public Polynomial [] factorZ () {
+		if (degree() < 2)
+			return new Polynomial [] { this };
+		Variable v = vs.var(1);
+		ArrayList<Polynomial> l = new ArrayList<Polynomial>();
+		factorZ (v, l);
+		Polynomial [] a = new Polynomial[l.size()];
+		for (int i=0; i<l.size(); i++)
+			a[i] = l.get(i);
+		return a;
+	}
+	// Worker, not public
+	private void factorZ (Variable v, ArrayList<Polynomial> l) {
+		Polynomial f = this;
+		ArrayList<Polynomial> r = new ArrayList<Polynomial>();
+
+		double dleading = ts.get(0).coef().get();
+		double dlast = ts.get(ts.size()-1).coef().get();
+		long leading = (long) dleading;
+		long last = (long) dlast;
+
+		ArrayList<Long> fleading = zFactorsOf(leading);
+		ArrayList<Long> flast = zFactorsOf(last);
+
+
+		for (Long a: fleading) {
+			for (Long b: flast) {
+				Polynomial p = new Polynomial (v);
+				p=p.mul(new Polynomial(new Scalar(a)));
+				p=p.add(new Polynomial(new Scalar(b)));
+				Polynomial [] c = f.div(p);
+				if (c[1].isZero()) {
+					l.add (p);
+					if (c[0].degree() < 2) {
+						l.add (c[0]);
+						return;
+					}
+					c[0].factorZ(v, l);
+					return;
+				}
+			}
+		}
+		l.add (this);
+		return;
+	}
+	private ArrayList<Long> zFactorsOf (long a) {
+		ArrayList<Long> r = new ArrayList<Long>();
+		a=Math.abs(a);
+		if (a == 0 || a == 1) {
+			r.add (1L);
+			r.add (-1L);
+			return r;
+		}
+		// Factor
+		for (long t=1L; t<=a; t++) {
+			if ((a % t) == 0) {
+				r.add (t);
+				r.add (-t);
+			}
+		}
+		return r;
+	}
+}

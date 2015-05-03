@@ -1,0 +1,12 @@
+package com.rtdti.calc15.cas;
+
+public class Variable {
+	private String v;
+		v = null;
+	}
+		v = new String (s);
+	}
+		v = new String (a.v);
+	}
+}
+

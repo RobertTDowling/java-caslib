@@ -1,0 +1,180 @@
+=== test1.ic =============================
+x+y
+=== test10.ic =============================
+x²-1
+0
+x+1
+0
+x-1
+=== test10a.ic =============================
+x-1
+r3o2i+x+0.5
+-r3o2i+x+0.5
+-r3o2i²x+x³+r3o2i²-0.75x-0.25
+=== test11.ic =============================
+x¹¹-11x¹⁰+55x⁹-165x⁸+330x⁷-462x⁶+462x⁵-330x⁴+165x³-55x²+11x-1
+=== test12.ic =============================
+a⁷+7a⁶b+7a⁶c+7a⁶d+7a⁶e+7a⁶f+7a⁶g+21a⁵b²+42a⁵bc+42a⁵bd+42a⁵be+42a⁵bf+42a⁵bg+21a⁵c²+42a⁵cd+42a⁵ce+42a⁵cf+42a⁵cg+21a⁵d²+42a⁵de+42a⁵df+42a⁵dg+21a⁵e²+42a⁵ef+42a⁵eg+21a⁵f²+42a⁵fg+21a⁵g²+35a⁴b³+105a⁴b²c+105a⁴b²d+105a⁴b²e+105a⁴b²f+105a⁴b²g+105a⁴bc²+210a⁴bcd+210a⁴bce+210a⁴bcf+210a⁴bcg+105a⁴bd²+210a⁴bde+210a⁴bdf+210a⁴bdg+105a⁴be²+210a⁴bef+210a⁴beg+105a⁴bf²+210a⁴bfg+105a⁴bg²+35a⁴c³+105a⁴c²d+105a⁴c²e+105a⁴c²f+105a⁴c²g+105a⁴cd²+210a⁴cde+210a⁴cdf+210a⁴cdg+105a⁴ce²+210a⁴cef+210a⁴ceg+105a⁴cf²+210a⁴cfg+105a⁴cg²+35a⁴d³+105a⁴d²e+105a⁴d²f+105a⁴d²g+105a⁴de²+210a⁴def+210a⁴deg+105a⁴df²+210a⁴dfg+105a⁴dg²+35a⁴e³+105a⁴e²f+105a⁴e²g+105a⁴ef²+210a⁴efg+105a⁴eg²+35a⁴f³+105a⁴f²g+105a⁴fg²+35a⁴g³+35a³b⁴+140a³b³c+140a³b³d+140a³b³e+140a³b³f+140a³b³g+210a³b²c²+420a³b²cd+420a³b²ce+420a³b²cf+420a³b²cg+210a³b²d²+420a³b²de+420a³b²df+420a³b²dg+210a³b²e²+420a³b²ef+420a³b²eg+210a³b²f²+420a³b²fg+210a³b²g²+140a³bc³+420a³bc²d+420a³bc²e+420a³bc²f+420a³bc²g+420a³bcd²+840a³bcde+840a³bcdf+840a³bcdg+420a³bce²+840a³bcef+840a³bceg+420a³bcf²+840a³bcfg+420a³bcg²+140a³bd³+420a³bd²e+420a³bd²f+420a³bd²g+420a³bde²+840a³bdef+840a³bdeg+420a³bdf²+840a³bdfg+420a³bdg²+140a³be³+420a³be²f+420a³be²g+420a³bef²+840a³befg+420a³beg²+140a³bf³+420a³bf²g+420a³bfg²+140a³bg³+35a³c⁴+140a³c³d+140a³c³e+140a³c³f+140a³c³g+210a³c²d²+420a³c²de+420a³c²df+420a³c²dg+210a³c²e²+420a³c²ef+420a³c²eg+210a³c²f²+420a³c²fg+210a³c²g²+140a³cd³+420a³cd²e+420a³cd²f+420a³cd²g+420a³cde²+840a³cdef+840a³cdeg+420a³cdf²+840a³cdfg+420a³cdg²+140a³ce³+420a³ce²f+420a³ce²g+420a³cef²+840a³cefg+420a³ceg²+140a³cf³+420a³cf²g+420a³cfg²+140a³cg³+35a³d⁴+140a³d³e+140a³d³f+140a³d³g+210a³d²e²+420a³d²ef+420a³d²eg+210a³d²f²+420a³d²fg+210a³d²g²+140a³de³+420a³de²f+420a³de²g+420a³def²+840a³defg+420a³deg²+140a³df³+420a³df²g+420a³dfg²+140a³dg³+35a³e⁴+140a³e³f+140a³e³g+210a³e²f²+420a³e²fg+210a³e²g²+140a³ef³+420a³ef²g+420a³efg²+140a³eg³+35a³f⁴+140a³f³g+210a³f²g²+140a³fg³+35a³g⁴+21a²b⁵+105a²b⁴c+105a²b⁴d+105a²b⁴e+105a²b⁴f+105a²b⁴g+210a²b³c²+420a²b³cd+420a²b³ce+420a²b³cf+420a²b³cg+210a²b³d²+420a²b³de+420a²b³df+420a²b³dg+210a²b³e²+420a²b³ef+420a²b³eg+210a²b³f²+420a²b³fg+210a²b³g²+210a²b²c³+630a²b²c²d+630a²b²c²e+630a²b²c²f+630a²b²c²g+630a²b²cd²+1260a²b²cde+1260a²b²cdf+1260a²b²cdg+630a²b²ce²+1260a²b²cef+1260a²b²ceg+630a²b²cf²+1260a²b²cfg+630a²b²cg²+210a²b²d³+630a²b²d²e+630a²b²d²f+630a²b²d²g+630a²b²de²+1260a²b²def+1260a²b²deg+630a²b²df²+1260a²b²dfg+630a²b²dg²+210a²b²e³+630a²b²e²f+630a²b²e²g+630a²b²ef²+1260a²b²efg+630a²b²eg²+210a²b²f³+630a²b²f²g+630a²b²fg²+210a²b²g³+105a²bc⁴+420a²bc³d+420a²bc³e+420a²bc³f+420a²bc³g+630a²bc²d²+1260a²bc²de+1260a²bc²df+1260a²bc²dg+630a²bc²e²+1260a²bc²ef+1260a²bc²eg+630a²bc²f²+1260a²bc²fg+630a²bc²g²+420a²bcd³+1260a²bcd²e+1260a²bcd²f+1260a²bcd²g+1260a²bcde²+2520a²bcdef+2520a²bcdeg+1260a²bcdf²+2520a²bcdfg+1260a²bcdg²+420a²bce³+1260a²bce²f+1260a²bce²g+1260a²bcef²+2520a²bcefg+1260a²bceg²+420a²bcf³+1260a²bcf²g+1260a²bcfg²+420a²bcg³+105a²bd⁴+420a²bd³e+420a²bd³f+420a²bd³g+630a²bd²e²+1260a²bd²ef+1260a²bd²eg+630a²bd²f²+1260a²bd²fg+630a²bd²g²+420a²bde³+1260a²bde²f+1260a²bde²g+1260a²bdef²+2520a²bdefg+1260a²bdeg²+420a²bdf³+1260a²bdf²g+1260a²bdfg²+420a²bdg³+105a²be⁴+420a²be³f+420a²be³g+630a²be²f²+1260a²be²fg+630a²be²g²+420a²bef³+1260a²bef²g+1260a²befg²+420a²beg³+105a²bf⁴+420a²bf³g+630a²bf²g²+420a²bfg³+105a²bg⁴+21a²c⁵+105a²c⁴d+105a²c⁴e+105a²c⁴f+105a²c⁴g+210a²c³d²+420a²c³de+420a²c³df+420a²c³dg+210a²c³e²+420a²c³ef+420a²c³eg+210a²c³f²+420a²c³fg+210a²c³g²+210a²c²d³+630a²c²d²e+630a²c²d²f+630a²c²d²g+630a²c²de²+1260a²c²def+1260a²c²deg+630a²c²df²+1260a²c²dfg+630a²c²dg²+210a²c²e³+630a²c²e²f+630a²c²e²g+630a²c²ef²+1260a²c²efg+630a²c²eg²+210a²c²f³+630a²c²f²g+630a²c²fg²+210a²c²g³+105a²cd⁴+420a²cd³e+420a²cd³f+420a²cd³g+630a²cd²e²+1260a²cd²ef+1260a²cd²eg+630a²cd²f²+1260a²cd²fg+630a²cd²g²+420a²cde³+1260a²cde²f+1260a²cde²g+1260a²cdef²+2520a²cdefg+1260a²cdeg²+420a²cdf³+1260a²cdf²g+1260a²cdfg²+420a²cdg³+105a²ce⁴+420a²ce³f+420a²ce³g+630a²ce²f²+1260a²ce²fg+630a²ce²g²+420a²cef³+1260a²cef²g+1260a²cefg²+420a²ceg³+105a²cf⁴+420a²cf³g+630a²cf²g²+420a²cfg³+105a²cg⁴+21a²d⁵+105a²d⁴e+105a²d⁴f+105a²d⁴g+210a²d³e²+420a²d³ef+420a²d³eg+210a²d³f²+420a²d³fg+210a²d³g²+210a²d²e³+630a²d²e²f+630a²d²e²g+630a²d²ef²+1260a²d²efg+630a²d²eg²+210a²d²f³+630a²d²f²g+630a²d²fg²+210a²d²g³+105a²de⁴+420a²de³f+420a²de³g+630a²de²f²+1260a²de²fg+630a²de²g²+420a²def³+1260a²def²g+1260a²defg²+420a²deg³+105a²df⁴+420a²df³g+630a²df²g²+420a²dfg³+105a²dg⁴+21a²e⁵+105a²e⁴f+105a²e⁴g+210a²e³f²+420a²e³fg+210a²e³g²+210a²e²f³+630a²e²f²g+630a²e²fg²+210a²e²g³+105a²ef⁴+420a²ef³g+630a²ef²g²+420a²efg³+105a²eg⁴+21a²f⁵+105a²f⁴g+210a²f³g²+210a²f²g³+105a²fg⁴+21a²g⁵+7ab⁶+42ab⁵c+42ab⁵d+42ab⁵e+42ab⁵f+42ab⁵g+105ab⁴c²+210ab⁴cd+210ab⁴ce+210ab⁴cf+210ab⁴cg+105ab⁴d²+210ab⁴de+210ab⁴df+210ab⁴dg+105ab⁴e²+210ab⁴ef+210ab⁴eg+105ab⁴f²+210ab⁴fg+105ab⁴g²+140ab³c³+420ab³c²d+420ab³c²e+420ab³c²f+420ab³c²g+420ab³cd²+840ab³cde+840ab³cdf+840ab³cdg+420ab³ce²+840ab³cef+840ab³ceg+420ab³cf²+840ab³cfg+420ab³cg²+140ab³d³+420ab³d²e+420ab³d²f+420ab³d²g+420ab³de²+840ab³def+840ab³deg+420ab³df²+840ab³dfg+420ab³dg²+140ab³e³+420ab³e²f+420ab³e²g+420ab³ef²+840ab³efg+420ab³eg²+140ab³f³+420ab³f²g+420ab³fg²+140ab³g³+105ab²c⁴+420ab²c³d+420ab²c³e+420ab²c³f+420ab²c³g+630ab²c²d²+1260ab²c²de+1260ab²c²df+1260ab²c²dg+630ab²c²e²+1260ab²c²ef+1260ab²c²eg+630ab²c²f²+1260ab²c²fg+630ab²c²g²+420ab²cd³+1260ab²cd²e+1260ab²cd²f+1260ab²cd²g+1260ab²cde²+2520ab²cdef+2520ab²cdeg+1260ab²cdf²+2520ab²cdfg+1260ab²cdg²+420ab²ce³+1260ab²ce²f+1260ab²ce²g+1260ab²cef²+2520ab²cefg+1260ab²ceg²+420ab²cf³+1260ab²cf²g+1260ab²cfg²+420ab²cg³+105ab²d⁴+420ab²d³e+420ab²d³f+420ab²d³g+630ab²d²e²+1260ab²d²ef+1260ab²d²eg+630ab²d²f²+1260ab²d²fg+630ab²d²g²+420ab²de³+1260ab²de²f+1260ab²de²g+1260ab²def²+2520ab²defg+1260ab²deg²+420ab²df³+1260ab²df²g+1260ab²dfg²+420ab²dg³+105ab²e⁴+420ab²e³f+420ab²e³g+630ab²e²f²+1260ab²e²fg+630ab²e²g²+420ab²ef³+1260ab²ef²g+1260ab²efg²+420ab²eg³+105ab²f⁴+420ab²f³g+630ab²f²g²+420ab²fg³+105ab²g⁴+42abc⁵+210abc⁴d+210abc⁴e+210abc⁴f+210abc⁴g+420abc³d²+840abc³de+840abc³df+840abc³dg+420abc³e²+840abc³ef+840abc³eg+420abc³f²+840abc³fg+420abc³g²+420abc²d³+1260abc²d²e+1260abc²d²f+1260abc²d²g+1260abc²de²+2520abc²def+2520abc²deg+1260abc²df²+2520abc²dfg+1260abc²dg²+420abc²e³+1260abc²e²f+1260abc²e²g+1260abc²ef²+2520abc²efg+1260abc²eg²+420abc²f³+1260abc²f²g+1260abc²fg²+420abc²g³+210abcd⁴+840abcd³e+840abcd³f+840abcd³g+1260abcd²e²+2520abcd²ef+2520abcd²eg+1260abcd²f²+2520abcd²fg+1260abcd²g²+840abcde³+2520abcde²f+2520abcde²g+2520abcdef²+5040abcdefg+2520abcdeg²+840abcdf³+2520abcdf²g+2520abcdfg²+840abcdg³+210abce⁴+840abce³f+840abce³g+1260abce²f²+2520abce²fg+1260abce²g²+840abcef³+2520abcef²g+2520abcefg²+840abceg³+210abcf⁴+840abcf³g+1260abcf²g²+840abcfg³+210abcg⁴+42abd⁵+210abd⁴e+210abd⁴f+210abd⁴g+420abd³e²+840abd³ef+840abd³eg+420abd³f²+840abd³fg+420abd³g²+420abd²e³+1260abd²e²f+1260abd²e²g+1260abd²ef²+2520abd²efg+1260abd²eg²+420abd²f³+1260abd²f²g+1260abd²fg²+420abd²g³+210abde⁴+840abde³f+840abde³g+1260abde²f²+2520abde²fg+1260abde²g²+840abdef³+2520abdef²g+2520abdefg²+840abdeg³+210abdf⁴+840abdf³g+1260abdf²g²+840abdfg³+210abdg⁴+42abe⁵+210abe⁴f+210abe⁴g+420abe³f²+840abe³fg+420abe³g²+420abe²f³+1260abe²f²g+1260abe²fg²+420abe²g³+210abef⁴+840abef³g+1260abef²g²+840abefg³+210abeg⁴+42abf⁵+210abf⁴g+420abf³g²+420abf²g³+210abfg⁴+42abg⁵+7ac⁶+42ac⁵d+42ac⁵e+42ac⁵f+42ac⁵g+105ac⁴d²+210ac⁴de+210ac⁴df+210ac⁴dg+105ac⁴e²+210ac⁴ef+210ac⁴eg+105ac⁴f²+210ac⁴fg+105ac⁴g²+140ac³d³+420ac³d²e+420ac³d²f+420ac³d²g+420ac³de²+840ac³def+840ac³deg+420ac³df²+840ac³dfg+420ac³dg²+140ac³e³+420ac³e²f+420ac³e²g+420ac³ef²+840ac³efg+420ac³eg²+140ac³f³+420ac³f²g+420ac³fg²+140ac³g³+105ac²d⁴+420ac²d³e+420ac²d³f+420ac²d³g+630ac²d²e²+1260ac²d²ef+1260ac²d²eg+630ac²d²f²+1260ac²d²fg+630ac²d²g²+420ac²de³+1260ac²de²f+1260ac²de²g+1260ac²def²+2520ac²defg+1260ac²deg²+420ac²df³+1260ac²df²g+1260ac²dfg²+420ac²dg³+105ac²e⁴+420ac²e³f+420ac²e³g+630ac²e²f²+1260ac²e²fg+630ac²e²g²+420ac²ef³+1260ac²ef²g+1260ac²efg²+420ac²eg³+105ac²f⁴+420ac²f³g+630ac²f²g²+420ac²fg³+105ac²g⁴+42acd⁵+210acd⁴e+210acd⁴f+210acd⁴g+420acd³e²+840acd³ef+840acd³eg+420acd³f²+840acd³fg+420acd³g²+420acd²e³+1260acd²e²f+1260acd²e²g+1260acd²ef²+2520acd²efg+1260acd²eg²+420acd²f³+1260acd²f²g+1260acd²fg²+420acd²g³+210acde⁴+840acde³f+840acde³g+1260acde²f²+2520acde²fg+1260acde²g²+840acdef³+2520acdef²g+2520acdefg²+840acdeg³+210acdf⁴+840acdf³g+1260acdf²g²+840acdfg³+210acdg⁴+42ace⁵+210ace⁴f+210ace⁴g+420ace³f²+840ace³fg+420ace³g²+420ace²f³+1260ace²f²g+1260ace²fg²+420ace²g³+210acef⁴+840acef³g+1260acef²g²+840acefg³+210aceg⁴+42acf⁵+210acf⁴g+420acf³g²+420acf²g³+210acfg⁴+42acg⁵+7ad⁶+42ad⁵e+42ad⁵f+42ad⁵g+105ad⁴e²+210ad⁴ef+210ad⁴eg+105ad⁴f²+210ad⁴fg+105ad⁴g²+140ad³e³+420ad³e²f+420ad³e²g+420ad³ef²+840ad³efg+420ad³eg²+140ad³f³+420ad³f²g+420ad³fg²+140ad³g³+105ad²e⁴+420ad²e³f+420ad²e³g+630ad²e²f²+1260ad²e²fg+630ad²e²g²+420ad²ef³+1260ad²ef²g+1260ad²efg²+420ad²eg³+105ad²f⁴+420ad²f³g+630ad²f²g²+420ad²fg³+105ad²g⁴+42ade⁵+210ade⁴f+210ade⁴g+420ade³f²+840ade³fg+420ade³g²+420ade²f³+1260ade²f²g+1260ade²fg²+420ade²g³+210adef⁴+840adef³g+1260adef²g²+840adefg³+210adeg⁴+42adf⁵+210adf⁴g+420adf³g²+420adf²g³+210adfg⁴+42adg⁵+7ae⁶+42ae⁵f+42ae⁵g+105ae⁴f²+210ae⁴fg+105ae⁴g²+140ae³f³+420ae³f²g+420ae³fg²+140ae³g³+105ae²f⁴+420ae²f³g+630ae²f²g²+420ae²fg³+105ae²g⁴+42aef⁵+210aef⁴g+420aef³g²+420aef²g³+210aefg⁴+42aeg⁵+7af⁶+42af⁵g+105af⁴g²+140af³g³+105af²g⁴+42afg⁵+7ag⁶+b⁷+7b⁶c+7b⁶d+7b⁶e+7b⁶f+7b⁶g+21b⁵c²+42b⁵cd+42b⁵ce+42b⁵cf+42b⁵cg+21b⁵d²+42b⁵de+42b⁵df+42b⁵dg+21b⁵e²+42b⁵ef+42b⁵eg+21b⁵f²+42b⁵fg+21b⁵g²+35b⁴c³+105b⁴c²d+105b⁴c²e+105b⁴c²f+105b⁴c²g+105b⁴cd²+210b⁴cde+210b⁴cdf+210b⁴cdg+105b⁴ce²+210b⁴cef+210b⁴ceg+105b⁴cf²+210b⁴cfg+105b⁴cg²+35b⁴d³+105b⁴d²e+105b⁴d²f+105b⁴d²g+105b⁴de²+210b⁴def+210b⁴deg+105b⁴df²+210b⁴dfg+105b⁴dg²+35b⁴e³+105b⁴e²f+105b⁴e²g+105b⁴ef²+210b⁴efg+105b⁴eg²+35b⁴f³+105b⁴f²g+105b⁴fg²+35b⁴g³+35b³c⁴+140b³c³d+140b³c³e+140b³c³f+140b³c³g+210b³c²d²+420b³c²de+420b³c²df+420b³c²dg+210b³c²e²+420b³c²ef+420b³c²eg+210b³c²f²+420b³c²fg+210b³c²g²+140b³cd³+420b³cd²e+420b³cd²f+420b³cd²g+420b³cde²+840b³cdef+840b³cdeg+420b³cdf²+840b³cdfg+420b³cdg²+140b³ce³+420b³ce²f+420b³ce²g+420b³cef²+840b³cefg+420b³ceg²+140b³cf³+420b³cf²g+420b³cfg²+140b³cg³+35b³d⁴+140b³d³e+140b³d³f+140b³d³g+210b³d²e²+420b³d²ef+420b³d²eg+210b³d²f²+420b³d²fg+210b³d²g²+140b³de³+420b³de²f+420b³de²g+420b³def²+840b³defg+420b³deg²+140b³df³+420b³df²g+420b³dfg²+140b³dg³+35b³e⁴+140b³e³f+140b³e³g+210b³e²f²+420b³e²fg+210b³e²g²+140b³ef³+420b³ef²g+420b³efg²+140b³eg³+35b³f⁴+140b³f³g+210b³f²g²+140b³fg³+35b³g⁴+21b²c⁵+105b²c⁴d+105b²c⁴e+105b²c⁴f+105b²c⁴g+210b²c³d²+420b²c³de+420b²c³df+420b²c³dg+210b²c³e²+420b²c³ef+420b²c³eg+210b²c³f²+420b²c³fg+210b²c³g²+210b²c²d³+630b²c²d²e+630b²c²d²f+630b²c²d²g+630b²c²de²+1260b²c²def+1260b²c²deg+630b²c²df²+1260b²c²dfg+630b²c²dg²+210b²c²e³+630b²c²e²f+630b²c²e²g+630b²c²ef²+1260b²c²efg+630b²c²eg²+210b²c²f³+630b²c²f²g+630b²c²fg²+210b²c²g³+105b²cd⁴+420b²cd³e+420b²cd³f+420b²cd³g+630b²cd²e²+1260b²cd²ef+1260b²cd²eg+630b²cd²f²+1260b²cd²fg+630b²cd²g²+420b²cde³+1260b²cde²f+1260b²cde²g+1260b²cdef²+2520b²cdefg+1260b²cdeg²+420b²cdf³+1260b²cdf²g+1260b²cdfg²+420b²cdg³+105b²ce⁴+420b²ce³f+420b²ce³g+630b²ce²f²+1260b²ce²fg+630b²ce²g²+420b²cef³+1260b²cef²g+1260b²cefg²+420b²ceg³+105b²cf⁴+420b²cf³g+630b²cf²g²+420b²cfg³+105b²cg⁴+21b²d⁵+105b²d⁴e+105b²d⁴f+105b²d⁴g+210b²d³e²+420b²d³ef+420b²d³eg+210b²d³f²+420b²d³fg+210b²d³g²+210b²d²e³+630b²d²e²f+630b²d²e²g+630b²d²ef²+1260b²d²efg+630b²d²eg²+210b²d²f³+630b²d²f²g+630b²d²fg²+210b²d²g³+105b²de⁴+420b²de³f+420b²de³g+630b²de²f²+1260b²de²fg+630b²de²g²+420b²def³+1260b²def²g+1260b²defg²+420b²deg³+105b²df⁴+420b²df³g+630b²df²g²+420b²dfg³+105b²dg⁴+21b²e⁵+105b²e⁴f+105b²e⁴g+210b²e³f²+420b²e³fg+210b²e³g²+210b²e²f³+630b²e²f²g+630b²e²fg²+210b²e²g³+105b²ef⁴+420b²ef³g+630b²ef²g²+420b²efg³+105b²eg⁴+21b²f⁵+105b²f⁴g+210b²f³g²+210b²f²g³+105b²fg⁴+21b²g⁵+7bc⁶+42bc⁵d+42bc⁵e+42bc⁵f+42bc⁵g+105bc⁴d²+210bc⁴de+210bc⁴df+210bc⁴dg+105bc⁴e²+210bc⁴ef+210bc⁴eg+105bc⁴f²+210bc⁴fg+105bc⁴g²+140bc³d³+420bc³d²e+420bc³d²f+420bc³d²g+420bc³de²+840bc³def+840bc³deg+420bc³df²+840bc³dfg+420bc³dg²+140bc³e³+420bc³e²f+420bc³e²g+420bc³ef²+840bc³efg+420bc³eg²+140bc³f³+420bc³f²g+420bc³fg²+140bc³g³+105bc²d⁴+420bc²d³e+420bc²d³f+420bc²d³g+630bc²d²e²+1260bc²d²ef+1260bc²d²eg+630bc²d²f²+1260bc²d²fg+630bc²d²g²+420bc²de³+1260bc²de²f+1260bc²de²g+1260bc²def²+2520bc²defg+1260bc²deg²+420bc²df³+1260bc²df²g+1260bc²dfg²+420bc²dg³+105bc²e⁴+420bc²e³f+420bc²e³g+630bc²e²f²+1260bc²e²fg+630bc²e²g²+420bc²ef³+1260bc²ef²g+1260bc²efg²+420bc²eg³+105bc²f⁴+420bc²f³g+630bc²f²g²+420bc²fg³+105bc²g⁴+42bcd⁵+210bcd⁴e+210bcd⁴f+210bcd⁴g+420bcd³e²+840bcd³ef+840bcd³eg+420bcd³f²+840bcd³fg+420bcd³g²+420bcd²e³+1260bcd²e²f+1260bcd²e²g+1260bcd²ef²+2520bcd²efg+1260bcd²eg²+420bcd²f³+1260bcd²f²g+1260bcd²fg²+420bcd²g³+210bcde⁴+840bcde³f+840bcde³g+1260bcde²f²+2520bcde²fg+1260bcde²g²+840bcdef³+2520bcdef²g+2520bcdefg²+840bcdeg³+210bcdf⁴+840bcdf³g+1260bcdf²g²+840bcdfg³+210bcdg⁴+42bce⁵+210bce⁴f+210bce⁴g+420bce³f²+840bce³fg+420bce³g²+420bce²f³+1260bce²f²g+1260bce²fg²+420bce²g³+210bcef⁴+840bcef³g+1260bcef²g²+840bcefg³+210bceg⁴+42bcf⁵+210bcf⁴g+420bcf³g²+420bcf²g³+210bcfg⁴+42bcg⁵+7bd⁶+42bd⁵e+42bd⁵f+42bd⁵g+105bd⁴e²+210bd⁴ef+210bd⁴eg+105bd⁴f²+210bd⁴fg+105bd⁴g²+140bd³e³+420bd³e²f+420bd³e²g+420bd³ef²+840bd³efg+420bd³eg²+140bd³f³+420bd³f²g+420bd³fg²+140bd³g³+105bd²e⁴+420bd²e³f+420bd²e³g+630bd²e²f²+1260bd²e²fg+630bd²e²g²+420bd²ef³+1260bd²ef²g+1260bd²efg²+420bd²eg³+105bd²f⁴+420bd²f³g+630bd²f²g²+420bd²fg³+105bd²g⁴+42bde⁵+210bde⁴f+210bde⁴g+420bde³f²+840bde³fg+420bde³g²+420bde²f³+1260bde²f²g+1260bde²fg²+420bde²g³+210bdef⁴+840bdef³g+1260bdef²g²+840bdefg³+210bdeg⁴+42bdf⁵+210bdf⁴g+420bdf³g²+420bdf²g³+210bdfg⁴+42bdg⁵+7be⁶+42be⁵f+42be⁵g+105be⁴f²+210be⁴fg+105be⁴g²+140be³f³+420be³f²g+420be³fg²+140be³g³+105be²f⁴+420be²f³g+630be²f²g²+420be²fg³+105be²g⁴+42bef⁵+210bef⁴g+420bef³g²+420bef²g³+210befg⁴+42beg⁵+7bf⁶+42bf⁵g+105bf⁴g²+140bf³g³+105bf²g⁴+42bfg⁵+7bg⁶+c⁷+7c⁶d+7c⁶e+7c⁶f+7c⁶g+21c⁵d²+42c⁵de+42c⁵df+42c⁵dg+21c⁵e²+42c⁵ef+42c⁵eg+21c⁵f²+42c⁵fg+21c⁵g²+35c⁴d³+105c⁴d²e+105c⁴d²f+105c⁴d²g+105c⁴de²+210c⁴def+210c⁴deg+105c⁴df²+210c⁴dfg+105c⁴dg²+35c⁴e³+105c⁴e²f+105c⁴e²g+105c⁴ef²+210c⁴efg+105c⁴eg²+35c⁴f³+105c⁴f²g+105c⁴fg²+35c⁴g³+35c³d⁴+140c³d³e+140c³d³f+140c³d³g+210c³d²e²+420c³d²ef+420c³d²eg+210c³d²f²+420c³d²fg+210c³d²g²+140c³de³+420c³de²f+420c³de²g+420c³def²+840c³defg+420c³deg²+140c³df³+420c³df²g+420c³dfg²+140c³dg³+35c³e⁴+140c³e³f+140c³e³g+210c³e²f²+420c³e²fg+210c³e²g²+140c³ef³+420c³ef²g+420c³efg²+140c³eg³+35c³f⁴+140c³f³g+210c³f²g²+140c³fg³+35c³g⁴+21c²d⁵+105c²d⁴e+105c²d⁴f+105c²d⁴g+210c²d³e²+420c²d³ef+420c²d³eg+210c²d³f²+420c²d³fg+210c²d³g²+210c²d²e³+630c²d²e²f+630c²d²e²g+630c²d²ef²+1260c²d²efg+630c²d²eg²+210c²d²f³+630c²d²f²g+630c²d²fg²+210c²d²g³+105c²de⁴+420c²de³f+420c²de³g+630c²de²f²+1260c²de²fg+630c²de²g²+420c²def³+1260c²def²g+1260c²defg²+420c²deg³+105c²df⁴+420c²df³g+630c²df²g²+420c²dfg³+105c²dg⁴+21c²e⁵+105c²e⁴f+105c²e⁴g+210c²e³f²+420c²e³fg+210c²e³g²+210c²e²f³+630c²e²f²g+630c²e²fg²+210c²e²g³+105c²ef⁴+420c²ef³g+630c²ef²g²+420c²efg³+105c²eg⁴+21c²f⁵+105c²f⁴g+210c²f³g²+210c²f²g³+105c²fg⁴+21c²g⁵+7cd⁶+42cd⁵e+42cd⁵f+42cd⁵g+105cd⁴e²+210cd⁴ef+210cd⁴eg+105cd⁴f²+210cd⁴fg+105cd⁴g²+140cd³e³+420cd³e²f+420cd³e²g+420cd³ef²+840cd³efg+420cd³eg²+140cd³f³+420cd³f²g+420cd³fg²+140cd³g³+105cd²e⁴+420cd²e³f+420cd²e³g+630cd²e²f²+1260cd²e²fg+630cd²e²g²+420cd²ef³+1260cd²ef²g+1260cd²efg²+420cd²eg³+105cd²f⁴+420cd²f³g+630cd²f²g²+420cd²fg³+105cd²g⁴+42cde⁵+210cde⁴f+210cde⁴g+420cde³f²+840cde³fg+420cde³g²+420cde²f³+1260cde²f²g+1260cde²fg²+420cde²g³+210cdef⁴+840cdef³g+1260cdef²g²+840cdefg³+210cdeg⁴+42cdf⁵+210cdf⁴g+420cdf³g²+420cdf²g³+210cdfg⁴+42cdg⁵+7ce⁶+42ce⁵f+42ce⁵g+105ce⁴f²+210ce⁴fg+105ce⁴g²+140ce³f³+420ce³f²g+420ce³fg²+140ce³g³+105ce²f⁴+420ce²f³g+630ce²f²g²+420ce²fg³+105ce²g⁴+42cef⁵+210cef⁴g+420cef³g²+420cef²g³+210cefg⁴+42ceg⁵+7cf⁶+42cf⁵g+105cf⁴g²+140cf³g³+105cf²g⁴+42cfg⁵+7cg⁶+d⁷+7d⁶e+7d⁶f+7d⁶g+21d⁵e²+42d⁵ef+42d⁵eg+21d⁵f²+42d⁵fg+21d⁵g²+35d⁴e³+105d⁴e²f+105d⁴e²g+105d⁴ef²+210d⁴efg+105d⁴eg²+35d⁴f³+105d⁴f²g+105d⁴fg²+35d⁴g³+35d³e⁴+140d³e³f+140d³e³g+210d³e²f²+420d³e²fg+210d³e²g²+140d³ef³+420d³ef²g+420d³efg²+140d³eg³+35d³f⁴+140d³f³g+210d³f²g²+140d³fg³+35d³g⁴+21d²e⁵+105d²e⁴f+105d²e⁴g+210d²e³f²+420d²e³fg+210d²e³g²+210d²e²f³+630d²e²f²g+630d²e²fg²+210d²e²g³+105d²ef⁴+420d²ef³g+630d²ef²g²+420d²efg³+105d²eg⁴+21d²f⁵+105d²f⁴g+210d²f³g²+210d²f²g³+105d²fg⁴+21d²g⁵+7de⁶+42de⁵f+42de⁵g+105de⁴f²+210de⁴fg+105de⁴g²+140de³f³+420de³f²g+420de³fg²+140de³g³+105de²f⁴+420de²f³g+630de²f²g²+420de²fg³+105de²g⁴+42def⁵+210def⁴g+420def³g²+420def²g³+210defg⁴+42deg⁵+7df⁶+42df⁵g+105df⁴g²+140df³g³+105df²g⁴+42dfg⁵+7dg⁶+e⁷+7e⁶f+7e⁶g+21e⁵f²+42e⁵fg+21e⁵g²+35e⁴f³+105e⁴f²g+105e⁴fg²+35e⁴g³+35e³f⁴+140e³f³g+210e³f²g²+140e³fg³+35e³g⁴+21e²f⁵+105e²f⁴g+210e²f³g²+210e²f²g³+105e²fg⁴+21e²g⁵+7ef⁶+42ef⁵g+105ef⁴g²+140ef³g³+105ef²g⁴+42efg⁵+7eg⁶+f⁷+7f⁶g+21f⁵g²+35f⁴g³+35f³g⁴+21f²g⁵+7fg⁶+g⁷
+=== test13b.ic =============================
+-3x²y+3xy²+6xyz-y³-3y²z-3yz²
+-3y
+3y²+6yz
+-y³-3y²z-3yz²
+-3y²-6yz
+root
+9y⁴+36y³z+36y²z²
+4
+-12y
+12y⁴+36y³z+36y²z²
+108y⁸+756y⁷z+2052y⁶z²+2592y⁵z³+1296y⁴z⁴
+108y⁸+756y⁷z+2052y⁶z²+2592y⁵z³+1296y⁴z⁴+3y²+6yz
+=== test20.ic =============================
+2x
+6
+2
+=== test21.ic =============================
+=== test3.ic =============================
+x+y
+-x+y
+2x+y
+y
+x²-2xy+y²
+-x³+3x²y-3xy²+y³
+=== test30.ic =============================
+x²-5x+6
+(x-2)(x-3)
+=== test31.ic =============================
+x⁴-13x²+36
+(x+3)(x-2)(x+2)(x-3)
+=== test32.ic =============================
+(x⁶+x⁴+x²+1)(x-1)(x+1)
+=== test33.ic =============================
+(11)(13)(5)
+(2)¹⁶
+(7)
+=== test3a.ic =============================
+1
+2
+x
+2
+4
+2x
+x
+2x
+x²
+=== test4.ic =============================
+-g-u+x
+-g³-3g²u+3g²x-3gu²+6gux-3gx²-u³+3u²x-3ux²+x³
+=== test40.ic =============================
+x²-2xy+y²
+(x-y)²
+9x²-12x+4
+(3x-2)²
+x⁴-2x²+1
+(x-1)²(x+1)²
+=== test41.ic =============================
+x³+3x²y+3x²z+3xy²+6xyz+3xz²+y³+3y²z+3yz²+z³
+(1)x^3+(3y+3z)x^2+(3y²+6yz+3z²)x^1+(y³+3y²z+3yz²+z³)x^0
+3.14
+(1)y^3+(3x+3z)y^2+(3x²+6xz+3z²)y^1+(x³+3x²z+3xz²+z³)y^0
+3.14
+(1)z^3+(3x+3y)z^2+(3x²+6xy+3y²)z^1+(x³+3x²y+3xy²+y³)z^0
+3.14
+=== test42.ic =============================
+x³+6x²y+9x²z+12xy²+36xyz+27xz²+8y³+36y²z+54yz²+27z³
+(8)y^3+(12x+36z)y^2+(6x²+36xz+54z²)y^1+(x³+9x²z+27xz²+27z³)y^0
+3.14
+=== test5.ic =============================
+x²-y²
+=== test50.ic =============================
+0.5
+60
+=== test51.ic =============================
+(233)(1103)(2089)
+5.36870912E8
+29.000000000000004
+(2)²⁹
+=== test52.ic =============================
+2x
+1
+=== test53.ic =============================
+(x-1)(x+1)
+(x-1)(x+1)
+=== test54.ic =============================
+(x-y)²
+x²-2xy+y²
+x²-2xy+y²
+123
+(3)(41)
+123
+123
+=== test55.ic =============================
+0
+Serialize=s0
+1
+Serialize=s4607182418800017408
+-1
+Serialize=s-4616189618054758400
+(2)³(3)(31)
+Serialize=zi3,s4611686018427387904*i1,s4613937818241073152*i1,s4629418941960159232
+x
+Serialize=pvx+s4607182418800017408,e1:1
+x³-2x²y+xy²+3x²-6xy+3y²
+Serialize=pvx:y+s4607182418800017408,e3:3:0+s-4611686018427387904,e3:2:1+s4607182418800017408,e3:1:2+s4613937818241073152,e2:2:0+s-4604930618986332160,e2:1:1+s4613937818241073152,e2:0:2
+(x+3)(x-y)²
+Serialize=fi1;pvx+s4607182418800017408,e1:1+s4613937818241073152,e0:0*i2;pvx:y+s4607182418800017408,e1:1:0+s-4616189618054758400,e1:0:1
+=== test56.ic =============================
+0
+1
+-1
+(2)³(3)(31)
+x
+x³-2x²y+xy²+3x²-6xy+3y²
+(x+3)(x-y)²
+=== test57.ic =============================
+0
+0
+1
+1
+-1
+-1
+x
+x
+x³-2x²y+xy²+3x²-6xy+3y²
+x³-2x²y+xy²+3x²-6xy+3y²
+(x+3)(x-y)²
+x³-2x²y+xy²+3x²-6xy+3y²
+=== test6.ic =============================
+x²-y²
+x-y
+0
+x+y
+=== test7.ic =============================
+x³-3x²y-3x²z+3xy²+6xyz+3xz²-y³-3y²z-3yz²-z³
+0
+x²-2xy-2xz+y²+2yz+z²
+0
+x-y-z
+0
+1
+=== test8.ic =============================
+x²-2xy+y²
+y²-2yz+z²
+x-2y+z
+y²
+x-2y
+=== test9.ic =============================
+x⁴-1
+x-1
+0
+x³+x²+x+1
+=== test9a.ic =============================
+x⁴-1
+x+1
+0
+x³-x²+x-1
+=== test9b.ic =============================
+x⁴-1
+x²+1
+0
+x²-1

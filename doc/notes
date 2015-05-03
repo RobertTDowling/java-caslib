@@ -1,0 +1,959 @@
+Why is there an Evec.mul? -- because Polynomial mul needs it
+
+----
+
+Wed Mar 18 06:52:45 PDT 2015 & Thu Mar 19 06:21:57 PDT 2015
+
+What would factoring, substitution and solving look like?
+
+We also have the interesting fact that as a calculator*, every step on
+the way to formation of a polynomial is simplified along the way.
+There are no parenthesis needed or implied.  Once we allow for
+factoring, we can have products over sums, which need to be
+distributed to simplify.  Now we need to add Simplify
+
+*One exception, the ^ operation, I special case if it is poly^integer
+ to perform repeated multiplication, each iterating simplifying along
+ the way.
+
+What are expressions, that can contain other types?
+
+ΣΠ· ⁰¹²³⁴⁵⁶⁷⁸⁹
+
+         Int  Var
+          *\  /*
+  Scalar   Evec -- Π Var ^ Power
+     *\  /
+      Term      -- Scalar · Π Var ^ Power
+        |*
+    Polynomial  -- simplified Σ Terms
+        |                        <--- this is where non-simplified appears
+    Factoring   -- Π Polynomial
+        |                        <--- this is where discontinuity appears
+     Equality   -- obj = obj
+
+Equality might want to have any kind of object on each side of equals.
+
+    Polynomial = Scalar
+    Variable = Scalar
+    Variable = Polynomial (like a function definition???)
+    Polynomial = Polynomial    
+
+----------------------------------------
+
+Factor: Polynomial -- Poly1 Poly2 Poly3 ...
+    or  Polynomial -- Poly1^Power1 Poly2^Power2 Poly3^Power3 ...
+    or  Polynomial -- FactoringObject
+
+One possible problem is that we don't know how many we will get.  We
+do know the total of all of the powers will be the same.  If P^P form,
+we don't know how many of those we will get.  In P form, we do know.
+
+For Factoring integers in N, We don't know how many primes we get.
+Right now, I just do a formatting step, and the original N is still on
+the stack, ready to go.  It is a good UI actually.
+
+Factor: Polynomial -- FactoringObject
+
+        x²+2x+1 -- (x+1)²
+        x³+x²-x-1 -- (x+1)²(x-1)
+
+With this, we allow a new, nonsimplified form to exist on the stack
+
+----------------------------------------
+
+Substitute: Expression [Variable] Value -- Expression
+
+⁰¹²³⁴⁵⁶⁷⁸⁹
+        x³+x²-x-1  x  1 -- 0
+        x²+2x+1  x  y+1 -- y²+4y+4
+        x²+2x+1  x  y+1 -- (y+1)²+2(y+1)+1
+        
+So you need to interpret the expression like it was a function
+
+----------------------------------------
+
+Simplify: Expression -- SimpleExpression
+
+        (z+1)²+2(z+1)+1 -- z²+4z+4
+
+----------------------------------------
+
+Solve: Equality [Variable] -- Equality1 Equality2 ...
+
+In some cases, x²=4, we will not need a variable.  In others,
+x²+y²=1, we will need to know what variable to solve for
+
+Here, we rarely can avoid having multiple items end up on the stack.
+Only in the case of rearranging could there be only one output:
+
+       x+y=5  x -- x=5-y
+
+Solve: EqualityA EqualityB ... [Variable] -- Equality1 Equality2 ...
+
+----------------------------------------
+
+Complex, Q -- More Vector types.  Like polynomial, but fixed dimension
+
+------------------------------------------------------------------------------
+
+Thu Mar 19 20:09:12 PDT 2015
+
+Making an abstract "Stackable" interface that MyStack uses
+
+public class Ver3MyStack {
+	private Stack<Polynomial> stack;
+	public MyStack () { stack = new Stack<Polynomial>(); }
+	public void dumpStack () { ... stack.get(i).toString())); }
+	public void push (Polynomial p) { stack.push(p); }
+	public Polynomial pop () { return stack.pop(); }
+
+------------------------------------------------------------------------------
+
+enum StackableBinOp { add, sub, mul, div, pow, ... }
+
+public interface Stackable {
+	public String toString ();n
+	public Stackable resultType (StackableBinOp op, Stackable other)
+	public Stackable toType (StackableType )
+		// Convert to "type" subclassed of type?
+	public Stackable op (StackableBinOp add, Stackable other)
+
+	public Stackable add (Stackable other)
+	public Stackable sub (Stackable other)
+	public Stackable mul (Stackable other)
+	public Stackable div (Stackable other)
+	public Stackable pow (Stackable other)
+
+
+public class MyStack {
+	private Stack<Stackable> stack;
+	public MyStack () { stack = new Stack<Stackable>(); }
+	public void dumpStack () { ... stack.get(i).toString())); }
+	public void push (Stackable p) { stack.push(p); }
+	public Stackable pop () { return stack.pop(); }
+
+// Typical Usage of Stackable: "+"
+    Stackable b = stack.pop(); Stackable a = stack.pop();
+    Stackable c = a.add(b.toType(a));    stack.push(c);
+
+hmmm
+  1) we need to find the result type of operation
+  2) we need to promote both types to that result type
+     Have promotion be very fast if no promotion is being done
+  3) Then perform the operation
+
+     a	     b	     op	     result
+
+     scalar  scalar  +-*/^   scalar
+
+     scalar  poly    +-*/^   poly
+
+     poly    scalar  +-*/^   poly
+
+     poly    poly    +-*/    poly
+     poly    poly    ^       error
+
+     eqn     eqn     +,-     eqn
+     eqn     eqn     *,/,^   error
+
+     eqn     eqn     +,-     eqn
+     eqn     eqn     *,/,^   error
+
+public class Scalar implements Stackable;
+public class Polynomial implements Stackable;
+public class Factored implements Stackable;
+public class Equality implements Stackable;
+
+----------------------------------------------------------------------
+
+Fri Mar 20 06:30:54 PDT 2015
+
+Promotion and Restriction
+
+
+How to find result type of operation?  Table?  Or N tables, one in each type?
+
+I don't want the types to have to know about each other.
+
+At least, I don't want the types to have to know about superior types.
+
+    Scalar knows about Scalar only
+    Poly knows about Scalar and Poly
+    Factored knows about Scalar, Poly and Factored
+    Equality knows about Scalar, Poly, Factored and Equality
+
+	Each types has set knownAbout(type).
+	boolean knowAbout (other) { return (other is in knownAbout) }
+-->	Doea A == B?  Then we're done, return A's type
+good	Does A know about B?  Then use A's type
+	Does B know about A?  Then use B's type
+	Otherwise error.
+
+We could only have adjacent types know about each other, again downward
+
+   Scalar is EOL
+   Poly knows Scalar
+   Factored knows Poly
+   Equality knows Factored
+
+	The knowAbout function becomes recursive
+	boolean knowAbout (other) {
+	    return true if isMyInferior()
+	    return myInferior.knowAbout (other)
+
+Could support multiple inheritance by having knownAbout be a set again,
+and iterate the recursion
+
+	boolean knowAbout (other) {
+	    return true if (other in knownAbout)
+	    for (type: knownAbout)
+		return true if type.knowAbout (other)
+	    return false
+
+What about when ascending types are not strictly inclusive?
+
+   ℕ < ℤ < ℚ < ℝ < ℂ
+
+   ℤ/pℤ < ??
+
+Anyway
+
+------------------------------------------------------------------------------
+
+Sat Mar 21 08:32:53 PDT 2015
+
+Promotion
+
+	A1 B2 -> B1 B2
+	A1 B2 -> A1 A2
+	A1 B2 -> C1 C2
+
+Say A is Scalar and B is Polynomial
+
+    A.add(B) ---
+    	     Is B Scalar?  then return sum
+	     Otherwise
+
+Add could chain...
+
+    Eq add (Eq)
+    Eq add (Poly) --> This chains Scalar.toPoly
+    Eq add (Other) -- Means Other > Eq, so return Other.addTo (Eq)
+    Poly add (Poly)
+    Poly add (Scalar)
+
+Or Add could be expliclit
+
+    Eq add (Eq)
+    Eq add (Poly)
+    Eq add (Scalar)
+    Eq add (Other) -- Means Other > Eq, so return Other.addTo (Eq)
+
+    Poly add (Poly)
+    Poly add (Scalar)
+
+------------------------------------------------------------------------------
+
+Sat Mar 21 10:48:46 PDT 2015
+
+My Tree for this dicussion will be
+
+         Scalar
+           |
+       Polynomial
+        |    |
+  Factoring  |
+        |    |
+       Equality
+
+So
+  Eq is directly connected to Factoring and Polynomial
+  Factoring is directly connected to Polynomial
+  Polynomial is directly connected to Scalar
+
+Conveniently we can use S P F E
+
+    +| S  P  F  E    *| S  P  F  E
+    -|-----------    -|-----------
+    S| S  P^ Pv E^   S| S  P^ F^ E^
+    P| P^ P  Pv E^   P| P^ P  Pv E^
+    F| Pv Pv Pv E^   F| F^ Pv F  E^
+    E| E^ E^ E^ E    E| E^ E^ E^ E
+
+So there are promotions (^) and restrictions (v) and non-conversions ( )
+
+Every operation may need to examine both operands to decide what to
+do.  There is no easy way to embed this information in the classes
+themselves.  We could look for shortcuts, like same+same=same, but these
+seem like hacks.  How to make this more elegant?  
+
+Consider left promotions ^X and right promotions X^, and ditto restrictions
+
+            Right                Right
+    +|  S   P   F   E    *|  S   P   F   E
+ L  -|----------------   -|----------------
+ e  S|  S  ^P  ^Pv ^E    S|  S  ^P  ^F  ^E
+ f  P|  P^  P   Pv ^E    P|  P^  P   Pv ^E
+ t  F| vP^ vP  vPv ^E    F|  F^ vP   F  ^E
+    E|  E^  E^  E^  E    E|  E^  E^  E^  E
+
+Now consider, how to perform promotions?  Stepwise or all at once?
+
+Stepwise      To      
+     |  S   P   F   E
+ F  -|----------------
+ r  S|      SP SPF SPE
+ o  P|  PS      PF  PE
+ m  F| FPS  FP      FE
+    E| EPS  EP  FE    
+
+Stepwise, need these: PS FP EP FE; SP PF PE FE
+All at once:    PS FS ES FP EP FE; SP SF SE PF PE FE
+
+Maybe we encode this graph
+
+       S
+       |
+       P
+      /|
+     F |
+      \|
+       E
+
+         Other         Other
+     | S P F E      | S P F E
+ B  -|--------- B  -|---------
+ a  S|   ^ ^ ^  a  S|   ^ P P
+ s  P| v   ^ ^  s  P| v   ^ ^
+ e  F| v v   ^  e  F| P v   ^
+    E| v v v       E| P v v
+
+
+S{^}=P P{^}=F,E F{^}=E E{^}=.  E{v}=F,P F{v}=P P{v}=S S{v}=.
+
+or
+
+S{S}=. S{P}=^ S{F}=P S{E}=P
+P{S}=v P{P}=. P{F}=^ P{E}=^
+F{S}=P F{P}=v F{F}=. F{E}=^
+E{S}=P E{P}=v E{F}=v E{E}=.
+
+
+Char typeName()
+
+m.add(typeName(Scalar),typename(Polynomial))
+
+O add (O a, O b)
+
+  
+    +|  S   P   F   E 
+ L  -|----------------
+ e  S|  S  ^P  ^Pv ^E 
+ f  P|  P^  P   Pv ^E 
+ t  F| vP^ vP  vPv ^E 
+    E|  E^  E^  E^  E 
+
+Sun Mar 22 08:35:22 PDT 2015
+
+Aha!  Equation is a container for a pair, not a proper type itself.
+
+When you consider what's left, Scalar, Polynomial, Factoring (perhaps Variable?)
+     Polynomial is a Sum of Terms (products of vars and scalars)
+     Factoring is a Product of Monomials (differences of Terms and scalars)
+
+08:37 % ./promo.pl | fgrep Need | sort -u
+  Add Need to change Factoring to Polynomial
+  Add Need to change Scalar to Polynomial
+  Mul Need to change Factoring to Polynomial
+  Mul Need to change Scalar to Factoring
+  Mul Need to change Scalar to Polynomial
+
+Let's say I want to add a new type, Variable.  How much work is that???
+  * Had to redo both add and mul tables
+  * Had to add class
+  * Would have to add all the type changers (constructors, I guess)
+
+11:26 % ./promo.pl | fgrep Need | sort -u
+  Add Need to change Factoring to Polynomial
+  Add Need to change Scalar to Polynomial
+  Add Need to change Variable to Polynomial
+  Mul Need to change Factoring to Polynomial
+  Mul Need to change Scalar to Factoring
+  Mul Need to change Scalar to Polynomial
+  Mul Need to change Variable to Factoring
+  Mul Need to change Variable to Polynomial
+
+So this solution works, but is not very elegant
+
+a = pop
+b = pop
+c = object.add(a, b)
+
+object.add does
+  dtype = result.add (a, b)
+  if atype != dtype a=dtype.new(a)
+  if btype != dtype b=dtype.new(b)
+  return a.add(b)
+
+So, each type has all it's closure operations, (perhaps not /)
+and each also has constructors to convert from any other type
+
+And object has the look up table of conversions.
+
+----
+
+Ok, instead of calling them object, lets look at our names
+
+  enum BinOp { add, sub, mul, div, pow, equals }
+  enum UnOp { neg, oneover, root ... }
+  singleton OperationTypes
+    Stackable binopResult (BinOp, Stackable, Stackable)
+    Stackable unopResult (UnOp, Stackable)
+  interface Stackable
+    Stackable (Stackable) { ctor to convert types }
+    Stackable binop (BinOp, Stackable)
+    Stackable unop (UnOp)
+    String typeName ()
+    Stackable zero () { singleton, for construction??? }
+
+class Scalar implements Stackable
+class Variable implements Stackable
+class VarComparer implements Comparator<Variable>
+class VarMap
+class VarSet
+class EvecComparer implements Comparator<Evec>
+class Evec
+class EvecMap
+class Term
+class Polynomial implements Stackable
+
+  class Factoring implements Stackable
+  class Equation implements Stackable
+
+class Profile
+class ProfileComparer implements Comparator<String>
+
+  class StackEntry - container interface
+
+class MyStack
+class StackApp
+
+------------------------------------------------------------------------------
+
+Mon Mar 23 06:37:10 PDT 2015
+
+Some confusion around base class, abstract class, and interface.
+
+Let's say I have two classes, call them A and B, and Stackable (S). I
+want to be able to do these things:
+
+  A a;
+  B b;
+
+  S t = S.binOpResult (S.add, aa, bb) // Figure out what type we will need
+  S aa = t.from(b) // Create a new type t from unknown b
+  S bb = t.from(a) // Create a new type t from unknown a
+  S c = S.binOp (S.add, aa, bb)
+
+Maybe S.add does all this in one blow
+
+  S c = S.binop (S.add, a, b);
+
+Anyway, S needs these methods
+
+  class S {
+      public  S from (S s);
+      private S binOpResult (S.op, A x, A y);
+      public  S binOp (S.op, S x, S y);
+
+A and B need these methods
+
+  class A {
+      public A (all the pieces);
+      public A from (S s);
+      public A binOp (S.op, A x, A y);
+
+But I don't like having binOpResult having to return a "fake" object
+only used to call .from later on.  This sounds like a factory instead.
+
+----
+
+Tue Mar 24 06:29:14 PDT 2015
+
+  A a;
+  B b;
+
+  SFactory t = S.binOpResult (S.add, a, b) // Figure out type we will need
+  S aa = t.makeFrom(b) // Create a new type t from unknown b
+  S bb = t.makeFrom(a) // Create a new type t from unknown a
+  S c = aa.(S.add, bb) // We use A's type to decide which binop to run
+
+---
+
+  class SFactory {
+      public S makeFrom (S from) // create our type from _from_
+      public S makeFrom (A from) { return null; }      
+      public S makeFrom (B from) { return null; }      
+
+  class AFactory extends SFactory {
+      public A makeFrom (A from) // create A from A
+      public A makeFrom (B from) // create A from B
+      public A binOp (S.op, A y);
+      
+  class BFactory extends SFactory {
+      public B makeFrom (B from) // create B from B; can't make from A
+      public B binOp (S.op, B y);
+      
+  class S {
+      public SFactory binOpResult (S.op, A x, A y);
+         return table(S.op, x, y)
+	 
+S.op could be objects... then
+
+  A a;
+  B b;
+
+  SFactory t = S.binOpResult (S.add, a, b) // Figure out type we will need
+  S aa = t.makeFrom(b) // Create a new type t from unknown b
+  S bb = t.makeFrom(a) // Create a new type t from unknown a
+  S c = aa.(S.add, bb) // We use A's type to decide which binop to run
+
+  abstract class SOp {
+      public SFactory table (S x, S y)
+  class SAdd {
+      public SFactory table (S x, S y)
+  class SMul {
+      public SFactory table (S x, S y)
+
+  class SFactory {
+      public S makeFrom (S from) // create our type from _from_
+      public S makeFrom (A from) { return null; }      
+      public S makeFrom (B from) { return null; }      
+  class AFactory extends SFactory {
+      public A makeFrom (A from) // create A from A
+      public A makeFrom (B from) // create A from B
+      public A binOp (SOp, A y);
+  class BFactory extends SFactory {
+      public B makeFrom (B from) // create B from B; can't make from A
+      public B binOp (SOp, B y);
+      
+  class S {
+      public S() {
+        SOp add = new SAdd()
+        SOp mul = new SMul()
+      public SFactory binOpResult (SOp, A x, A y) {
+         return table(SOp, x, y);
+  class A {
+      public A binOp (SOp, A b) { big case on SOp }
+
+Tue Mar 24 20:06:34 PDT 2015
+
+* Try this?  // S c = aa.binOp(t.op, bb) // We use A's type and factory to decide which binop to run
+* Get rid of returning NULL, because if you do, you'll have to test for it!
+* Can we remove { big case on SOp } ?
+
+  SOp o = new SAdd ();
+  SFactory t = S.binOpResult (o, a, b) // Figure out type we will need
+  S aa = t.makeFrom(b) // Create a new type t from unknown b using factory
+  S bb = t.makeFrom(a) // Create a new type t from unknown a using factory
+  S c = o.binOp(aa, bb) // We use A's type and factory to decide which binop to run
+
+  abstract class SOp {
+      public SFactory table (S x, S y)
+      public S binOp (S x, S y)
+  class SAdd extends SOp {
+      public SFactory table (S x, S y) { return ... } 
+      public S binOp (S x, S y) { return x.add(S y); }
+  class SMul extends SOp {
+      public SFactory table (S x, S y) { return ... } 
+      public S binOp (S x, S y) { return x.mul(S y); }
+
+  class S {
+      public SFactory binOpResult (SOp o, S x, S y) {
+         return o.table(x, y); // FIXME
+  class A extends S {
+      public SFactory binOpResult (SOp o, A x, A y) {
+      public A add (A b) { return ... }
+      public A mul (A b) { return ... }
+
+  class SFactory {
+      private final ? operation;
+      public S makeFrom (S from) // create our type from _from_
+      public S makeFrom (A from) { return null; }      
+      public S makeFrom (B from) { return null; }
+     
+  class AFactory extends SFactory {
+      private final ? operation = ;        
+      public A makeFrom (A from) // create A from A
+      public A makeFrom (B from) // create A from B
+  class BFactory extends SFactory {
+      public B makeFrom (B from) // create B from B; can't make from A
+      
+Tue Mar 24 21:36:41 PDT 2015
+
+* Can we remove table(SOp, x, y)?
+
+---
+Wed Mar 25 06:45:52 PDT 2015
+
+  SOp o = new SAdd ();
+  SFactory t = S.binOpResult (o, a, b) // Figure out type we will need
+    return o.factoryOfBinOpResult(x, y);
+      return x.factoryOfAddResult (A y);
+         return y.factoryOfAddResultWithA();
+           return new AFactory ();
+  S aa = t.makeFrom(b) // Create a new type t from unknown b using factory
+  S bb = t.makeFrom(a) // Create a new type t from unknown a using factory
+  S c = o.binOp(aa, bb) // We use A's type and factory to decide which binop to run
+
+  abstract class SOp {
+      public S binOp (S x, S y)
+      public SFactory factoryOfBinOpResult (A x, A y);
+  class SAdd extends SOp {
+      public S binOp (S x, S y) { return x.add(S y); }
+      public SFactory factoryOfBinOpResult (A x, A y) {
+          return x.factoryOfAddResult (A y); }
+  class SMul extends SOp {
+      public S binOp (S x, S y) { return x.mul(S y); }
+      public SFactory factoryOfBinOpResult (A x, A y) {
+          return x.factoryOfMulResult (A y); }
+
+  class S {
+      public SFactory binOpResult (SOp o, S x, S y) {
+         return o.factoryOfBinOpResult(x, y);
+  class A extends S {
+      public A add (A y) { return ... }
+      public A mul (A y) { return ... }
+      public SFactory factoryOfAddResult(S y) { return y.factoryOfAddResultWithA();
+      public SFactory factoryOfMulResult(S y) { return y.factoryOfMulResultWithA();
+      public SFactory factoryOfAddResultWithA() { return new AFactory (); // could stash operation
+      public SFactory factoryOfAddResultWithB() { return new BFactory ();
+      public SFactory factoryOfMulResultWithA() { return new AFactory ();
+      public SFactory factoryOfMulResultWithB() { return new AFactory ();
+  class B extends S {
+      public B add (B y) { return ... }
+      public B mul (B y) { return ... }
+      public SFactory factoryOfAddResult(S y) { return y.factoryOfAddResultWithB();
+      public SFactory factoryOfMulResult(S y) { return y.factoryOfMulResultWithB();
+      public SFactory factoryOfAddResultWithA() { return new AFactory (); // could stash operation
+      public SFactory factoryOfAddResultWithB() { return new BFactory ();
+      public SFactory factoryOfMulResultWithA() { return new AFactory ();
+      public SFactory factoryOfMulResultWithB() { return new AFactory ();
+
+  class SFactory {
+      private final ? operation; //I coiuld stash operation in here if I wanted
+      public S makeFrom (S from) // create our type from _from_
+      public S makeFrom (A from) { return null; }      
+      public S makeFrom (B from) { return null; }      
+  class AFactory extends SFactory {
+      private final ? operation = ;        
+      public A makeFrom (A from) // create A from A
+      public A makeFrom (B from) // create A from B
+  class BFactory extends SFactory {
+      public B makeFrom (B from) // create B from B; can't make from A
+
+----
+
+Wed Mar 25 20:19:31 PDT 2015
+
+Left my computer outside and on! all day long today.  I don't do that often!
+
+  SOp o = new SAdd ();
+  SFactory t = o.binOpResultFactory(x, y);
+    return x.addResultFactory (A y);
+      return y.addResultFactoryWithA();
+        return new AFactory ();
+  S aa = t.makeFrom(a) // Create a new type t from unknown b using factory
+  S bb = t.makeFrom(b) // Create a new type t from unknown a using factory
+  S c = o.binOp(aa, bb) // We use A's type and factory to decide which binop to run
+
+  abstract class SOp {
+      S binOp (S x, S y)
+      SFactory binOpResultFactory (S x, S y);
+  class SAdd extends SOp {
+      S binOp (S x, S y) { return x.add((S) y); }
+      SFactory binOpResultFactory (S x, S y) {
+          return x.addResultFactory (S y); }
+  class SMul extends SOp {
+      S binOp (S x, S y) { return x.mul((S) y); }
+      SFactory binOpResultFactory (S x, S y) {
+          return x.mulResultFactory (S y); }
+
+  interface S
+  class A implements S {
+      A add (A y) { return ... } // Fixme This won't work.  Needs to be (S y)
+either          
+      A mul (A y) { return ... }
+      SFactory addResultFactory(S y) { return y.addResultFactoryWithA();
+      SFactory mulResultFactory(S y) { return y.mulResultFactoryWithA();
+      SFactory addResultFactoryWithA() { return new AFactory (); // could stash operation
+      SFactory addResultFactoryWithB() { return new BFactory ();
+      SFactory mulResultFactoryWithA() { return new AFactory ();
+      SFactory mulResultFactoryWithB() { return new AFactory ();
+  class B implements S {
+      B add (B y) { return ... }
+      B mul (B y) { return ... }
+      SFactory addResultFactory(S y) { return y.addResultFactoryWithB();
+      SFactory mulResultFactory(S y) { return y.mulResultFactoryWithB();
+      SFactory addResultFactoryWithA() { return new AFactory (); // could stash operation
+      SFactory addResultFactoryWithB() { return new BFactory ();
+      SFactory mulResultFactoryWithA() { return new AFactory ();
+      SFactory mulResultFactoryWithB() { return new AFactory ();
+
+  class SFactory {
+      private final ? operation; //I could stash operation in here if I wanted
+      S makeFrom (S from) // create our type from _from_
+      S makeFrom (A from) { return null; }      
+      S makeFrom (B from) { return null; }      
+  class AFactory extends SFactory {
+      private final ? operation = ;        
+      A makeFrom (A from) // create A from A
+      A makeFrom (B from) // create A from B
+  class BFactory extends SFactory {
+      B makeFrom (B from) // create B from B; can't make from A
+
+
+------------------------------------------------------------------------------
+
+Thu Mar 26 05:55:45 PDT 2015
+
+This is tested (lightly) and works.
+* Nothing is private.  Better to fix that
+* Coercion should be removed if possible
+* Interfaces where used instead of base classes since there was not inheritance
+
+interface S {
+	public S add (S y);
+	public S mul (S y);
+	public S makeAFrom ();
+	public S makeBFrom ();
+	public SFactory addResultFactory(S y);
+	public SFactory mulResultFactory(S y);
+	public SFactory addResultFactoryWithA();
+	public SFactory addResultFactoryWithB();
+	public SFactory mulResultFactoryWithA();
+	public SFactory mulResultFactoryWithB();
+	public String toString ();
+}
+
+class A implements S {
+	public int value;	
+	public A (int x) { value = x; }
+	public S makeAFrom () { return new A(value); }
+	public S makeBFrom () { return new B(value); }
+	public A add (A y) { return new A(value+y.value); }
+	public A mul (A y) { return new A(value*y.value); }
+	public S add (S y) { return (S) add ((A) y); }
+	public S mul (S y) { return (S) mul ((A) y); }
+	public SFactory addResultFactory(S y) { return y.addResultFactoryWithA(); }
+	public SFactory mulResultFactory(S y) { return y.mulResultFactoryWithA(); }
+	public SFactory addResultFactoryWithA() { return new AFactory (); }
+	public SFactory addResultFactoryWithB() { return new BFactory (); }
+	public SFactory mulResultFactoryWithA() { return new AFactory (); }
+	public SFactory mulResultFactoryWithB() { return new BFactory (); }
+	public String toString () { return Integer.toString(value); }
+}
+
+class B implements S {
+	public double value;	
+	public B (double x) { value = x; }
+	public S makeAFrom () { return new A((int)value); }
+	public S makeBFrom () { return new B(value); }
+	public B add (B y) { return new B(value+y.value); }
+	public B mul (B y) { return new B(value*y.value); }
+	public S add (S y) { return (S) add ((B) y); }
+	public S mul (S y) { return (S) mul ((B) y); }
+	public SFactory addResultFactory(S y) { return y.addResultFactoryWithB(); }
+	public SFactory mulResultFactory(S y) { return y.mulResultFactoryWithB(); }
+	public SFactory addResultFactoryWithA() { return new BFactory (); }
+	public SFactory addResultFactoryWithB() { return new BFactory (); }
+	public SFactory mulResultFactoryWithA() { return new BFactory (); }
+	public SFactory mulResultFactoryWithB() { return new BFactory (); }
+	public String toString () { return Double.toString(value); }
+}
+
+interface SFactory {
+	public S makeFrom (S from);
+}
+
+class AFactory implements SFactory {
+	public S makeFrom (S from) { return from.makeAFrom (); }
+}
+
+class BFactory implements SFactory {
+	public S makeFrom (S from) { return from.makeBFrom (); }
+}
+
+interface SOp {
+	S binOp (S x, S y);
+	SFactory binOpResultFactory (S x, S y);
+}
+
+class SAdd implements SOp {
+	public SAdd () { }
+	public S binOp (S x, S y) { return x.add (y); }
+	public SFactory binOpResultFactory (S x, S y) {
+		return x.addResultFactory (y);
+	}
+}
+
+class SMul implements SOp {
+	public SMul () { }
+	public S binOp (S x, S y) { return x.mul (y); }
+	public SFactory binOpResultFactory (S x, S y) {
+		return x.mulResultFactory (y);
+	}
+}
+
+class Test {
+	public static void main(String[] args) {
+		runTest (new SAdd(), new A(1), new A(2));
+		runTest (new SAdd(), new A(1), new B(2.5));
+		runTest (new SAdd(), new B(1.5), new A(2));
+		runTest (new SAdd(), new B(1.5), new B(2.5));
+		runTest (new SMul(), new A(1), new A(2));
+		runTest (new SMul(), new A(1), new B(2.5));
+		runTest (new SMul(), new B(1.5), new A(2));
+		runTest (new SMul(), new B(1.5), new B(2.5));
+	}
+	private static void runTest (SOp o, S a, S b) {
+		SFactory t = o.binOpResultFactory (a, b);
+		S aa = t.makeFrom(a);
+		S bb = t.makeFrom(b);
+		S c = o.binOp(aa, bb);
+		System.out.print (String.format ("a=%s aa=%s\n",
+						 a.toString(), aa.toString()));
+		System.out.print (String.format ("b=%s bb=%s\n",
+						 b.toString(), bb.toString()));
+		System.out.print (String.format ("c=%s\n",
+						 c.toString()));
+	}
+}
+
+------------------------------------------------------------------------------
+
+Coercion Has Been Removed!
+* But now we have some "return null" methods in all the classes that
+  will balloon if we get more types
+
+interface S {
+	public S addTo (S x);
+	public S mulTo (S x);
+	public A addA (A y);
+	public B addB (B y);
+	public A mulA (A y);
+	public B mulB (B y);
+	public S makeAFrom ();
+	public S makeBFrom ();
+	public SFactory addResultFactory(S y);
+	public SFactory mulResultFactory(S y);
+	public SFactory addResultFactoryWithA();
+	public SFactory addResultFactoryWithB();
+	public SFactory mulResultFactoryWithA();
+	public SFactory mulResultFactoryWithB();
+	public String toString ();
+}
+
+class A implements S {
+	private int value;	
+	public A (int x) { value = x; }
+	public S addTo (S x) { return x.addA (this); }
+	public S mulTo (S x) { return x.mulA (this); }
+	public A addA (A y) { return new A(value+y.value); }
+	public A mulA (A y) { return new A(value*y.value); }
+	public B addB (B y) { return null; }
+	public B mulB (B y) { return null; }
+	public S makeAFrom () { return new A(value); }
+	public S makeBFrom () { return new B(value); }
+	public SFactory addResultFactory(S y) { return y.addResultFactoryWithA(); }
+	public SFactory mulResultFactory(S y) { return y.mulResultFactoryWithA(); }
+	public SFactory addResultFactoryWithA() { return new AFactory (); }
+	public SFactory addResultFactoryWithB() { return new BFactory (); }
+	public SFactory mulResultFactoryWithA() { return new AFactory (); }
+	public SFactory mulResultFactoryWithB() { return new BFactory (); }
+	public String toString () { return Integer.toString(value); }
+}
+
+class B implements S {
+	private double value;	
+	public B (double x) { value = x; }
+	public S addTo (S x) { return x.addB (this); }
+	public S mulTo (S x) { return x.mulB (this); }
+	public A addA (A y) { return null; }
+	public A mulA (A y) { return null; }
+	public B addB (B y) { return new B(value+y.value); }
+	public B mulB (B y) { return new B(value*y.value); }
+	public S makeAFrom () { return new A((int)value); }
+	public S makeBFrom () { return new B(value); }
+	public SFactory addResultFactory(S y) { return y.addResultFactoryWithB(); }
+	public SFactory mulResultFactory(S y) { return y.mulResultFactoryWithB(); }
+	public SFactory addResultFactoryWithA() { return new BFactory (); }
+	public SFactory addResultFactoryWithB() { return new BFactory (); }
+	public SFactory mulResultFactoryWithA() { return new BFactory (); }
+	public SFactory mulResultFactoryWithB() { return new BFactory (); }
+	public String toString () { return Double.toString(value); }
+}
+
+interface SFactory {
+	public S makeFrom (S from);
+}
+
+class AFactory implements SFactory {
+	public S makeFrom (S from) { return from.makeAFrom (); }
+}
+
+class BFactory implements SFactory {
+	public S makeFrom (S from) { return from.makeBFrom (); }
+}
+
+interface BinOp {
+	S binOp (S x, S y);
+	SFactory binOpResultFactory (S x, S y);
+}
+
+class AddBinOp implements BinOp {
+	public AddBinOp () { }
+	public S binOp (S x, S y) { return y.addTo (x); }
+	public SFactory binOpResultFactory (S x, S y) {
+		return x.addResultFactory (y);
+	}
+}
+
+class MulBinOp implements BinOp {
+	public MulBinOp () { }
+	public S binOp (S x, S y) { return y.mulTo (x); }
+	public SFactory binOpResultFactory (S x, S y) {
+		return x.mulResultFactory (y);
+	}
+}
+class Test {
+	public static void main(String[] args) {
+		runTest (new AddBinOp(), new A(1), new A(2));
+		runTest (new AddBinOp(), new A(1), new B(2.5));
+		runTest (new AddBinOp(), new B(1.5), new A(2));
+		runTest (new AddBinOp(), new B(1.5), new B(2.5));
+		runTest (new MulBinOp(), new A(1), new A(2));
+		runTest (new MulBinOp(), new A(1), new B(2.5));
+		runTest (new MulBinOp(), new B(1.5), new A(2));
+		runTest (new MulBinOp(), new B(1.5), new B(2.5));
+	}
+	private static void runTest (BinOp o, S a, S b) {
+		SFactory t = o.binOpResultFactory (a, b);
+		S aa = t.makeFrom(a);
+		S bb = t.makeFrom(b);
+		S c = o.binOp(aa, bb);
+		System.out.print (String.format ("a=%s aa=%s\n",
+						 a.toString(), aa.toString()));
+		System.out.print (String.format ("b=%s bb=%s\n",
+						 b.toString(), bb.toString()));
+		System.out.print (String.format ("c=%s\n",
+						 c.toString()));
+	}
+}
+
+This was from test-it/list
+
+Ver4 implements this with Scalar and Polynomial
+------------------------------------------------------------------------------
+

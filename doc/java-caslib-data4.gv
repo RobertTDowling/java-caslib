@@ -1,0 +1,60 @@
+digraph foo
+{
+/*
+    private final VarMap vm; // embed
+VarMap {    private HashMap<String,Integer> pm;
+    private HashMap<String,Variable> vm;
+Evec {    private int[] e; 
+    private VarSet vs; // ref
+EvecMap {    private HashMap<String,Scalar> sm; // embed
+    private HashMap<String,Evec> em; // embed
+Scalar {    private double d;
+Term {    private Scalar coef; // embed
+    private Evec evec; // embed, kind of
+Polynomial {    private VarSet vs; // embed
+    private ArrayList<Term> ts; // embed
+*/
+	rankdir=BT // =LR
+	node [ shape=box ]
+	"VarSet" -> "Variable" [ arrowhead=dotnormal ]
+	"VarSet" -> "VarMap" [ dir=both arrowtail=odiamond ]
+	"Evec" ->  "VarSet"
+	"VarMap" -> "Variable" [ arrowhead=dotnormal ]
+	"Evec"
+	"EvecMap" -> "Evec" [ arrowhead=dotnormal dir=both arrowtail=odiamond ]
+	"EvecMap" -> "Scalar" [ arrowhead=dotnormal dir=both arrowtail=odiamond ]
+	"Term" -> "Scalar" [ dir=both arrowtail=odiamond ]
+	"Term" -> "Evec" [ dir=both arrowtail=odiamond ]
+	"Polynomial" -> "VarSet" [ dir=both arrowtail=odiamond ]
+	"Polynomial" -> "Term" [ dir=both arrowtail=odiamond arrowhead=dotnormal ]
+
+	"Polynomial" -> "EvecMap" [ dir=none constraint=false style=dotted ]
+	"Evec" -> "VarMap" [ dir=none constraint=false style=dotted ]
+
+	"Factoring" -> "Polynomial" [ dir=both arrowtail=odiamond arrowhead=dotnormal ]
+	"PrimeFactoring" // -> "Scalar"
+	"Equation" -> "Polynomial" [ arrowhead=dotnormal ]
+	"Equation" -> "Factoring" [ arrowhead=dotnormal ]
+
+
+	{ rank=same "Polynomial" "EvecMap" }
+	{ rank=same "VarMap" "Evec" }
+	{ rank=same "Scalar" "Variable" }
+	{ rank=same "Factoring" "PrimeFactoring" }
+
+///////////////////////////////////////////////////////////////////////////
+
+	"VarSet" [ label="VarSet\n{ AL<Variable>, VarMap }\nVar Ordering" ]
+	"Evec" [ label="Evec\n{ int [], VarSet }\nΠ Var^Power" ]
+	"Polynomial" [ label="Polynomial\n{ VarSet, AL<Term> }\nΣ Terms" ]
+	"Term" [ label="Term\n{ Coef, Evec }\nCoef · Π Var^Power" ]
+	"EvecMap" [ label= "EvecMap\n{ Map(Evec->Coef) }\nΣ Terms" ]
+	"VarMap" [ label="VarMap\n{ Map(Variable->Int) }\nΠ Var^Power\nVar->Order" ]
+
+
+//	"Factoring" [ label="Factoring\n{ VarSet, AL<AL<Term>> }\n{ AL<Polynomial> }\nΠ Polynomial" ]
+	"Factoring" [ label="Factoring\n{ AL<Polynomial> }\nΠ Polynomial^Power" ]
+	"Equation" [ label="Equation\n{ ... }\nExp = Exp" ]
+
+	"PrimeFactoring" [ label="PrimeFactoring\nΠ Prime^Power" ] 
+}

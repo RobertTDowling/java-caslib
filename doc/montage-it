@@ -1,0 +1,2 @@
+montage -geometry  480x640\> java-caslib-data*.png type-hierarchy.png m.png
+

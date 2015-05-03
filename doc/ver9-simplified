@@ -1,0 +1,94 @@
+interface IStackable
+  Stackable addTo (Stackable x);
+  SFactory addResultFactory (Stackable y);
+  SFactory addResultFactoryWithScalar (Stackable y);
+  SFactory addResultFactoryWithPolynomial (Stackable y);
+
+  SFactory cosResultFactory ();
+  Stackable cos (); // Remove or add the rest
+
+  Stackable makeScalarFrom ();
+  Stackable makePolynomialFrom ();
+
+abstract class Stackable implements IStackable // Default implementations
+  Scalar add (Scalar y) { System.out.print ("!S+"); return null; }
+  Polynomial add (Polynomial y) { System.out.print ("!P+"); return null; }
+
+  Scalar cos () { System.out.print ("!Ff"); null; }
+  Polynomial cos () { System.out.print ("!Ff"); null; } // Missing
+
+class Scalar extends Stackable
+  Stackable addTo (Stackable x) { return x.add(this); }
+  SFactory addResultFactory (Stackable y) { return y.addResultFactoryWithScalar (this); }
+  SFactory addResultFactoryWithScalar (Stackable x) { return new ScalarFactory (x, this); }
+  SFactory addResultFactoryWithPolynomial (Stackable x) { return new PolynomialFactory (x, this); }
+  Scalar add (Scalar b) { return new Scalar (d + b.d); }
+
+  SFactory cosResultFactory () { return new ScalarFactory(this, null); }
+  Scalar cos (Scalar b) { return new Scalar (Math.cos(d)); }
+
+  Stackable makeScalarFrom () { return new Scalar (this); }
+  Stackable makePolynomialFrom () { return new Polynomial (this); }
+
+class Polynomial extends Stackable
+  Stackable addTo (Stackable x) { return x.add(this); }
+  SFactory addResultFactory (Stackable y) { return y.addResultFactoryWithPolynomial (this); }
+  SFactory addResultFactoryWithScalar (Stackable x) { return new PolynomialFactory (x, this); }
+  SFactory addResultFactoryWithPolynomial (Stackable x) { return new PolynomialFactory (x, this); }
+  Polynomial add (Polynomial b) { _do poly addition_ }
+
+  SFactory cosResultFactory () { return new DomainErrFactory(this, null); }
+  Polynomial cos (Scalar b) { return new DomainErr(); }
+
+  Stackable makeScalarFrom () { return new Scalar (this); }
+  Stackable makePolynomialFrom () { return new Polynomial (this); }
+
+abstract class SFactory
+  final Stackable [] args;
+  SFactory (Stackable a, Stackable b) { args = new Stackable [] { a, b }; }
+  abstract Stackable makeFrom (Stackable from);
+
+class ScalarFactory extends SFactory
+  ScalarFactory (Stackable a, Stackable b) { super (a, b); }
+  Stackable makeFrom (Stackable from) { return from.makeScalarFrom (); }
+
+class PolynomialFactory extends SFactory
+  PolynomialFactory (Stackable a, Stackable b) { super (a, b); }
+  Stackable makeFrom (Stackable from) { return from.makePolynomialFrom (); }
+
+abstract class BinOp
+  abstract Stackable binOp (SFactory f);
+  abstract SFactory binOpResultFactory (Stackable x, Stackable y);
+
+class Add extends BinOp
+  Stackable [] args; // Wrong
+  Add () { }
+  Stackable binOp (SFactory f) { 
+    Stackable aa = f.makeFrom (f.args[0]);
+    Stackable bb = f.makeFrom (f.args[1]);
+    return bb.addTo(aa);
+  SFactory binOpResultFactory (Stackable x, Stackable y) {
+    args = new Stackable [] { x, y };
+    return x.addResultFactory (y);
+
+interface UnOp
+  Stackable unOp (SFactory f);
+  SFactory unOpResultFactory (Stackable x);
+
+class Cos implements UnOp {
+  Cos () { }
+  Stackable unOp (SFactory f) {
+    Stackable aa = f.makeFrom (f.args[0]);
+    return aa.cos()
+  SFactory unOpResultFactory (Stackable x) {
+    return x.cosResultFactory ();
+------------------------------------------------------------------------------
+Using Add
+  BinOp o = new Add();
+  SFactory t = o.binOpResultFactory (a,b);
+  Stackable c = o.binOp (t);
+
+Using Cos
+  UnOp o = new Cos();
+  SFactory t = o.binOpResultFactory (a,a);
+  Stackable c = o.upOp (t);

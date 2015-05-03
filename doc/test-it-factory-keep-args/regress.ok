@@ -1,0 +1,32 @@
+t.args[0]=1 t.args[1]=2
+a=1 aa=1
+b=2 bb=2
+c=3
+t.args[0]=1 t.args[1]=2.5
+a=1 aa=1.0
+b=2.5 bb=2.5
+c=3.5
+t.args[0]=1.5 t.args[1]=2
+a=1.5 aa=1.5
+b=2 bb=2.0
+c=3.5
+t.args[0]=1.5 t.args[1]=2.5
+a=1.5 aa=1.5
+b=2.5 bb=2.5
+c=4.0
+t.args[0]=1 t.args[1]=2
+a=1 aa=1
+b=2 bb=2
+c=2
+t.args[0]=1 t.args[1]=2.5
+a=1 aa=1.0
+b=2.5 bb=2.5
+c=2.5
+t.args[0]=1.5 t.args[1]=2
+a=1.5 aa=1.5
+b=2 bb=2.0
+c=3.0
+t.args[0]=1.5 t.args[1]=2.5
+a=1.5 aa=1.5
+b=2.5 bb=2.5
+c=3.75

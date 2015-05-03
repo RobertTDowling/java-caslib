@@ -1,4 +1,5 @@
-/*****************************************************************************"
+package com.rtdti.cas;
+/*****************************************************************************
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
 
@@ -22,4 +23,13 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 *****************************************************************************/
+
+public abstract class Stackable implements IStackable {
+
+	// boilerplate
+
+	public Stackable [] factorInZ() { return new Stackable [] { new DomainErr ("factorInZ")}; }
+}
+

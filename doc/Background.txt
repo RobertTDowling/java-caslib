@@ -1,0 +1,169 @@
+# java-caslib
+Java CAS Library
+Robert T Dowling
+Kensington, CA  USA
+
+I wrote this for my pleasure--very few comments.
+
+This is close to the tenth Computer Algebra System I've made for
+myself over the years.  Most of them were started in Perl, sometimes
+using objects, sometimes not.  My first attempts were at finding a
+representation of polynomials that was easy to manipulate when
+computing sums and products.  Other investigations centered around
+simple rings and fields that contain each other, such as the integers,
+fractions, reals and complex numbers.  There, the challenge was to
+figure out how to make promotion and restriction work easily.  For
+example, multiplying integers should result in another integer, but
+division might or might not.  How should this be handled?  About that
+time, I became very interested in objects, probably after reading some
+of the Gang of Four's "Design Patterns."  Perl's very liberal attitude
+toward objects and type created one set of problems, while C++'s
+restrictiveness make for others.  There was a brief stint in Haskell,
+which was quite intellectually rewarding, but I felt it was to
+inaccessible.  I wasn't going to start doing everything in Haskell, so
+it wasn't going to hold my attention.  Finally, after a year or so of
+writing Android apps, I decided to see what Java's object model
+brought to the party.  It took another few months to start finding the
+boundaries of that language, but by then, I had enough working to
+reach a critical mass.  Rather than looking at promotion and
+restriction in terms of rings and fields, I addressed the hierarchy
+of scalar / term / single variable polynomial / multivariable polynomial
+/ factored polynomial.
+
+One of the motivators to push forward again on a task I'd started
+many, many times before was the discovery of the exponent vector,
+inspired by "Poly: A new polynomial data structure for Maple 17."
+
+   http://www.cecm.sfu.ca/~monaganm/papers/issac12.pdf
+
+While Monagan and Pearce's work inspired me to "try again," my
+implementation differs significantly in that I wanted easy-of-coding
+for the polynomial 4-functions (+-*/), and not performance, although
+the two are often related.  Their paper led to read about grevlex,
+Graded Reverse Lexicographic Order
+http://en.wikipedia.org/wiki/Monomial_order#Graded_reverse_lexicographic_order
+as a way to facilitate both pretty-printing and to make a reasonable
+algorithm for polynomial division, which ultimately led to factoring
+
+My Computer Algebra System Attempts and Calculators
+
+1999
+
+    mat (Mar 1999) Perl
+       before UC Berkeley!
+       Matrix multiplication as exploration of finite groups / nilpontence
+
+2001
+
+    logi1/logi2 (2001) Perl
+       Logic manipulation, with CGI web interface
+       Really looks like investigating groups for my Abstract Algebra class
+
+2004
+
+    calc (2004) Perl 
+	Cmdline workhorse RPN calc from 2004, no polynomial
+	multi-column display showing dec, hex, time formats
+
+2005
+
+    nrand.pl (Feb 2015) Perl
+    Stats.cpp (2005, Feb-Aug 2011) C++
+	Simple statistics support library
+    stats.pm (2005) perl
+	mean, min, max, stdev
+
+2006
+
+    old-ideas-20060515 (May 2006) Perl
+       Polynomial multiplication ideas
+    pac (2006-2007) Pel 
+	the first real investigation into data structures
+	PAC0 -- minimal
+	PAC1 -- simpler
+	PAC2 -- some; best?
+	PAC3 -- some; good, best?
+	PAC3a -- stub
+    overtone (2006)
+       recoding and finding overtones in overtone singing
+
+2007
+
+    pac (2006-2007) Perl
+	paper (2007) -- proposal of paper for dr dobbs journal
+    calc (2007) python
+	Python -- same functionality as Perl calc
+    alg-2007 (Nov-Dec 2007) C++
+       Promotion / restriction in fields Z, Q, R, ...
+
+2008
+
+    rpcalc.y,.lex (<2008) Lex & Yacc & C
+	Very old Lex/Yacc/C rpn calculator +-*/^
+    without-oo (Feb-Mar 2008) Perl
+       Groups, permutations, symmetry
+    oo (Feb-Mar 2008) Perl
+       Groups, permutations, sets
+
+2009
+2010
+
+    all-types (Mar 2010) Perl
+       Investigate all possible binary operations on small groups
+    histo.pm (2010) Perl
+	median, percentile, mode, show_buckets (histogram)
+
+2011
+
+    Histo.cpp (Feb 2011) C++
+	Histogram support library
+
+2012
+
+    gf (May 2012) Perl
+       Playing with GF and prime polynomials
+    alg-2012 (Nov 2012) Perl
+       Polynomial objects mixed in with Group promotion code
+       "Here we go again"
+       Thoughts about factories and binops and promotion
+       pretty printing
+       Polynomial division
+       A calculator based on object "algobj"
+
+2013
+
+    alg-2013 (Aug 2013) C++
+       Object and stack and binops, very early    
+    calc.hs (Nov-Dec 2013) Haskell
+	Haskell -- same functionality as Perl calc
+    poly.hs (Nov 2013) Haskell
+	Handles polynomials, >1 var, +-*, no /.  Pretty print
+
+2014
+
+    Calc1 (Mar 2014)...Calc14 (Sep 2014) Android
+	Various incarnation of an RPN calc app
+    Calc15 (Sep-Dec 2014) Android
+	Last RPN calc app, rebranded into RPNCalcN
+    RPNCalcN (Oct 2014-Jan 2015) Android
+	No algebra, just a nice calc with UI
+	PR Effort Oct 2014
+	RPNCalcN email created Oct 20 2014
+	APK 1.15 generated Oct 25 2014 and uploaded to Alpha
+	Published to Alpha Oct 27 2014
+        Published to Prod  Jan 14 2015
+	Submitted Content rating Mar 21 2015
+
+2015
+
+    cas-poly-onevar (Jan-Feb 2015) java
+	StackApp.java, Polynomial.java -- +-*/, some pretty print
+	no multiple variables
+    stats34.pm (Feb 2015) Perl
+	skewness and kurtosis
+    perl-caslib (Feb-Mar 2015) Perl
+	basis for java-caslib, testing out Evec structure
+    java-caslib (Mar-May 2015) java
+	Much more complete; multivar polynomials, factored polynomials
+	restriction, promotion
+	ready for RPNCalcN

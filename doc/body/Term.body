@@ -1,0 +1,34 @@
+	public Scalar coef () { return coef; }
+	public Evec evec () { return evec; }
+	public int degree () { return evec.degree(); }
+	public Term mul (VarSet v, Term other) {
+		Profile.tick ("Term.mul");
+		VarMap tm = this.evec.unpack ();
+		VarMap om = other.evec.unpack ();
+		Scalar tc = this.coef;
+		Scalar oc = other.coef;
+		// Collect all the maps
+		VarMap work = new VarMap ();
+		for (Variable x: tm.keys())
+			work.addTo (x, tm.get(x));
+		for (Variable x: om.keys())
+			work.addTo (x, om.get(x));
+		return new Term (tc.mul(oc), new Evec (v, work));
+	}
+	public Term div (VarSet v, Term other) {
+		Profile.tick ("Term.div");
+		VarMap tm = this.evec.unpack ();
+		VarMap om = other.evec.unpack ();
+		Scalar tc = this.coef;
+		Scalar oc = other.coef;
+		// Collect all the maps
+		VarMap work = new VarMap ();
+		for (Variable x: tm.keys())
+			work.addTo (x, tm.get(x));
+		for (Variable x: om.keys())
+			work.addTo (x, -om.get(x));
+		// Check for failure
+		for (Variable x: work.keys())
+			if (work.get(x) < 0) return null;
+		return new Term (tc.div(oc), new Evec (v, work));
+	}

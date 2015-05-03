@@ -1,0 +1,10 @@
+#!/bin/sh
+
+mkdir out
+for i in $(cat list); do
+   echo "package com.rtdti.cas;" > /tmp/og
+   cat ../LICENSE >> /tmp/og
+   tail -n +2 $i > /tmp/ug
+   cat /tmp/og /tmp/ug > out/$i
+done
+   

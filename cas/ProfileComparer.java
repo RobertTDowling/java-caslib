@@ -1,3 +1,4 @@
+package com.rtdti.cas;
 /*****************************************************************************"
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
@@ -23,3 +24,19 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
+
+import java.util.Comparator;
+import java.util.HashMap;
+
+public class ProfileComparer implements Comparator<String> {
+	private HashMap<String,Integer> h;	
+	public ProfileComparer (HashMap<String,Integer> h) {
+		this.h = h;
+	}
+	@Override
+	public int compare(String x, String y) {
+		int d = h.get(y).compareTo(h.get(x));
+		if (d==0) d = x.compareTo(y);
+		return d;
+	}
+}

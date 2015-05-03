@@ -1,0 +1,8 @@
+  Variable:   Variable                                                                             
+    VarSet:   Variable     VarSet     VarMap       Evec    EvecMap                  Term           
+    VarMap:   Variable                VarMap                                                       
+      Evec:   Variable     VarSet     VarMap       Evec                Scalar                      
+   EvecMap:                                        Evec    EvecMap     Scalar                      
+    Scalar:                                                            Scalar                      
+      Term:   Variable     VarSet     VarMap       Evec                Scalar       Term           
+Polynomial:   Variable     VarSet     VarMap       Evec    EvecMap     Scalar       Term Polynomial

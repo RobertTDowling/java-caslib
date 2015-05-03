@@ -1,0 +1,54 @@
+digraph foobar {
+/* All the classes.... Just Scalar and FactoredPolynomial */
+   scalar [ label="Scalar" ]
+   scalarfac [ label="ScalarFactory" ]
+   factored [ label="Factored" ]
+   fp [ label="FactoredPoly" ]
+   fpfac [ label="FactoredPolyFactory" ]
+   stackable [ label="Stackable" ]
+   istackable [ label="IStackable" ]
+/* All the operations... Just add, mul, cos */
+   binop [ label="BinOp" ]
+   add [ label="Add" ]
+   mul [ label="Mul" ]
+   unop [ label="UnOp" ]
+   cos [ label="Cosine" ]
+
+   binop -> add
+   binop -> mul
+   unop -> cos
+   
+   istackable -> stackable
+   stackable -> scalar
+   stackable -> factored
+
+   factored -> fp
+   fpfac
+   scalarfac
+
+   
+}
+/*
+Add
+BinOp
+
+DomainErr
+DomainErrFactory
+
+Factored
+FactoredPolynomial
+FactoredPolynomialFactory
+
+IStackable
+Mul
+
+Polynomial
+PolynomialFactory
+
+SFactory
+
+Scalar
+ScalarFactory
+
+Stackable
+*/

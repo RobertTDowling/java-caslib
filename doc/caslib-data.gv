@@ -1,0 +1,29 @@
+digraph foo
+{
+	"varlist" -> "csv" [ label=join ]
+	"csv" -> "varlist" [ label=split ]
+	"varlist" -> "fobo" [ label=Pack ]
+	"fobo" -> "varlist" [ label=Unpack ]
+	"hash{var}=power" -> "varlist" [ dir=both ]
+
+	"coef,fobo" [ label="Term\ncoef,fobo" ]
+
+	"coef,fobo" -> "coef,csv" [ constraint=false label="TermToCoefKey" ]
+	"coef,varlist" -> "coef,fobo" [ dir=back label="TermToCoefList" ]
+	"coef,varlist" -> "coef,csv" [ style=invis ]
+
+	"coef,fobo" -> "[coef,varlist]" [ style=invis ]
+	"coef,csv" -> "[coef,varlist]" [ style=invis ]
+
+	"varlist" -> "coef,varlist" [ style=invis ]
+	"fobo" -> "coef,fobo" [ style=invis ]
+	"csv" -> "coef,csv" [ style=invis ]
+
+	"[coef,fobo]" -> "hash{csv}=coef" [ dir=both constraint=false ]
+	"[coef,varlist]" -> "[coef,fobo]" [ dir=both ]
+	"[coef,varlist]" -> "hash{csv}=coef" [ style=invis ]
+
+	"coef,varlist" -> "[coef,varlist]" [ style=invis ]
+	"coef,fobo" -> "[coef,fobo]" [ style=invis ]
+	"coef,csv" -> "hash{csv}=coef" [ style=invis ]
+}

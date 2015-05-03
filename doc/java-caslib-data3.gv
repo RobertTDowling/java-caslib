@@ -1,0 +1,25 @@
+digraph foo
+{
+	"Scalar" -> "Term" [ weight=1 ]
+	"Variable" -> "VarSet" -> "Evec"
+	"VarSet" -> "Polynomial" [ dir=back ]
+	{ rank=same "Evec" -> "VarMap" [dir=none style=dashed] } 
+	"Evec" -> "Term" [ weight=1 ]
+	{ rank=same "Polynomial" -> "EvecMap" [dir=none style=dashed] } 
+	"Term" -> "Polynomial" [ weight=1 ]
+	"Polynomial" -> "Factoring"
+	"Polynomial" -> "Equation"
+	"Factoring" -> "Equation"
+	"Equation"
+	
+	"VarMap" -> "EvecMap" [ style=invis weight=1 ]
+
+	"VarSet" [ label="VarSet\n{ AL<Variable> }\nVar Ordering" ]
+	"Evec" [ label="Evec\n{ int [], VarSet }\nΠ Var^Power" ]
+	"Polynomial" [ label="Polynomial\n{ VarSet, AL<Term> }\nΣ Terms" ]
+	"Term" [ label="Term\n{ Coef, Evec }\nCoef · Π Var^Power" ]
+	"EvecMap" [ label= "EvecMap\n{ Map(Evec->Coef) }\nΣ Terms" ]
+	"VarMap" [ label="VarMap\n{ Map(Variable->Int) }\nΠ Var^Power" ]
+	"Factoring" [ label="Factoring\n{ VarSet, AL<AL<Term>> }\n{ AL<Polynomial> }\nΠ Polynomial" ]
+	"Equation" [ label="Equation\n{ ... }\nExp = Exp" ]
+}

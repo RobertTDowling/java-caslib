@@ -1,0 +1,79 @@
+		Profile.tick ("VarSet.ctor()");
+		vs = new ArrayList<Variable> ();
+		vm = new VarMap ();
+		order = 0;
+		vs = new ArrayList<Variable> ();
+		for (Variable i: v.vs)
+			vs.add(i);
+		vm = new VarMap (v.vm);
+		order = v.order;
+	}
+		vs = new ArrayList<Variable> ();
+		vm = new VarMap ();
+		vs.add (v);
+		vm.put (v, 1);
+		order = 1;
+	}
+	private int transcribe (VarMap m) {
+		int i = 0;
+		for (Variable v: m.sortKeys()) {
+			vs.add(v);
+			vm.put(v, ++i);
+		}
+		return i;
+	}
+	public VarSet (VarMap m) {
+		vs = new ArrayList<Variable> ();
+		vm = new VarMap ();
+		order = transcribe (m);
+	}
+	public VarSet (Variable[] a) {
+		VarMap m = new VarMap();
+		for (Variable v: a)
+			m.addTo (v);
+		vs = new ArrayList<Variable> ();
+		vm = new VarMap ();
+		order = transcribe (m);
+	}
+	public VarSet (EvecMap l) {
+		VarMap m = new VarMap();
+		for (Evec e: l.keys()) {
+			VarMap n = e.unpack();
+			for (Variable f: n.keys()) {
+				m.addTo (f);
+			}
+		}
+		vs = new ArrayList<Variable> ();
+		vm = new VarMap ();
+		order = transcribe (m);
+	}
+	public VarSet union (VarSet b) {
+		// Make unique
+		VarMap m = new VarMap();
+		for (Variable v: this.vs)
+			m.addTo (v);
+		for (Variable v: b.vs)
+			m.addTo (v);
+	 	return new VarSet (m);
+	}
+	public int order () { return order; }
+	public int index (Variable v) {
+		Profile.tick ("VarSet.index");
+		return vm.get(v); }
+	public Variable var (int index) { return vs.get(index-1); }
+	public ArrayList<Variable> vars () { return vs; }
+
+	public Evec remap (Evec src) {
+		VarSet that = src.getVarSet ();
+		VarMap m = src.unpack ();
+		return new Evec (this, m);
+	}
+	public Term remap (Term tsrc) {
+		Evec src = tsrc.evec();
+		VarSet that = src.getVarSet ();
+		VarMap m = src.unpack ();
+		return new Term (tsrc.coef(), new Evec (this, m));
+	}
+	public boolean equals (VarSet other) {
+		return vs.equals (other.vs);
+	}

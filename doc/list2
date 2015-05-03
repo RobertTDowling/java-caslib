@@ -1,0 +1,48 @@
+Variable {
+    private String v;
+	public Variable () {
+	public Variable (String s) {
+	public Variable (Variable a) {
+VarSet {
+    private final int order;
+    private final ArrayList<Variable> vs;
+    private final VarMap vm;   
+	public VarSet () {
+	public VarSet (VarSet v) {
+	public VarSet (Variable v) {
+	public VarSet (VarMap m) {
+	public VarSet (Variable[] a) {
+	public VarSet (EvecMap l) {
+	public VarSet union (VarSet b) {
+VarMap {
+    private HashMap<String,Integer> pm;
+    private HashMap<String,Variable> vm;
+	public VarMap () {
+	public VarMap (VarMap m) {
+Evec {
+    private int[] e;
+    private VarSet vs;
+	public Evec (VarSet s, VarMap m) {
+	public Evec (Evec a) {
+EvecMap {
+    private HashMap<String,Scalar> sm;
+    private HashMap<String,Evec> em;
+	public EvecMap () {
+Scalar {
+    private double d;
+	public Scalar () {
+	public Scalar (double a) {
+	public Scalar (Scalar a) {
+Term {
+    private Scalar coef;
+    private Evec evec;
+	public Term (Scalar coef, Evec evec) {
+	public Term (Term t) {
+Polynomial {
+    private VarSet vs;
+    private ArrayList<Term> ts;
+	public Polynomial () {
+	public Polynomial (Scalar s) {
+	public Polynomial (Variable v) {
+	public Polynomial (VarSet v, Term t) {
+	public Polynomial (Polynomial a) {

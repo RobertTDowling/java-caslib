@@ -1,3 +1,6 @@
+import java.util.Stack;
+import com.rtdti.cas.Stackable;
+
 /*****************************************************************************"
 Copyright (c) 2015, Robert T Dowling
 All rights reserved.
@@ -23,3 +26,26 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
+
+public class MyStack {
+	private Stack<Stackable> stack;
+	public MyStack () {
+		stack = new Stack<Stackable>();
+	}
+	public void dumpStack () {
+		int i;
+		for (i=0; i<stack.size(); i++)
+		{
+			System.out.print (String.format("%d: (%s) %s\n", i,
+                             stack.get(i).name(), stack.get(i).toString()));
+			//			System.out.print (String.format("%d: %s\n", i,
+			//                             stack.get(i).toString()));
+		}
+	}
+	public void push (Stackable p) {
+		stack.push(p);
+	}
+	public Stackable pop () {
+		return stack.pop();
+	}
+}
