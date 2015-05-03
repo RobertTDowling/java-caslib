@@ -39,8 +39,8 @@ import java.util.Iterator;
 
 public class VarSet {
 	private final int order;
-	private final ArrayList<Variable> vs;
-	private final VarMap vm;   
+	private final ArrayList<Variable> vs; // Ordered
+	private final VarMap vm;   // For finding index quickly
 	public VarSet () {
 		Profile.tick ("VarSet.ctor()");
 		vs = new ArrayList<Variable> ();
@@ -136,6 +136,17 @@ public class VarSet {
 		for (Variable v: b.vs)
 			m.addTo (v);
 	 	return new VarSet (m);
+	}
+	public VarSet remove (Variable v) {
+		// Make a new varset with variable v removed
+		ArrayList<Variable> nvl = new ArrayList<Variable> (vs);
+		int index = index (v);
+		if (index < 1) {
+			// Failed, so nothign to remove
+			return this;
+		}
+		nvl.remove(index-1);
+		return new VarSet (nvl);
 	}
 	public int order () { return order; }
 	public int index (Variable v) {

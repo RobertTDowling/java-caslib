@@ -449,21 +449,17 @@ public class Polynomial extends Stackable {
 		int maxPower = 0;
 		for (Term t: ts) {
 			Evec te = t.evec();
-			int [] e = te.getE ();
-			int p = e[index];
+			int p = te.getPower(index);
 			if (p > maxPower)
 				maxPower = p;
 		}
 		// System.out.print (String.format ("  MaxPower of %s is %d ix=%d\n",
 		//      v.toString(), maxPower, index));
+
 		// Create a Varset that does not have V in it
-		ArrayList<Variable> ovl = vs.vars();
- 	// v Lord have mercy, this is very unencapsulated
-		ArrayList<Variable> nvl = new ArrayList<Variable> (ovl);
-		nvl.remove(index-1);
-		VarSet nvs = new VarSet (nvl);
- 	// ^ Lord have mercy, this is very unencapsulated
+		VarSet nvs = vs.remove (v);
 		// System.out.print (String.format ("  New VS=%s\n", nvs.toString()));
+
 		// Accumulate into maxPower+1 seperate EvecMaps
 		EvecMap [] em = new EvecMap [maxPower+1];
 		for (int i=0; i<=maxPower; i++) {

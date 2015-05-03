@@ -72,14 +72,16 @@ public class Evec {
 		}
 		return m;
 	}
+	public int getPower (int index) {
+		if (index > 0 && index < e.length)
+			return e[index];
+		return 0;
+	}
 	public int degree () {
 		return e[0];
 	}
 	public boolean isScalar () {
-		int sum = -e[0];
-		for (int i: e)
-			sum += i;
-		return sum == 0;
+		return degree() == 0;
 	}
 	public Evec mul (Evec other) {  // Used by Polynomial mul only
 		Profile.tick ("Evec.mul");
