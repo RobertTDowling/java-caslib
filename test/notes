@@ -261,3 +261,177 @@ integer factor of a_n and b_0 is an integer factor of a_0.
 
 (x+y+6)^3 = x³+3x²y+3xy²+y³+18x²+36xy+18y²+108x+108y+216
 
+Factor in x: (1)x³+(3y+18)x²+(3y²+36y+108)x+(y³+18y²+108y+216)
+
+Factor 1x³ = +/- 1, 1x, 1x², 1x³
+Factor (y³+18y²+108y+216) = (y+6)³ = +/- 1, (y+6), (y+6)², (y+6)³
+
+64 to test
+
+------------------------------------------------------------------------------
+
+Tue May  5 06:27:04 PDT 2015
+
+How to make this easy?
+
+f = Factor (p)
+  if (p is not in one var)
+     pick first var v
+     make f in 1 var v, with polynomial coef
+  else
+     make f = p, but with each scalar coef replaced with degenerate polynomial 
+  let lead = leading coef polynomial of f
+  let last = last coef polynomial of f
+  let flead = list of divisor polynomials of lead (not just factors)
+  let flast = list of divisor polynomials of last
+  for (a: flead) {
+    for (b: flast) {
+       let d = ax+b
+       let q,r = f /mod d
+       if r.isZero
+         add d to l
+	 if degree (q) < 2
+	   add q to l
+	   return
+	 recurse -- this is the ugly part -- we need a polynomial with Scalar coef again!  Is it?
+   failed... add q to l
+
+l = list of divisors polynomials (p)
+
+------------------------------------------------------------------------------
+
+Wed May  6 06:53:59 PDT 2015
+
+What are the divisors of...  4x^3+8x^2+4x ?  18 of them
+
+     1, 2, 4,                       x, 2x, 4x,
+     x+1, 2x+2, 4x+4,               x^2+x, 2x^2+2, 4x^2+4,
+     (x+1)^2, 2(x+1)^2, 4(x+1)^2,   x(x+1)^2, 2x(x+1)^2, 4x(x+1)^2
+
+{1,2,4} x {1,x} x {1,x+1,(x+1)^2} == 2^{0,1,2} x x^{0,1} x (x+1)^{0,1,2}
+
+What is _the factorizaion_ of 4x^3+8x^2+4x ?
+
+     (4x)(x+1)^2
+
+So Factorization returns a FactoredPolynomial type
+
+     Sum { PolyCoef x Variable ^ Power }
+
+Whereas divisors need to return 3 lists of (object, power) pairs
+
+     PrimeFactored scalar GCD
+     Evec of variable GCD
+     FactoredPolynomial of P/GCD
+
+All three could be expressed a Factored objects
+
+Or it could be one massive Factored object: 
+
+     2^2, x^1, (x+1)^2
+
+Hmmm.  We could remove the gcd x^1 by looking at the power of the last
+term in the polynomial.  That leaves the 2^2 and x+1^2.  One is
+scalar, one is polynomial with coef 1.
+
+------------------------------------------------------------------------------
+
+Polynomial [] lastFactored = factorInZ ();
+FactoredPolynomial jj = new FactoredPolynomial (lastFactored);
+			
+// Lexicographic order on jj
+Set<Stackable> tss = jj.sortKeys();
+int lfcount = tss.size();
+int [] exp = new int [lfcount];
+int [] trial = new int [lfcount];
+Polynomial [] base = new Polynomial [lfcount];
+int i=0;
+for (Stackable s: tss) {
+	base[i] = (Polynomial) s;
+	trial[i] = 0;
+	exp[i++] = jj.get(s);
+}
+
+ArrayList<Polynomial> divisors = new ArrayList<Polynomial>();
+i = 0;
+while (i < lfcount) {
+	Polynomial p = new Polynomial (new Scalar(1));
+	for (i=0; i<lfcount; i++) {
+		for (int j=0; j<trial[i]; j++) {
+			p = p.mul (base[i]);
+		}
+	}
+
+	// +/-P is a possible factor
+	divisors.add (p);
+
+	// Compute next trial
+	for (i=0; i<lfcount; i++) {
+		if (++trial[i] <= exp[i]) {
+			break;
+		}
+		trial[i] = 0;
+	}
+}
+return divisors;
+
+------------------------------------------------------------------------------
+
+Thu May  7 06:25:01 PDT 2015
+
+Why is this so hard???
+
+I'm getting wound up in trying to reuse code that can't be reused and
+bad variable names and the fact that Emacs is not helping me with
+refactoring and that I can't commit any of my work so it is a
+minefield of commented out code I can't delete yet.
+
+Look at more data
+
+Could I end up with 4x^2 + 12xy + 9y^2 -- yes and ver11 factors that 2x+3y
+
+But 4x^2 + 12xy^2 + 9y^4 can't be factored by ver11 because it does
+not do powers of the variable y
+
+Let's look at my algorithm again, and see if I can simplify it
+
+Poly: S*E+...+S*E, and E=v^a*...*z^e
+PolyOfPolyInOneVar: POPIOV
+PolyInOneVarOfPoly: Pn*v^n+...+Pk*v^k, k might==0  PIOVOP
+
+Construct all S*v+T, where S|Pn and T|Pk
+
+They can be constructed on the fly, or all at once.  That is an optimization.
+
+FactoredPolynomial factorInZ () // Let p be an alias to 'this'
+  Pick v, the first variable in p.
+  Create empty list<poly> l to hold factoriztion of p (Which then
+       becomes a FactoredPolynomial?  It could if we "mul" by factors,
+       but let's skip that for now.)
+  factorInZ (v, l)
+  Construct array from arraylist <-- is this step necessary
+  Construct FactoredPolynoimal from array
+------------------------------------------------------------------------------
+Polynomial [] factorInZ () // Let p be an alias to 'this'
+  Make p1 be a PIOVOP(v) that is eqivalent to p (what is the container?)
+  lead, last, are Polynomial
+  let lead = leading coef polynomial of p1 <-- This is array index basically
+  let last = last coef polynomial of p1
+  let ldlead = list of divisor Polynomials of lead (not just factors)
+  let ldlast = list of divisor Polynomials of last <-- These are Polynomial
+  for (s: ldlead) {
+     for (t: ldlast) {
+        let d = sv+b        <-- d is Polynomial
+        let q,r = p /mod d  <-- q,r are Polynomial
+        if r.isZero
+           add d to l
+	   if degree (q) < 2
+	     also add q to l
+	   return
+	recurse: q.factorInZ (v, l)
+  Leftovers... add q to l
+------------------------------------------------------------------------------
+list of divisor Polynomials of p
+  Lexicographic order
+
+Thu May  7 20:15:32 PDT 2015

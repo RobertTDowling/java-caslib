@@ -26,15 +26,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 *****************************************************************************/
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
 import java.lang.Math;
 
 public class FactoredPolynomial extends Factored {
-
-	// boilerplate
-
 
 	public Stackable copy () { return new FactoredPolynomial (this); }
 //////////////////////////////////////////////////////////////////////////////
@@ -89,6 +87,14 @@ public class FactoredPolynomial extends Factored {
 		for (Stackable s: a) {
 			PolynomialFactory f = new PolynomialFactory (s, null);
 			Stackable p = f.makeFrom (s);
+			addTo (p, 1);
+		}
+	}
+	public FactoredPolynomial (ArrayList<Polynomial> a) {
+		Profile.tick("FactoredPolynomial.ctor(ArrayList<Poly>)");
+		pm = new HashMap<String,Integer> ();
+		fm = new HashMap<String,Stackable> ();
+		for (Polynomial p: a) {
 			addTo (p, 1);
 		}
 	}
@@ -186,4 +192,7 @@ public class FactoredPolynomial extends Factored {
 		}
 		return o;
 	}
+
+	// boilerplate
+
 }

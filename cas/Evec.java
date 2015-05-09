@@ -39,12 +39,20 @@ public class Evec {
 	private final int[] e;
 	private final VarSet vs;
 	public Evec (VarSet s, VarMap m) {
-		Profile.tick ("Evec.ctor()");
+		Profile.tick ("Evec.ctor(VarSet, VarMap)");
 		vs = s;
 		e = new int[s.order()+1];
 		e[0] = 0;
 		for (Variable v: m.keys())
 			e[0] += (e[s.index(v)] = m.get(v));
+	}
+	public Evec (VarSet s, int [] ev) {
+		Profile.tick ("Evec.ctor(VarSet, int [])");
+		vs = s;
+		e = new int[ev.length];
+		for (int i=0; i<ev.length; i++) {
+			e[i] = ev[i];
+		}
 	}
 	public Evec (Evec a) {
 		Profile.tick ("Evec.ctor(Evec)");
@@ -82,6 +90,14 @@ public class Evec {
 	}
 	public boolean isScalar () {
 		return degree() == 0;
+	}
+	public Evec gcd (Evec y) {
+		Evec x = this;
+		int [] newe = new int [e.length];
+		for (int i=0; i<e.length; i++) {
+			newe[i] = Integer.min (x.e[i], y.e[i]);
+		}
+		return new Evec (x.vs, newe);
 	}
 	public Evec mul (Evec other) {  // Used by Polynomial mul only
 		Profile.tick ("Evec.mul");

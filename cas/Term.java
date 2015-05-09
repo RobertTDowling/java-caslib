@@ -43,6 +43,14 @@ public class Term {
 	public Scalar coef () { return coef; }
 	public Evec evec () { return evec; }
 	public int degree () { return evec.degree(); }
+	public Term gcd (Term y) {
+		Term x = this;
+		Scalar c = x.coef.gcd(y.coef);
+		Evec e = x.evec.gcd(y.evec);
+		Term r = new Term (c, e);
+		// System.out.print (String.format ("Term: x=%s y=%s gcd=%s\n", x.toString(), y.toString(), r.toString()));
+		return r;
+	}
 	public Term mul (VarSet v, Term other) {
 		Profile.tick ("Term.mul");
 		VarMap tm = this.evec.unpack ();

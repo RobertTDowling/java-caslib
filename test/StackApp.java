@@ -100,8 +100,10 @@ class StackApp {
 				else if (line.equals("E")) {
 					Polynomial a = (Polynomial) stack.pop();
 					Polynomial b = (Polynomial) stack.pop();
-					Stackable c = b.expressIn (a);
-					stack.push (c);
+					Stackable [] c = b.expressIn (a);
+					for (Stackable s: c) {
+						stack.push (s);
+					}
 				}
 				else if (line.equals("F")) {
 					UnOp o = new Factor ();

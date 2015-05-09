@@ -69,7 +69,15 @@ public class PrimeFactored extends Factored {
 	}
 	public PrimeFactored (Polynomial p) {
 		Profile.tick("PrimeFactored.ctor(Polynomial)");
-		System.out.print ("Can't make PrimeFactored from Polynomial\n");
+		pm = new HashMap<String,Integer> ();
+		fm = new HashMap<String,Stackable> ();
+		Scalar s = new Scalar (p.scalar());
+		// Factor it in Z
+		Scalar [] pp = s.factorInZ ();
+		// Populate
+		for (Scalar ppp: pp) {
+			addTo (ppp, 1);
+		}
 	}
 	public PrimeFactored (FactoredPolynomial f) {
 		Profile.tick ("PrimeFactored.ctor(FactoredPolynomial)");
