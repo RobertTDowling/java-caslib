@@ -105,7 +105,7 @@ public class Polynomial extends Stackable {
 		vs = new VarSet();
 		ts = new ArrayList<Term> ();
 		String [] s2 = s.substring(1).split ("\\+");
-		boolean first = true; 
+		boolean first = true;
 		for (String t: s2) {
 			if (first) {
 				// Pick off VarSet
@@ -366,7 +366,17 @@ public class Polynomial extends Stackable {
 		return fp;
 	}
 
-	private Polynomial gcdOfTerms () {
+	private boolean isSingleTerm () {
+		return ts.size() == 1;
+	}
+
+	private Term getSingleTerm () {
+		if (isSingleTerm())
+			return ts.get(0);
+		return null;
+	}
+
+	private Term gcdOfTerms () {
 		Term g = null;
 		for (Term t: ts) {
 			if (g==null)
@@ -374,12 +384,7 @@ public class Polynomial extends Stackable {
 			else
 				g = g.gcd(t);
 		}
-		Polynomial pg = new Polynomial (g);
-		// An empty term is 1, but may not look like it.  Fix that.
-		if (g.isOne())
-			pg = new Polynomial (new Scalar (1));
-// 		System.out.print (String.format ("  ... gcdOfTerms(%s) = %s [%s]\n", this.toString(), pg.toString(), g.toDebug()));
-		return pg;
+		return g;
 	}
 
 	// private ArrayList<Polynomial> factorInZ () {
@@ -395,10 +400,30 @@ public class Polynomial extends Stackable {
 	}
 
 	// Worker, not public
+	// Convert to n instances of each variable in Evec and prime factor of scalar
+	private void addFactors (Term t, ArrayList<Polynomial> l) {
+		Scalar s = t.coef();
+		Evec e = t.evec();
+
+		// Prime factor the coef and put them in
+		Scalar [] spf = s.factorInZ ();
+		for (Scalar z: spf)
+			l.add(new Polynomial(z));
+
+		// Break apart the evec, and put them in
+		Variable [] ef = e.factorInZ ();
+		for (Variable z: ef)
+			l.add(new Polynomial(z));
+	}
+
+	// Worker, not public
 	// Factor this into v-k expressions, returning answer in l
+	// The key here is that if (v-k)^n is a factor, l will have n copies of (v-k)
 	private void factorInZ (Variable v, ArrayList<Polynomial> l) {
 		Polynomial p = this;
 		Polynomial one = new Polynomial (new Scalar (1));
+
+///		System.out.print (String.format ("factorInZ(%s,v=%s)\n", p.toString(), v.toString()));
 
 		// Early out for 1
 		if (p.sub(one).isZero()) {
@@ -406,27 +431,41 @@ public class Polynomial extends Stackable {
 			return;
 		}
 
-		// Pull out gcd
-		Polynomial g = p.gcdOfTerms();
-		if (!g.sub(one).isZero()) {
-///			p=p.div(g);
-///			System.out.print (String.format ("Pulling out gcd=%s leaving %s\n", g.toString(), p.toString()));
+		// If Polynomial is just a single term, we won't find any av+b divisors, so don't try
+		if (p.isSingleTerm ()) {
+///			System.out.print (String.format ("P is single term: p=%s\n", p.toString()));
+			// In fact, if we do GCD, we'll gcd=t, and p will then be 1, so don't bother
+
+			Term t = p.getSingleTerm ();
+			addFactors (t, l);
+			return;
 		}
-		
+
+		// Pull out gcd term
+		Term g = p.gcdOfTerms();
+		if (!g.isOne()) {
+			// Non-1 GCD, so divide out of P and add terms to list
+			p=p.div(new Polynomial(g));
+///			System.out.print (String.format ("Pulling out gcd=%s from p=%s leaving %s\n", g.toString(), this.toString(), p.toString()));
+
+			addFactors (g, l);
+			// Continue trying to factor reduced p
+		}
+
 		// Convert to array of polynomials
 		Polynomial [] p1 = p.expressIn (v);
 
 		// Find divisors of lead (highest power in v) term
 		Polynomial lead = p1[p1.length-1];
 ///		System.out.print ("  ... lead=" +lead.toString()+ "\n");
-		ArrayList<Polynomial> leadDiv = lead.findDivisors (g);
-///		System.out.print (String.format (".... %s\n", leadDiv.toString()));
-			
+		ArrayList<Polynomial> leadDiv = lead.findDivisors ();
+///		System.out.print (String.format (" Lead (%s).... %s\n", lead.toString(), leadDiv.toString()));
+
 		// find divisors of last (lowest power in v) term
 		Polynomial last = p1[0]; // Needs to be smarter
 ///		System.out.print ("  ... last=" +last.toString()+ "\n");
-		ArrayList<Polynomial> lastDiv = last.findDivisors (g);
-///		System.out.print (String.format (".... %s\n", lastDiv.toString()));
+		ArrayList<Polynomial> lastDiv = last.findDivisors ();
+///		System.out.print (String.format (" Last (%s).... %s\n", last.toString(), lastDiv.toString()));
 
 		for (Polynomial s: leadDiv) {
 			for (Polynomial t: lastDiv) {
@@ -456,12 +495,12 @@ public class Polynomial extends Stackable {
 		}
 		// Failed to factor, tack on what is left
 		// System.out.print (String.format ("we be done, l has %s\n", l.toString()));
-		l.add (this);
+		l.add (p);
 		return;
 	}
-	
+
 	// Worker: find all divisors of a given polynomial
-	private ArrayList<Polynomial> findDivisors (Polynomial gcd) {
+	private ArrayList<Polynomial> findDivisors () {
 		ArrayList<Polynomial> divisors = new ArrayList<Polynomial>();
 		int divisorCount;
 		int [] exp;

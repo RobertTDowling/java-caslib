@@ -91,6 +91,17 @@ public class Evec {
 	public boolean isScalar () {
 		return degree() == 0;
 	}
+	// Return list of variables as factors.  If x^3 is there, return x,x,x
+	public Variable [] factorInZ () {
+		Variable [] f = new Variable [e[0]];
+		int k=0;
+		for (int i=1; i<e.length; i++) {
+			for (int j=0; j<e[i]; j++) {
+				f[k++] = vs.var(i);
+			}
+		}
+		return f;
+	}
 	public Evec gcd (Evec y) {
 		Evec x = this;
 		int [] newe = new int [e.length];

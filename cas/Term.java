@@ -51,7 +51,7 @@ public class Term {
 		// System.out.print (String.format ("Term: x=%s y=%s gcd=%s\n", x.toString(), y.toString(), r.toString()));
 		return r;
 	}
-	public boolean isOne () { return degree() == 0; }
+	public boolean isOne () { return degree() == 0 && coef.scalar() == 1.0; }
 	public Term mul (VarSet v, Term other) {
 		Profile.tick ("Term.mul");
 		VarMap tm = this.evec.unpack ();
