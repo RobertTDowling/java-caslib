@@ -435,3 +435,22 @@ list of divisor Polynomials of p
   Lexicographic order
 
 Thu May  7 20:15:32 PDT 2015
+
+Massive changes to Polynomial.j to try to factor more cases, like
+test35-37, but still not there.  Yet this is working again and using
+new direction.
+
+Add GCD to Evec and Term.
+Polynomial.expressIn returns array now.
+Remove dead comments from boilerplat.pl.
+Add constructor from Polynomial for PrimeFactored.
+Add constructor from ArrayList<Polynomial> for FactoredPolynomial.
+
+Sat May  9 08:21:02 PDT 2015
+
+Commit it working for more cases in test35.ic except easiest x^2+2xy+y^2.
+
+This is broken because we now express the last coef y^2 as
+  1*y^2 + 0 y^1 + 0 y^0.
+
+This appears to be solvable with GCD pulling y^2 and leaving 1 behind

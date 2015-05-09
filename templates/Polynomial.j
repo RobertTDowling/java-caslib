@@ -33,8 +33,6 @@ public class Polynomial extends Stackable {
 	private VarSet vs;
 	private ArrayList<Term> ts;
 
-	// boilerplate
-
 	public Stackable copy () { return new Polynomial (this); }
 //////////////////////////////////////////////////////////////////////////////
 	public Polynomial () {
@@ -70,6 +68,12 @@ public class Polynomial extends Stackable {
 	public Polynomial (VarSet v, Term t) {
 		Profile.tick("Polynomial.ctor(VarSet,Term)");
 		vs = v;
+		ts = new ArrayList<Term> ();
+		ts.add (t);
+	}
+	public Polynomial (Term t) {
+		Profile.tick("Polynomial.ctor(Term)");
+		vs = t.evec().getVarSet();
 		ts = new ArrayList<Term> ();
 		ts.add (t);
 	}
@@ -119,6 +123,7 @@ public class Polynomial extends Stackable {
 			}
 		}
 	}
+	public ArrayList<Term> terms () { return ts; }
 	public void addTo (Term t) {
 	       ts.add(t);
 	}
@@ -130,7 +135,7 @@ public class Polynomial extends Stackable {
 	public double scalar () {
 		for (Term t: ts) {
 			Evec te = t.evec();
-			if (te.toString().equals ("0"))
+			if (te.isScalar())
 				return t.coef().get();
 		}
 		return 0;
@@ -138,7 +143,7 @@ public class Polynomial extends Stackable {
 	public boolean isScalar () {
 		for (Term t: ts) {
 			Evec te = t.evec();
-			if (!te.toString().equals ("0"))
+			if (!te.isScalar())
 				return false;
 		}
 		return true;
@@ -327,16 +332,16 @@ public class Polynomial extends Stackable {
 		for (Term t: ts)
 			System.out.print (String.format("  t='%s'\n", t.toDebug()));
 	}
-	public Stackable factor () {
-		Stackable [] r = factorInZ ();
-		return new FactoredPolynomial (r);
-	}
+
 	public Polynomial expand () { return new Polynomial (this); }
+
 	// Public one
-	public Polynomial [] factorInZ () {
+	public Stackable factor () {
 		// Early out if degree 1 or less
-		if (degree() < 2)
-			return new Polynomial [] { this };
+		if (degree() < 2) {
+			System.out.print (String.format("    factored='%s'\n", this.toString()));
+			return new FactoredPolynomial (this);
+		}
 		// Use the theorem that says that any factor of
 		// ax^n+...+z will be in the form (bx+y) where b is a factor
 		// of a and y is a factor of z.
@@ -344,98 +349,103 @@ public class Polynomial extends Stackable {
 		// So can we apply this theorem yet?  Or must we simplify
 		// what we got?
 
-		// Pick a variable to factor in.  Pick the first
+		// Pick a variable and express 'this' as a polynomial in v with
+		// polynomials as coef.  If 'this' happens to be a polynomial with
+		// Scalar coef, they will be converted to polynomial coef so we
+		// can handle them uniformly
 		Variable v = vs.var(1);
-		int degLastTerm = ts.get(ts.size()-1).degree();
 
-		// Is this polynomial either in 2 vars or in 1 var with a
-		// a scalar term?  If so, we can make a (x-k) type attempt.
-		if (vs.order() == 1 && degLastTerm == 0 ||
-		    vs.order() == 2 && degLastTerm != 0) {
-			// Yes, we can try to find a x-k type of factor
+		// Make an empty list to hold the answer
+		ArrayList<Polynomial> l = new ArrayList<Polynomial>();
 
-			// System.out.print (String.format ("v=%s\n", v.toString()));
-			// Factor...
-			ArrayList<Polynomial> l = new ArrayList<Polynomial>();
-			factorInZ (v, l);
-			// Construct array from arraylist
-			Polynomial [] a = new Polynomial[l.size()];
-			for (int i=0; i<l.size(); i++)
-				a[i] = l.get(i);
-			return a;
-		} else {
-			// We need to simplify
-			System.out.print ("We need to remove variable " + v.toString() + " to do this...\n");
-			System.out.print (String.format ("vs.order=%d last term=%s degree=%d\n",
-							 vs.order(), ts.get(ts.size()-1).toString(),
-							 degLastTerm));
-			
-			Polynomial [] pInVar1 = expressIn (v);
-			// Subfactor last (lowest power in v) term
-			Polynomial last = pInVar1[0];
-			System.out.print ("  ... last=" +last.toString()+ "\n");
-			Polynomial [] lastFactored = last.factorInZ ();
-			
-			// Oy!  These factors serve as "k" in x-k type expressions
-			return lastFactored; // FIXME: this is not real answer
-		}
+		factorInZ (v, l);
+
+		// Make a factored Polynomial for the answer
+		FactoredPolynomial fp = new FactoredPolynomial (l);
+///		System.out.print (String.format("    factored='%s'\n", fp.toString()));
+		return fp;
 	}
-	
+
+	private Polynomial gcdOfTerms () {
+		Term g = null;
+		for (Term t: ts) {
+			if (g==null)
+				g = t;
+			else
+				g = g.gcd(t);
+		}
+		Polynomial pg = new Polynomial (g);
+		// An empty term is 1, but may not look like it.  Fix that.
+		if (g.isOne())
+			pg = new Polynomial (new Scalar (1));
+// 		System.out.print (String.format ("  ... gcdOfTerms(%s) = %s [%s]\n", this.toString(), pg.toString(), g.toDebug()));
+		return pg;
+	}
+
+	// private ArrayList<Polynomial> factorInZ () {
+	public Polynomial [] factorInZ () {
+		ArrayList<Polynomial> l = new ArrayList<Polynomial>();
+		Variable v = vs.var(1);
+		factorInZ (v, l);
+		Polynomial [] r = new Polynomial [l.size()];
+		int i = 0;
+		for (Polynomial p: l)
+			r[i++] = p;
+		return r;
+	}
+
 	// Worker, not public
+	// Factor this into v-k expressions, returning answer in l
 	private void factorInZ (Variable v, ArrayList<Polynomial> l) {
-		Polynomial f = this;
-		ArrayList<Polynomial> r = new ArrayList<Polynomial>();
+		Polynomial p = this;
+		Polynomial one = new Polynomial (new Scalar (1));
 
-		// Get leading and last coefficient
-		double dleading = ts.get(0).coef().get();
-		double dlast = ts.get(ts.size()-1).coef().get();
-		// System.out.print (String.format ("leading=%f last=%f\n", dleading, dlast));
-		// Factor each in Z
-		long leading = (long) dleading;
-		long last = (long) dlast;
+		// Early out for 1
+		if (p.sub(one).isZero()) {
+			l.add (this);
+			return;
+		}
 
-		ArrayList<Long> fleading = zFactorsOf(leading);
-		ArrayList<Long> flast = zFactorsOf(last);
+		// Pull out gcd
+		Polynomial g = p.gcdOfTerms();
+		if (!g.sub(one).isZero()) {
+///			p=p.div(g);
+///			System.out.print (String.format ("Pulling out gcd=%s leaving %s\n", g.toString(), p.toString()));
+		}
+		
+		// Convert to array of polynomials
+		Polynomial [] p1 = p.expressIn (v);
 
-		// Get leading and last variable
-		VarMap mleading = ts.get(0).evec().unpack();
-		VarMap mlast = ts.get(ts.size()-1).evec().unpack();
-		Set<Variable> sleading = mleading.keys();
-		Set<Variable> slast = mlast.keys();
-		if (slast.isEmpty())
-			slast = sleading;
+		// Find divisors of lead (highest power in v) term
+		Polynomial lead = p1[p1.length-1];
+///		System.out.print ("  ... lead=" +lead.toString()+ "\n");
+		ArrayList<Polynomial> leadDiv = lead.findDivisors (g);
+///		System.out.print (String.format (".... %s\n", leadDiv.toString()));
+			
+		// find divisors of last (lowest power in v) term
+		Polynomial last = p1[0]; // Needs to be smarter
+///		System.out.print ("  ... last=" +last.toString()+ "\n");
+		ArrayList<Polynomial> lastDiv = last.findDivisors (g);
+///		System.out.print (String.format (".... %s\n", lastDiv.toString()));
 
-		// System.out.print (String.format ("leading=%s %s\n", fleading.toString(), sleading.toString()));
-		// System.out.print (String.format ("last=%s %s\n", flast.toString(), slast.toString()));
+		for (Polynomial s: leadDiv) {
+			for (Polynomial t: lastDiv) {
+				Polynomial d = new Polynomial (v);
+				// System.out.print (String.format ("Try s=%s t=%s d=%s\n", s.toString(), t.toString(), d.toString()));
+				d=d.mul(s).add(t);
+				Polynomial [] c = p.divMod (d);
 
-		for (Long a: fleading) {
-		    for (Variable x: sleading) {
-			for (Long b: flast) {
-		            for (Variable y: slast) {
-				    // System.out.print (String.format ("a=%s x=%s b=%s y=%s\n", a.toString(), x.toString(), b.toString(), y.toString()));
-				// Polynomial p = new Polynomial (v);
-				Polynomial pl = new Polynomial (x);
-				Polynomial pr;
-				if (y.toString().equals(x.toString()))
-					pr = new Polynomial (new Scalar(1.0));
-				else
-					pr = new Polynomial (y);
-				// p=p.mul(new Polynomial(new Scalar(a)));
-				pl=pl.mul(new Polynomial(new Scalar(a)));
-				pr=pr.mul(new Polynomial(new Scalar(b)));
-				// p=p.add(new Polynomial(new Scalar(b)));
-				Polynomial p=pl.add(pr);
-				Polynomial [] c = f.divMod (p);
-				// System.out.print (String.format ("Try %s q=%s r=%s\n", p.toString(), c[0].toString(), c[1].toString()));
+/// System.out.print (String.format ("Try %s / %s =  q=%s r=%s\n", p.toString(), d.toString(), c[0].toString(), c[1].toString()));
 				if (c[1].isZero()) {
-					// Found one (p); Add to list
+					// Found one (d); Add to list
 					// System.out.print (String.format ("(%s)", p.toString()));
-					l.add (p);
+					l.add (d);
 					// Is quotient degree 1?
 					if (c[0].degree() < 2) {
 						// Save quotient too, then we're done
 						// System.out.print (String.format ("(%s)", c[0].toString()));
 						l.add (c[0]);
+						// System.out.print (String.format ("we be done, l has %s\n", l.toString()));
 						return;
 					}
 					// recurse on quotient (c[0])
@@ -443,14 +453,88 @@ public class Polynomial extends Stackable {
 					return;
 				}
 			}
-		    }}
 		}
 		// Failed to factor, tack on what is left
+		// System.out.print (String.format ("we be done, l has %s\n", l.toString()));
 		l.add (this);
 		return;
 	}
-	// Find integer factors of an integer
-	private ArrayList<Long> zFactorsOf (long a) {
+	
+	// Worker: find all divisors of a given polynomial
+	private ArrayList<Polynomial> findDivisors (Polynomial gcd) {
+		ArrayList<Polynomial> divisors = new ArrayList<Polynomial>();
+		int divisorCount;
+		int [] exp;
+		int [] trial;
+		Polynomial [] base;
+		if (isScalar()) {
+			if (this.scalar() == 1) {
+				divisors.add (new Polynomial (new Scalar (1)));
+				divisors.add (new Polynomial (new Scalar (-1)));
+				return divisors;
+			}
+			PrimeFactored jj = new PrimeFactored (this);
+///			System.out.print (String.format ("PF jj=%s\n", jj.toString()));
+			Set<Stackable> tss = jj.sortKeys();
+			divisorCount = tss.size();
+			exp = new int [divisorCount];
+			trial = new int [divisorCount];
+			base = new Polynomial [divisorCount];
+			int i=0;
+			for (Stackable s: tss) {
+				base[i] = new Polynomial ((Scalar) s);
+				trial[i] = 0;
+				exp[i++] = jj.get(s);
+///				System.out.print (String.format (" s=%s p=%d\n", s.toString(), jj.get(s)));
+			}
+		} else {
+			Stackable [] r = factorInZ ();
+			FactoredPolynomial jj = new FactoredPolynomial (r);
+///			System.out.print (String.format ("FP jj=%s\n", jj.toString()));
+			Set<Stackable> tss = jj.sortKeys();
+			divisorCount = tss.size();
+			exp = new int [divisorCount];
+			trial = new int [divisorCount];
+			base = new Polynomial [divisorCount];
+			int i=0;
+			for (Stackable s: tss) {
+				base[i] = (Polynomial) s;
+				trial[i] = 0;
+				exp[i++] = jj.get(s);
+///				System.out.print (String.format (" s=%s p=%d\n", s.toString(), jj.get(s)));
+			}
+		}
+
+		// Lexicographic order on jj
+		Polynomial negone = new Polynomial (new Scalar (-1));
+		int i = 0;
+		while (i < divisorCount) {
+			Polynomial p = new Polynomial (new Scalar(1));
+			for (i=0; i<divisorCount; i++) {
+				for (int j=0; j<trial[i]; j++) {
+					p = p.mul(base[i]);
+				}
+			}
+
+			// System.out.print (String.format (" ... %s\n", p));
+			// +/-P is a possible factor
+			divisors.add (p);
+			divisors.add (p.mul(negone));
+
+			// Compute next trial
+			for (i=0; i<divisorCount; i++) {
+				if (++trial[i] <= exp[i]) {
+					break;
+				}
+				trial[i] = 0;
+			}
+		}
+/// System.out.print (String.format ("divisors are %s\n", divisors.toString()));
+		return divisors;
+	}
+
+	// Find integer divisors of an integer
+	private ArrayList<Long> zDivisorsOf (long a) {
 		ArrayList<Long> r = new ArrayList<Long>();
 		a=Math.abs(a);
 		if (a == 0 || a == 1) {
@@ -467,18 +551,17 @@ public class Polynomial extends Stackable {
 		}
 		return r;
 	}
-	// Change a polynomial u,v,w.,,, into a polynomial in v with coef
-	// of polynomials in u,w,...
-	public Stackable expressIn (Polynomial pi) {
+
+	// Convenience for expressIn (v).  Accept pi as if it were v
+	public Stackable [ ] expressIn (Polynomial pi) {
 		// Peel off the variable V from pi
 		Variable v = pi.vs.var(1);
-		int index = vs.index (v);
-		if (index < 1) {
-			// Failed,so whole polynomial is answer
-			return this;
-		}
-		return this; // Not done
+		return expressIn (v);
 	}
+	// Convert a multivariable polynomial with Scalar coef into
+	// a single variable polynomial with polynomial coef
+	// Change a polynomial u,v,w.,,, into a polynomial in v with coef
+	// of polynomials in u,w,...
 	public Polynomial [ ] expressIn (Variable v) {
 		// Find the highest power of that variable
 		// System.out.print (String.format ("expressIn pi=%s this=%s, v=%s ix=%d\n", pi.toString(), this.toString(), v.toString(), index));
@@ -524,10 +607,10 @@ public class Polynomial extends Stackable {
 			np[i].vs = nvs;
 			for (Evec e:em[i].sortKeys())
 				np[i].ts.add (new Term(em[i].get(e), e));
-			System.out.print (String.format ("(%s)%s^%d", np[i].toString(), v.toString(), i));
-			if (i>0) System.out.print("+");
+///			System.out.print (String.format ("(%s)%s^%d", np[i].toString(), v.toString(), i));
+///			if (i>0) System.out.print("+");
 		}
-		System.out.print("\n");
+///		System.out.print("\n");
 		// Finally, create new Sum object...uh, I don't have this yet!
 		return np;
 	}
@@ -542,4 +625,6 @@ public class Polynomial extends Stackable {
 		}
 		return o;
 	}
+
+	// boilerplate
 }

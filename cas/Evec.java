@@ -94,9 +94,12 @@ public class Evec {
 	public Evec gcd (Evec y) {
 		Evec x = this;
 		int [] newe = new int [e.length];
-		for (int i=0; i<e.length; i++) {
+		int degree = 0;
+		for (int i=1; i<e.length; i++) {
 			newe[i] = Integer.min (x.e[i], y.e[i]);
+			degree += newe[i];
 		}
+		newe[0] = degree;
 		return new Evec (x.vs, newe);
 	}
 	public Evec mul (Evec other) {  // Used by Polynomial mul only
