@@ -154,7 +154,7 @@ public class VarSet {
 //		System.out.print (String.format ("VarSet index vm='%s' ", vm.toString()));
 //		System.out.print (String.format ("v=%s: ix=%d\n", v.toString(), vm.get(v) ));
 		return vm.get(v); }
-	public Variable var (int index) { return vs.get(index-1); }
+	public Variable var (int index) { return vs.size()>index-1 && index>0 ? vs.get(index-1) : null; }
 	public ArrayList<Variable> vars () { return vs; }
 
 	// Convert Evec src into a new Evec with 'this' VarSet

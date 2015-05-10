@@ -27,7 +27,15 @@ all:	clean
 	cd ../doc; make; make
 	javac StackApp.java
 
+AllFactors: AllFactors.java ../cas/*.java ../templates/*
+	# cd ../templates; make; mv *.java ../cas
+	# cd ../doc; make; make
+	javac AllFactors.java
+	echo "java AllFactors" > AllFactors
+	chmod +x AllFactors
+
 clean:
 	cd ../templates; make clean
 	cd ../doc; make clean
 	rm -f *.class *~ ../cas/*.class ../cas/*~ ../templates/*.java ../templates/*~
+

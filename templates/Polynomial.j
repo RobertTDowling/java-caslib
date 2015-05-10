@@ -348,6 +348,9 @@ public class Polynomial extends Stackable {
 		// polynomials as coef.  If 'this' happens to be a polynomial with
 		// Scalar coef, they will be converted to polynomial coef so we
 		// can handle them uniformly
+		//
+		// Unfortunately, we might be here on a wrapped Scalar
+		// and there is no variable
 		Variable v = vs.var(1);
 
 		// Make an empty list to hold the answer
@@ -433,6 +436,10 @@ public class Polynomial extends Stackable {
 			l.add (p);
 			return;
 		}
+		if (p.isZero()) {
+			l.add (p);
+			return;
+		}
 
 		// If Polynomial is just a single term, we won't find any av+b divisors, so don't try
 		if (p.isSingleTerm ()) {
@@ -485,7 +492,7 @@ public class Polynomial extends Stackable {
 					// Is quotient degree 1?
 					if (c[0].degree() < 2) {
 						// Save quotient too, then we're done
-						if (!c[0].isScalar() || c[0].scalar() != 1 && c[0].scalar() != -1) {
+						if (!c[0].isScalar() || c[0].scalar() != 1) {
 ///							System.out.print (String.format ("#(%s)", c[0].toString()));
 							l.add (c[0]);
 						}
