@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 public abstract class Stackable implements IStackable {
 
-	public final static String version = "java-caslib 1.12 5/2015";
+	public final static String version = "java-caslib 1.12a 5/2015";
 
 	// boilerplate
 
