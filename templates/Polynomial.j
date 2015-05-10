@@ -337,11 +337,6 @@ public class Polynomial extends Stackable {
 
 	// Public one
 	public Stackable factor () {
-		// Early out if degree 1 or less
-		if (degree() < 2) {
-///			System.out.print (String.format("    factored='%s'\n", this.toString()));
-			return new FactoredPolynomial (this);
-		}
 		// Use the theorem that says that any factor of
 		// ax^n+...+z will be in the form (bx+y) where b is a factor
 		// of a and y is a factor of z.
@@ -443,7 +438,6 @@ public class Polynomial extends Stackable {
 		if (p.isSingleTerm ()) {
 ///			System.out.print (String.format ("P is single term: p=%s\n", p.toString()));
 			// In fact, if we do GCD, we'll gcd=t, and p will then be 1, so don't bother
-
 			Term t = p.getSingleTerm ();
 			addFactors (t, l);
 			return;

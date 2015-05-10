@@ -52,6 +52,8 @@ public class Scalar extends Stackable {
 	}
     
 	static public long gcd (long a, long b) {
+		a = Math.abs(a);
+		b = Math.abs(b);
 		while (a>0 && b>0) {
 			if (a<b) { long t=a; a=b; b=t; }
 			a-=b;
