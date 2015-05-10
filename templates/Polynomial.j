@@ -494,7 +494,7 @@ public class Polynomial extends Stackable {
 			}
 		}
 		// Failed to factor, tack on what is left
-		// System.out.print (String.format ("we be done, l has %s\n", l.toString()));
+		// System.out.print (String.format ("failed, adding (%s)\n", p.toString()));
 		l.add (p);
 		return;
 	}
@@ -507,7 +507,7 @@ public class Polynomial extends Stackable {
 		int [] trial;
 		Polynomial [] base;
 		if (isScalar()) {
-			if (this.scalar() == 1) {
+			if (this.scalar() == 1 || this.scalar() == -1) {
 				divisors.add (new Polynomial (new Scalar (1)));
 				divisors.add (new Polynomial (new Scalar (-1)));
 				return divisors;
@@ -568,7 +568,7 @@ public class Polynomial extends Stackable {
 				trial[i] = 0;
 			}
 		}
-/// System.out.print (String.format ("divisors are %s\n", divisors.toString()));
+		// System.out.print (String.format ("divisors are %s\n", divisors.toString()));
 		return divisors;
 	}
 
