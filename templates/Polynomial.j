@@ -405,15 +405,23 @@ public class Polynomial extends Stackable {
 		Scalar s = t.coef();
 		Evec e = t.evec();
 
+///		System.out.print (" addFactors: "+t.toString()+" : ");
 		// Prime factor the coef and put them in
 		Scalar [] spf = s.factorInZ ();
-		for (Scalar z: spf)
-			l.add(new Polynomial(z));
+		if (s.scalar() != 1 && s.scalar() != -1) {
+			for (Scalar z: spf) {
+				l.add(new Polynomial(z));
+///				System.out.print (z.toString()+" ");
+			}
+		}
 
 		// Break apart the evec, and put them in
 		Variable [] ef = e.factorInZ ();
-		for (Variable z: ef)
+		for (Variable z: ef) {
 			l.add(new Polynomial(z));
+///			System.out.print (z.toString()+" ");
+		}
+///		System.out.print ("\n");
 	}
 
 	// Worker, not public
@@ -454,6 +462,7 @@ public class Polynomial extends Stackable {
 
 		// Convert to array of polynomials
 		Polynomial [] p1 = p.expressIn (v);
+///		System.out.print (" p1=["); for (Polynomial p2: p1) System.out.print (p2.toString()+","); System.out.print ("]\n");
 
 		// Find divisors of lead (highest power in v) term
 		Polynomial lead = p1[p1.length-1];
@@ -477,13 +486,15 @@ public class Polynomial extends Stackable {
 /// System.out.print (String.format ("Try %s / %s =  q=%s r=%s\n", p.toString(), d.toString(), c[0].toString(), c[1].toString()));
 				if (c[1].isZero()) {
 					// Found one (d); Add to list
-					// System.out.print (String.format ("(%s)", p.toString()));
+///					System.out.print (String.format ("%%(%s)", p.toString()));
 					l.add (d);
 					// Is quotient degree 1?
 					if (c[0].degree() < 2) {
 						// Save quotient too, then we're done
-						// System.out.print (String.format ("(%s)", c[0].toString()));
-						l.add (c[0]);
+						if (!c[0].isScalar() || c[0].scalar() != 1 && c[0].scalar() != -1) {
+///							System.out.print (String.format ("#(%s)", c[0].toString()));
+							l.add (c[0]);
+						}
 						// System.out.print (String.format ("we be done, l has %s\n", l.toString()));
 						return;
 					}

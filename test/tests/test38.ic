@@ -1,0 +1,11 @@
+6 U . F .
+6 x * U . F .
+6 x * y * U . F .
+6 x * y y * * U . F .
+6 x x * y * * U . F .
+6 x y - * U . F .
+6 x y - x * * U . F .
+6 x y - y * * U . F .
+6 x 1 - * U . F .
+6 x 1 - * y * U . F .
+6 x 1 - * y x - * U . F .

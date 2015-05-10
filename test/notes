@@ -640,3 +640,25 @@ I also just fixed the problem that kept x²+2xy+y² from factoring
 			g = g;
 		}
 
+
+------------------------------------------------------------------------------
+
+Sat May  9 20:06:00 PDT 2015
+
+Inconsisten output:
+
+6		(2)(3)
+6x		(6x)
+6xy		(2)(3)(x)(y)
+6xy²		(2)(3)(x)(y)²
+6x²y		(2)(3)(x)²(y)
+6x-6y		(6x-6y)
+6x²-6xy		(1)(x-y)(6)(x)
+6xy-6y²		(1)(x-y)(6)(y)
+6x-6		(6x-6)
+6xy-6y		(1)(6)(y)(x-1)
+-6x²+6xy+6x-6y	(-6x+6y)(x-1)
+
+Where in the world are these 1's coming from?
+
+xy-y²		(1)²(x-y)(y)
