@@ -339,7 +339,7 @@ public class Polynomial extends Stackable {
 	public Stackable factor () {
 		// Early out if degree 1 or less
 		if (degree() < 2) {
-			System.out.print (String.format("    factored='%s'\n", this.toString()));
+///			System.out.print (String.format("    factored='%s'\n", this.toString()));
 			return new FactoredPolynomial (this);
 		}
 		// Use the theorem that says that any factor of
@@ -427,7 +427,7 @@ public class Polynomial extends Stackable {
 
 		// Early out for 1
 		if (p.sub(one).isZero()) {
-			l.add (this);
+			l.add (p);
 			return;
 		}
 
