@@ -107,7 +107,7 @@ public class Evec {
 		int [] newe = new int [e.length];
 		int degree = 0;
 		for (int i=1; i<e.length; i++) {
-			newe[i] = Integer.min (x.e[i], y.e[i]);
+			newe[i] = Math.min (x.e[i], y.e[i]);
 			degree += newe[i];
 		}
 		newe[0] = degree;
