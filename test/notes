@@ -662,3 +662,95 @@ Inconsisten output:
 Where in the world are these 1's coming from?
 
 xy-y²		(1)²(x-y)(y)
+
+Sun May 10 08:40:05 PDT 2015
+
+Input		Ver 1.12		Ver 1.13?		Ver 1.14?
+6		(2)(3)			(2)(3)			(2)(3)
+6x		(2)(3)(x)		(6)(x)			6x
+6xy		(2)(3)(x)(y)		(6)(x)(y)		6xy
+6xy²		(2)(3)(x)(y)²		(6)(x)(y)²		6xy²		
+6x²y		(2)(3)(x)²(y)		(6)(x)²(y)		6x²y
+6x-6y		(2)(3)(x-y)		(6)(x-y)		(6)(x-y)
+6x²-6xy		(2)(3)(x-y)(x)		(6)(x-y)(x)		(6x)(x-y)
+6xy-6y²		(2)(3)(x-y)(y)		(6)(x-y)(y)		(6y)(x-y)
+6x-6		(2)(3)(x-1)		(6)(x-1)		(6)(x-1)
+6xy-6y		(2)(3)(y)(x-1)		(6)(y)(x-1)		(6y)(x-1)
+-6x²+6xy+6x-6y	(2)(3)(x-1)(-x+y)	(6)(x-1)(-x+y)		(6)(x-1)(-x+y)
+
+todo
+
+[ ] HTML formatting
+
+[ ] Unify use of Type [] and ArrayList<Type> so I never have to copy again
+
+  VarSet: AL<Variable> vs
+     [] taken in ctor
+     AL<Variable> taken in ctor
+     AL<Variable> returned by var
+  Scalar
+     Scalar [] Returned by factorInZ *converted from AL<Scalar>*
+  Polynomial:  AL<Term> ts
+     AL<Term> returned from "terms"
+     AL<Poly> used to build up answers for factoring
+     AL<Poly> returned from findDivisors
+     Poly [] returned from factorInZ and *converted from AL<Poly>*
+     [ ] used in findDivisors internall
+     AL<Long> returned from zDivisorsOf
+     Poly [] returned from expressIn
+  Evec: int [] e;
+     Taken in constructor
+     Variable [] returned from factorInZ
+     int [] returned from getE
+     int [] used in gcd to pass into constructor
+  FactoredPolynomial:
+     [] taken in ctor
+     AL<Poly> taken in ctor
+  PrimeFactored
+     [] taken in ctor
+
+Of the internal types in cas, what ones need to have dynamic growth?
+
+  VarSet: AL<Variable> vs -- probably not
+  Polynomial:  AL<Term> ts -- maybe, while constructing polynomial
+  Evec: int [] e; -- not
+
+Why is varset dynamic?
+    remove() otherwise, it is only the constructors
+       who calls remove?  Poly?
+       Interestingly, remove is not called on existing AL<> but to ctor a new
+       So might be able to make a VarSet (AL<V>) ctor convert to []
+    there is no addTo call
+
+Poly calls to remove;
+    EvecMap in cleanup()
+    VarSet in expressIn
+    VarMap in expressIn
+    And not surprisingly, these are the only classes that offer a remove method
+
+
+
+What about factorInZ...
+
+Scalars render as they do currently in RPNCalcN
+Non-Scalars render through toString()
+
+B: would b better if factorInZ returned AL, W: if it would be worse, I: indifferent
+N: PrimeFactored would need a new CTOR
+M: FactoredPolynomial already has a CTOR
+
+B Evec.java:	public Variable [] factorInZ () {
+I FactoredPolynomial.java:		Stackable [] pp = p.factorInZ ();
+M FactoredPolynomial.java:		Stackable [] r = t.args[0].factorInZ ();
+B Polynomial.java:	public Polynomial [] factorInZ () {
+I Polynomial.java:		Scalar [] spf = s.factorInZ ();
+I Polynomial.java:		Variable [] ef = e.factorInZ ();
+M Polynomial.java:			Stackable [] r = factorInZ ();
+I PrimeFactored.java:		Scalar [] pp = p.factorInZ ();
+I PrimeFactored.java:		Scalar [] pp = s.factorInZ ();
+I PrimeFactored.java:		Scalar [] pp = p.factorInZ ();
+N PrimeFactored.java:		Stackable [] r = t.args[0].factorInZ ();
+N Scalar.java:		Stackable [] r = factorInZ ();
+B Scalar.java:	public Scalar [] factorInZ () {
+
+

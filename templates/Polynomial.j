@@ -119,14 +119,11 @@ public class Polynomial extends Stackable {
 				Scalar sc = new Scalar (s3[0]);
 				Evec e = new Evec (vs, s3[1]);
 				Term term = new Term (sc, e);
-				addTo (term);
+				ts.add (term);
 			}
 		}
 	}
 	public ArrayList<Term> terms () { return ts; }
-	public void addTo (Term t) {
-	       ts.add(t);
-	}
 	public int degree () {
 		if (ts.size()>0)
 			return ts.get(0).degree();
