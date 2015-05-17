@@ -26,12 +26,45 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 *****************************************************************************/
 
-public abstract class Stackable implements IStackable {
+public abstract class Stackable {
 
 	public final static String version = "java-caslib 1.12a 5/2015";
 
-	// boilerplate
+	public abstract Stackable addTo (Stackable x);
+	public abstract Stackable subTo (Stackable x);
+	public abstract Stackable mulTo (Stackable x);
+	public abstract Stackable divTo (Stackable x);
+	public abstract Stackable modTo (Stackable x);
+	public abstract Stackable powerTo (Stackable x);
+	public abstract Stackable colonTo (Stackable x);
+	public abstract Stackable hmTo (Stackable x);
+	public abstract Stackable mdTo (Stackable x);
+	public abstract Stackable andTo (Stackable x);
+	public abstract Stackable orTo (Stackable x);
+	public abstract Stackable xorTo (Stackable x);
+	public abstract Stackable eeTo (Stackable x);
+	public abstract Stackable gcdTo (Stackable x);
+	public abstract Stackable lcmTo (Stackable x);
+
+	public abstract Stackable [] divModTo (Stackable x);
+
+	public abstract Stackable makeScalarFrom ();
+	public abstract Stackable makePrimeFactoredFrom ();
+	public abstract Stackable makePolynomialFrom ();
+	public abstract Stackable makeFactoredPolynomialFrom ();
+
+	public abstract boolean isScalar ();
+	public abstract boolean isZero ();
+	public abstract boolean isNotBad ();
+	public abstract double scalar ();
+	public abstract Stackable copy ();
+	public abstract String toString ();
+	public abstract String name();
+
+	public abstract String serialize ();
 
 	public Stackable [] factorInZ() { return new Stackable [] { new DomainErr ("factorInZ")}; }
+
+	// boilerplate
 }
 
