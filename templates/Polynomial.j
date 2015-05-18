@@ -1,3 +1,4 @@
+// -*- mode: java; -*-
 package com.rtdti.cas;
 /*****************************************************************************
 Copyright (c) 2015, Robert T Dowling
@@ -661,6 +662,25 @@ public class Polynomial extends Stackable {
 ///		System.out.print("\n");
 		// Finally, create new Sum object...uh, I don't have this yet!
 		return np;
+	}
+
+	public Stackable evalAt (Variable v, Stackable at) {
+		Stackable r = new Scalar (0);
+		Polynomial [] inV = expressIn (v);
+		BinOp o = new Mul();
+		BinOp p = new Add();
+		for (int i=0; i<inV.length; i++) {
+			Stackable vToI = new Scalar (1);
+			for (int j=0; j<i; j++) {
+				SFactory t = o.binOpResultFactory (vToI, at);
+				vToI = o.binOp (t);
+			}
+			SFactory t = o.binOpResultFactory (vToI, inV[i]);
+			vToI = o.binOp (t);
+			SFactory t2 = p.binOpResultFactory (r,vToI);
+			r = p.binOp (t2);
+		}
+		return r;
 	}
 
 	public String serialize () {

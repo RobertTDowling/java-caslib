@@ -132,6 +132,14 @@ class StackApp {
 					// System.out.print (String.format ("Deser '%s' got %s\n", a.toString(), b.toString()));
 					stack.push(b);
 				}
+				else if (line.equals("G")) {
+				 	Stackable x = stack.pop();
+				 	Polynomial pv = (Polynomial) stack.pop();
+					Variable v = new Variable ("x");
+				 	Polynomial f = (Polynomial) stack.pop();
+				 	Stackable c = f.evalAt (v, x);
+					stack.push (c);
+				}
 				else if (line.equals(".")) {
 					Stackable a = stack.pop();
 					System.out.print (String.format ("%s\n", a.toString()));

@@ -1,3 +1,4 @@
+// -*- mode: java; -*-
 package com.rtdti.cas;
 /*****************************************************************************
 Copyright (c) 2015, Robert T Dowling

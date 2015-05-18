@@ -753,4 +753,7 @@ N PrimeFactored.java:		Stackable [] r = t.args[0].factorInZ ();
 N Scalar.java:		Stackable [] r = factorInZ ();
 B Scalar.java:	public Scalar [] factorInZ () {
 
+Sun May 17 09:12:19 PDT 2015
 
+What about evaluateAt(v,else) ... rebuild the a polynomial replacing v with
+something else
