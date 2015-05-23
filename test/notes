@@ -757,3 +757,124 @@ Sun May 17 09:12:19 PDT 2015
 
 What about evaluateAt(v,else) ... rebuild the a polynomial replacing v with
 something else
+
+Sun May 17 21:03:21 PDT 2015
+
+It does seem likely there will be operations that only make sense on a
+Polynomial or FactoredPolynomial
+
+* Evaluate At (substitute v=value or v=other expression)
+* Express As (convert for multivar poly into poly with poly's as coef :pop
+
+	public Stackable evalAt (Variable v, Stackable at) {
+	public Polynomial [ ] expressIn (Variable v) {
+	public Polynomial [] factorInZ () {
+	public Stackable factor () {
+	public Polynomial expand () { return new Polynomial (this); }
+
+I have a couple left I need for RPNCalcN:
+
+f->f(v) -- Express As Polynomial in one var V
+x=? -- Solve for x
+f|x -- evalAt
+x=y -- make an equation out of x,y
+
+Solve for x needs something like newton's method - a numerical solver.
+
+Yet...can we divide out a zero that isn't integer???  Yes, and it works
+
+x^2 + x - 1.
+
+Roots are x = (-1+Sqrt(5))/2 (-1-Sqrt(5))/2
+
+Mon May 18 06:43:54 PDT 2015
+
+Let's say we want to "complicate the following expression"
+
+	x = 1
+
++2	x + 2 = 3
+
+*3	3x + 6 = 9
+
+/4	3/4x + 3/2 = 9/4
+
+[ ] I would need for Q to be a special type of scalar
+
+[ ] And I would need x=y functionality (eqn typ)
+
+	x = 1
+
++2	x + 2 = 3
+
+*3	3(x+2) = 9
+
+	3x + 6 = 9
+
+-4	3x + 2 = 5
+
+/5	3/5 x + 2/5 = 1
+
+	3x+2
+	---- = 1
+	  5
+
+------------------------------------------------------------------------------
+
+Tue May 19 21:06:40 PDT 2015
+
+To make = happen I need to add a "eqn" Stackable
+
+To make "express in" happen, i need to add a "pop" Stackable.
+
+What stackables do I have now?
+
+21:07 % fgrep "extends Stackable" *.java
+	DomainErr.java:public class DomainErr extends Stackable
+	Factored.java:public abstract class Factored extends Stackable
+	Polynomial.java:public class Polynomial extends Stackable
+	Scalar.java:public class Scalar extends Stackable
+
+21:07 % fgrep "extends Factored" *.java
+	FactoredPolynomial.java:public class FactoredPolynomial extends Factored
+	PrimeFactored.java:public class PrimeFactored extends Factored
+
+So if I made PoP and Eqn two new extensions of Stackable, what else would
+happen?  What would need to change in the boilerplate realm?
+
+@classes = qw(Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr);
+
+boilerplate.pl needs larger arrays of constants to express the promotions from
+  add, sub
+  mul, div, divmod
+  power
+  factor
+  expand
+
+boilerplate-stackable.pl would end up making more binop x classes and factories
+
+boilerplate-ops does not use @classes (so I'm removing it right now)
+
++,-  Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr
+PoP  Poly   Poly          Poly       Poly               DomainErr
+Eqn  Eqn    Eqn           Eqn        Eqn                DomainErr
+
+Eqn...was meaningless.  It needs to have handle each side individually.
+
+	  x+2 = 3
+
+has a scalar on the right, and a poly on the left.
+
+* Add x, and both become polys.
+* Subtract x, and the left becomes scalar, the right poly
+
+*,/  Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr
+PoP  Pop    Pop           Pop or Poly Pop or Poly       DomainErr
+
+Wed May 20 06:52:14 PDT 2015
+
+If I make a PoP, then returning an array of poly is not possible
+unless I create a new method for that.  Who uses "expressIn" call?
+
+* private void factorInZ (Variable v, ArrayList<Polynomial> l)
+* public Stackable evalAt (Variable v, Stackable at)

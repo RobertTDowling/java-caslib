@@ -134,8 +134,7 @@ class StackApp {
 				}
 				else if (line.equals("G")) {
 				 	Stackable x = stack.pop();
-				 	Polynomial pv = (Polynomial) stack.pop();
-					Variable v = new Variable ("x");
+				 	Polynomial v = (Polynomial) stack.pop();
 				 	Polynomial f = (Polynomial) stack.pop();
 				 	Stackable c = f.evalAt (v, x);
 					stack.push (c);
