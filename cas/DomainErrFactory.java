@@ -27,6 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 public class DomainErrFactory extends SFactory {
 	public DomainErrFactory (Stackable a, Stackable b) { super (a, b); }
+	public DomainErrFactory () { super (null, null); }
 	public Stackable makeFrom (Stackable from)
 	{
 		return new DomainErr ();

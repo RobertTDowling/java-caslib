@@ -348,7 +348,7 @@ public class Polynomial extends Stackable {
 		// can handle them uniformly
 		//
 		// Unfortunately, we might be here on a wrapped Scalar
-		// and there is no variable
+		// and there is no variable, in which case v=null
 		Variable v = vs.var(1);
 
 		// Make an empty list to hold the answer
@@ -603,7 +603,7 @@ public class Polynomial extends Stackable {
 
 	// Convenience for expressIn (v).  Accept pi as if it were v
 	public Stackable [ ] expressIn (Polynomial pi) {
-		// Peel off the variable V from pi
+		// Peel off the variable V from pi; v could be null
 		Variable v = pi.vs.var(1);
 		return expressIn (v);
 	}
@@ -664,9 +664,9 @@ public class Polynomial extends Stackable {
 		return np;
 	}
 
-	// Convenience for evalAt (v).  Accept pi as if it were v
+	// Convenience for evalAt (v, pi).  Accept pi as if it were v
 	public Stackable evalAt (Polynomial pi, Stackable at) {
-		// Peel off the variable V from pi
+		// Peel off the variable V from pi; v could be null
 		Variable v = pi.vs.var(1);
 		return evalAt (v, at);
 	}

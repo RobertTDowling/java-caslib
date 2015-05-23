@@ -98,8 +98,9 @@ class StackApp {
 					Stackable a = stack.pop();
 				}
 				else if (line.equals("E")) {
-					Polynomial a = (Polynomial) stack.pop();
-					Polynomial b = (Polynomial) stack.pop();
+					PolynomialFactory P = new PolynomialFactory ();
+				 	Polynomial a = (Polynomial) P.makeFrom (stack.pop());
+				 	Polynomial b = (Polynomial) P.makeFrom (stack.pop());
 					Stackable [] c = b.expressIn (a);
 					for (Stackable s: c) {
 						stack.push (s);
@@ -134,8 +135,9 @@ class StackApp {
 				}
 				else if (line.equals("G")) {
 				 	Stackable x = stack.pop();
-				 	Polynomial v = (Polynomial) stack.pop();
-				 	Polynomial f = (Polynomial) stack.pop();
+					PolynomialFactory P = new PolynomialFactory ();
+				 	Polynomial v = (Polynomial) P.makeFrom (stack.pop());
+				 	Polynomial f = (Polynomial) P.makeFrom (stack.pop());
 				 	Stackable c = f.evalAt (v, x);
 					stack.push (c);
 				}

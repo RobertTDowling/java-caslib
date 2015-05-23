@@ -27,6 +27,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 public class PolynomialFactory extends SFactory {
 	public PolynomialFactory (Stackable a, Stackable b) { super (a, b); }
+	public PolynomialFactory () { super (null, null); }
 	public Stackable makeFrom (Stackable from)
 	{
 		return from.makePolynomialFrom ();

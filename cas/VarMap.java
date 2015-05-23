@@ -72,6 +72,8 @@ public class VarMap {
 	}
 	public int get (Variable v) {
 		Profile.tick ("VarMap.get");
+		if (v==null)
+			return 0;
 		String k = v.toString();
 //		System.out.print (String.format("VarMap get Search v=%s\n", v.toString()));
 //		dumpo ();
