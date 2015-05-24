@@ -102,9 +102,16 @@ public class Polynomial extends Stackable {
 		for (Term t: r.ts)
 			ts.add(new Term(t));
 	}
-	public Polynomial (Eqn a) { 
+	public Polynomial (Eqn e) {
 		Profile.tick("Polynomial.ctor(Eqn)");
-		System.out.print ("Can't make Polynomial from Eqn\n");
+		SFactory u = new PolynomialFactory (null, null);
+		Polynomial l = (Polynomial) u.makeFrom(e.getLhs());
+		Polynomial r = (Polynomial) u.makeFrom(e.getRhs());
+		Polynomial a = l.sub(r);
+		vs = a.vs;
+		ts = new ArrayList<Term> ();
+		for (Term t: a.ts)
+			ts.add(new Term(t));
 	}
 	public Polynomial (String s) { // Deserialize
 		vs = new VarSet();

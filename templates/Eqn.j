@@ -87,16 +87,17 @@ public class Eqn extends Stackable {
 		return new Eqn [] { new Eqn (l[0], r[0]),
 					  new Eqn (l[1], r[1]) };
 	}
+	public Stackable expand () { return new Polynomial (this); }
 	/*
 	public Stackable factor () { return null; // FIXME }
-	public Eqn expand () { return new Eqn (d); }
 	public Eqn sqrt () { return new Eqn (Math.sqrt(d)); }
 	public Eqn squared () { return new Eqn (d*d); }
 	public Eqn times2 () { return new Eqn (d*2); }
 	public Eqn divide2 () { return new Eqn (d/2); }
 	*/
 
-	public Stackable get () { return lhs; }
+	public Stackable getLhs () { return lhs; }
+	public Stackable getRhs () { return rhs; }
 	public boolean isZero () { return lhs.isZero(); }
 	// public boolean isNeg () { return lhs.isNeg(); }
 	public boolean isNotBad () { return lhs.isNotBad(); }
