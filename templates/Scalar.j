@@ -84,6 +84,7 @@ public class Scalar extends Stackable {
 	public Scalar sub (Scalar b) { return new Scalar (d - b.d); }
 	public Scalar mul (Scalar b) { return new Scalar (d * b.d); }
 	public Scalar div (Scalar b) { return new Scalar (d / b.d); }
+	public Scalar mod (Scalar b) { return new Scalar (d % b.d); }
 	public Scalar power (Scalar b) { return new Scalar (Math.pow (d, b.d));	}
 	public Scalar colon (Scalar b) { return new Scalar (d + b.d/60); }
 	public Scalar hm (Scalar b) { return new Scalar ((60*60)*(d + b.d/60)); }
@@ -104,8 +105,8 @@ public class Scalar extends Stackable {
 	public Scalar gcd (Scalar b) { return new Scalar (gcd(longFromRounded(d), longFromRounded(b.d))); }
 	public Scalar lcm (Scalar b) { return new Scalar (lcm(longFromRounded(d), longFromRounded(b.d))); }
 	public Scalar [] divMod (Scalar b) {
-		double q = d / b.d;
-		double r = 0;
+		double q = Math.floor (d / b.d);
+		double r = d % b.d;
 		return new Scalar [] { new Scalar(q), new Scalar(r) }; }
 	public Stackable factor () {
 		Stackable [] r = factorInZ ();
