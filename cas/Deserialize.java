@@ -25,6 +25,36 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *****************************************************************************/
 
+/* Notes on parsing serialized output
+ * First character represents type:
+ *    s - Scalar
+ *    z - PrimeFactored 
+ *    p - Polynomial
+ *    f - FactoredPolynomial
+ *    f - FactoredPolynomial
+ *    E - Eqn
+ *    d - DomainErr
+ *    some hidden sub-types, used by Polynomial
+ *        e = Evec
+ *        v = VarSet
+ *
+ * Some bodies contain multiple parts, so they have "split" delimiters:
+ *
+ *    * - PrimeFactored, separating factors
+ *    , - PrimeFactored, separating powers from primes
+ *
+ *    + - Polynomial, separating terms, and also first item is VarSet
+ *    , - Polynomial, separating coef from varset
+ *
+ *    * - FactoredPolynomial, separating polynomial factors
+ *    ; - FactoredPolynomial, separating powers from polynomials
+ *
+ *    = - Eqn, separating LHS and RHS
+ *
+ *    : - VarSet, separating the variable names
+ *    : - Evec, separating the powers of the variables
+ */
+
 public class Deserialize {
 	static public Stackable deserialize (String s) {
 		if (s.startsWith ("s"))
@@ -35,6 +65,8 @@ public class Deserialize {
 			return new Polynomial (s);
 		else if (s.startsWith ("f"))
 			return new FactoredPolynomial (s);
+		else if (s.startsWith ("E"))
+			return new Eqn (s);
 		else
 			return new DomainErr ("Deserialize:"+s);
 	}

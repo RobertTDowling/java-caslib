@@ -49,15 +49,11 @@ public class Eqn extends Stackable {
 	public Eqn (Polynomial a) { lhs = rhs = new Polynomial (a); }
 	public Eqn (DomainErr a) { lhs = rhs = new DomainErr (a); }
 	public Eqn (String s) { // Deserialize
-		/*
-		d = 0;
-		if (s.startsWith ("s")) {
-			s = s.substring(1);
-			long l = Long.decode (s);
-			d = Double.longBitsToDouble(l);
+		if (s.startsWith ("E")) {
+			String [] s2 = s.substring(1).split ("=");
+			lhs = Deserialize.deserialize (s2[0]);
+			rhs = Deserialize.deserialize (s2[1]);
 		}
-		*/
-		// FIXME
 	}
 	// This does not make a copy!
 	public Eqn (Stackable l, Stackable r) {
@@ -105,8 +101,9 @@ public class Eqn extends Stackable {
 		return lhs.toString() + "=" + rhs.toString(); 
 	}
 	public String serialize () {
-		// Fixme
-		String o = String.format ("s%d", 333);
+		String o = String.format ("E%s=%s",
+					  lhs.serialize (),
+					  rhs.serialize ());
 		return o;
 	}
 
