@@ -232,6 +232,10 @@ public class Polynomial extends Stackable {
 		Polynomial [] dr = divMod (denom);
 		return dr[0];
 	}
+	public Polynomial mod (Polynomial denom) {
+		Polynomial [] dr = divMod (denom);
+		return dr[1];
+	}
 	public Polynomial [] divMod (Polynomial denom) {
 		Profile.tick("Polynomial.div");
 		Polynomial num = this;
