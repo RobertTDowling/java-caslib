@@ -80,13 +80,27 @@ class StackApp {
 					Stackable a = stack.pop();
 					stack.push(doBinOp (o, a, b));
 				}
-				else if (line.equals("/")) {
+				else if (line.equals("/%")) {
 					BinOp2 o = new DivMod();
 					Stackable b = stack.pop();
 					Stackable a = stack.pop();
 					Stackable [] c = doBinOp2 (o, a, b);
 					stack.push(c[0]);
 					stack.push(c[1]);
+				}
+				else if (line.equals("/")) {
+					BinOp o = new Div();
+					Stackable b = stack.pop();
+					Stackable a = stack.pop();
+					Stackable c = doBinOp (o, a, b);
+					stack.push(c);
+				}
+				else if (line.equals("%")) {
+					BinOp o = new Mod();
+					Stackable b = stack.pop();
+					Stackable a = stack.pop();
+					Stackable c = doBinOp (o, a, b);
+					stack.push(c);
 				}
 				else if (line.equals("^")) {
 					BinOp o = new Power();
@@ -127,7 +141,7 @@ class StackApp {
 					stack.push(a);
 					System.out.print (String.format ("Serialize=%s\n", a.serialize()));
 				}
-				else if (line.equals("%")) {
+				else if (line.equals("&")) {
 				 	Stackable a = stack.pop();
 					Stackable b = Deserialize.deserialize (a.toString());
 					// System.out.print (String.format ("Deser '%s' got %s\n", a.toString(), b.toString()));
