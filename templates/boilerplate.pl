@@ -24,7 +24,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-@classes = qw(Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr);
+@classes = qw(Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr Eqn);
 @binops = qw(add sub mul div mod power colon hm md and or xor ee gcd lcm);
 @binops2 = qw(divMod);
 @unops = qw(log2 pow2 not floor addinv multinv exp ln sin cos tan arcsin arccos
@@ -49,27 +49,30 @@ for $o (@binops, @binops2, @unops) {
     $LUT{$o}{PrimeFactored}{PrimeFactored} = "Scalar";
 }
 
-# add/sub                Scalar             PrimeFactored      Polynomial         FactoredPolynomial
-$X{Scalar}="             Scalar             Scalar             Polynomial         Polynomial";
-$X{PrimeFactored}="      Scalar             Scalar             Polynomial         Polynomial";
-$X{Polynomial}="         Polynomial         Polynomial         Polynomial         Polynomial";
-$X{FactoredPolynomial}=" Polynomial         Polynomial         Polynomial         Polynomial";
+# add/sub                Scalar             PrimeFactored      Polynomial         FactoredPolynomial Eqn
+$X{Scalar}="             Scalar             Scalar             Polynomial         Polynomial         Eqn";
+$X{PrimeFactored}="      Scalar             Scalar             Polynomial         Polynomial         Eqn";
+$X{Polynomial}="         Polynomial         Polynomial         Polynomial         Polynomial         Eqn";
+$X{FactoredPolynomial}=" Polynomial         Polynomial         Polynomial         Polynomial         Eqn";
+$X{Eqn}="                Eqn                Eqn                Eqn                Eqn                Eqn";
 
 $LUT{add} = $LUT{sub} = { mklut() };
 
-# mul/div/divMod         Scalar             PrimeFactored      Polynomial         FactoredPolynomial
-$X{Scalar}="             Scalar             PrimeFactored      Polynomial         FactoredPolynomial";
-$X{PrimeFactored}="      PrimeFactored      PrimeFactored      Polynomial         FactoredPolynomial";
-$X{Polynomial}="         Polynomial         Polynomial         Polynomial         FactoredPolynomial";
-$X{FactoredPolynomial}=" FactoredPolynomial FactoredPolynomial FactoredPolynomial FactoredPolynomial";
+# mul/div/divMod         Scalar             PrimeFactored      Polynomial         FactoredPolynomial Eqn
+$X{Scalar}="             Scalar             PrimeFactored      Polynomial         FactoredPolynomial Eqn";
+$X{PrimeFactored}="      PrimeFactored      PrimeFactored      Polynomial         FactoredPolynomial Eqn";
+$X{Polynomial}="         Polynomial         Polynomial         Polynomial         FactoredPolynomial Eqn";
+$X{FactoredPolynomial}=" FactoredPolynomial FactoredPolynomial FactoredPolynomial FactoredPolynomial Eqn";
+$X{Eqn}="                Eqn                Eqn                Eqn                Eqn                Eqn";
 
 $LUT{mul} = $LUT{div} = $LUT{divMod} = { mklut() };
 
-# power                  Scalar             PrimeFactored      Polynomial         FactoredPolynomial
-$X{Scalar}="             Scalar             PrimeFactored      Error              Error";
-$X{PrimeFactored}="      PrimeFactored      PrimeFactored      Error              Error";
-$X{Polynomial}="         Polynomial         Polynomial         Error              Error";
-$X{FactoredPolynomial}=" FactoredPolynomial FactoredPolynomial Error              Error";
+# power                  Scalar             PrimeFactored      Polynomial         FactoredPolynomial Eqn
+$X{Scalar}="             Scalar             Scalar             Error              Error              Error";
+$X{PrimeFactored}="      PrimeFactored      PrimeFactored      Error              Error              Error";
+$X{Polynomial}="         Polynomial         Polynomial         Error              Error              Error";
+$X{FactoredPolynomial}=" FactoredPolynomial FactoredPolynomial Error              Error              Error";
+$X{Eqn}="                Eqn                Eqn                Error              Error              Error";
 
 $LUT{power} = { mklut() };
 
@@ -77,12 +80,14 @@ $LUT{factor}{Scalar} = "PrimeFactored";
 $LUT{factor}{PrimeFactored} = "PrimeFactored";
 $LUT{factor}{Polynomial} = "FactoredPolynomial";
 $LUT{factor}{FactoredPolynomial} = "FactoredPolynomial";
+$LUT{factor}{Eqn} = "Eqn";
 $LUT{factor}{DomainErr} = "DomainErr";
 
 $LUT{expand}{Scalar} = "Scalar";
 $LUT{expand}{PrimeFactored} = "Scalar";
 $LUT{expand}{Polynomial} = "Polynomial";
 $LUT{expand}{FactoredPolynomial} = "Polynomial";
+$LUT{factor}{Eqn} = "Eqn";
 $LUT{expand}{DomainErr} = "DomainErr";
 
 sub mklut() {

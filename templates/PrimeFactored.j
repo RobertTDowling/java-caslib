@@ -63,6 +63,10 @@ public class PrimeFactored extends Factored {
 			addTo (ppp, 1);
 		}
 	}
+	public PrimeFactored (Eqn a) { 
+		Profile.tick("PrimeFactored.ctor(Eqn)");
+		System.out.print ("Can't make PrimeFactored from Eqn\n");
+	}
 	public PrimeFactored (Variable v) {
 		Profile.tick("PrimeFactored.ctor(Var)");
 		System.out.print ("Can't make PrimeFactored from Variable\n");

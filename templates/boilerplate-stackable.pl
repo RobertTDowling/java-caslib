@@ -24,7 +24,7 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-@classes = qw(Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr);
+@classes = qw(Scalar PrimeFactored Polynomial FactoredPolynomial DomainErr Eqn);
 @binops = qw(add sub mul div mod power colon hm md and or xor ee gcd lcm);
 @binops2 = qw(divMod);
 @unops = qw(log2 pow2 not floor addinv multinv exp ln sin cos tan arcsin arccos

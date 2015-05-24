@@ -53,6 +53,7 @@ public abstract class Stackable {
 	public abstract Stackable makePrimeFactoredFrom ();
 	public abstract Stackable makePolynomialFrom ();
 	public abstract Stackable makeFactoredPolynomialFrom ();
+	public abstract Stackable makeEqnFrom ();
 
 	public abstract boolean isScalar ();
 	public abstract boolean isZero ();

@@ -108,8 +108,36 @@ class StackApp {
 					Stackable a = stack.pop();
 					stack.push(doBinOp (o, a, b));
 				}
+				else if (line.equals("=")) {
+					Stackable b = stack.pop();
+					Stackable a = stack.pop();
+					stack.push(new Eqn (a, b));
+				}
 				else if (line.equals("D")) {
 					Stackable a = stack.pop();
+				}
+				else if (line.equals(".")) {
+					Stackable a = stack.pop();
+					System.out.print (String.format ("%s\n", a.toString()));
+				}
+				else if (line.equals("U")) {
+					Stackable a = stack.pop();
+					stack.push(a);
+					Stackable b = a.copy ();
+					stack.push(b);
+				}
+				else if (line.equals("S")) {
+					Stackable b = stack.pop();
+					Stackable a = stack.pop();
+					stack.push(b);
+					stack.push(a);
+				}
+				else if (line.equals("O")) {
+					Stackable b = stack.pop();
+					Stackable a = stack.pop();
+					stack.push(a);
+					stack.push(b);
+					stack.push(a);
 				}
 				else if (line.equals("E")) {
 					PolynomialFactory P = new PolynomialFactory ();
@@ -154,22 +182,6 @@ class StackApp {
 				 	Polynomial f = (Polynomial) P.makeFrom (stack.pop());
 				 	Stackable c = f.evalAt (v, x);
 					stack.push (c);
-				}
-				else if (line.equals(".")) {
-					Stackable a = stack.pop();
-					System.out.print (String.format ("%s\n", a.toString()));
-				}
-				else if (line.equals("U")) {
-					Stackable a = stack.pop();
-					stack.push(a);
-					Stackable b = a.copy ();
-					stack.push(b);
-				}
-				else if (line.equals("S")) {
-					Stackable b = stack.pop();
-					Stackable a = stack.pop();
-					stack.push(b);
-					stack.push(a);
 				}
 				else if (line.equals(":gcd")) { Stackable b=stack.pop(); stack.push (doBinOp (new Gcd(), stack.pop(), b)); }
 				else if (line.equals(":lcm")) { Stackable b=stack.pop(); stack.push (doBinOp (new Lcm(), stack.pop(), b)); }

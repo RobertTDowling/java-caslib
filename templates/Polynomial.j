@@ -102,6 +102,10 @@ public class Polynomial extends Stackable {
 		for (Term t: r.ts)
 			ts.add(new Term(t));
 	}
+	public Polynomial (Eqn a) { 
+		Profile.tick("Polynomial.ctor(Eqn)");
+		System.out.print ("Can't make Polynomial from Eqn\n");
+	}
 	public Polynomial (String s) { // Deserialize
 		vs = new VarSet();
 		ts = new ArrayList<Term> ();
@@ -125,6 +129,7 @@ public class Polynomial extends Stackable {
 		}
 	}
 	public ArrayList<Term> terms () { return ts; }
+	public VarSet varSet () { return vs; }
 	public int degree () {
 		if (ts.size()>0)
 			return ts.get(0).degree();

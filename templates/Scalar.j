@@ -1,3 +1,4 @@
+// -*- mode: java; -*-
 package com.rtdti.cas;
 /*****************************************************************************
 Copyright (c) 2015, Robert T Dowling
@@ -34,8 +35,6 @@ import java.util.ArrayList;
 
 public class Scalar extends Stackable {
 
-	// boilerplate
-
 	public boolean isScalar () { return true; }
 	public double scalar () { return d; }
 	public Stackable copy () { return new Scalar (d); }
@@ -71,6 +70,7 @@ public class Scalar extends Stackable {
 	public Scalar (PrimeFactored a) { d = a.scalar(); }
 	public Scalar (FactoredPolynomial a) { d = a.scalar(); }
 	public Scalar (Polynomial a) { d = a.scalar(); }
+	public Scalar (Eqn a) { d = a.scalar(); }
 	public Scalar (DomainErr a) { d = 0; }
 	public Scalar (String s) { // Deserialize
 		d = 0;
@@ -191,4 +191,7 @@ public class Scalar extends Stackable {
 		String o = String.format ("s%d", l);
 		return o;
 	}
+
+	// boilerplate
+
 }

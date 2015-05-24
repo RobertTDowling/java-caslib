@@ -17,6 +17,8 @@ Divide2.java
 DomainErr.java
 Ee.java
 Exp.java
+Eqn.java
+EqnFactory.java
 Expand.java
 Factor.java
 FactoredPolynomial.java

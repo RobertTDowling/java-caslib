@@ -44,6 +44,7 @@ public class DomainErr extends Stackable {
 	public DomainErr (PrimeFactored a) { msg="fromPF"; }
 	public DomainErr (FactoredPolynomial a) { msg="fromFP"; }
 	public DomainErr (Polynomial a) { msg="fromPoly"; }
+	public DomainErr (Eqn a) { msg="fromEqn"; }
 	public DomainErr add (DomainErr b) { return new DomainErr ("add"); }
 	public DomainErr sub (DomainErr b) { return new DomainErr ("sub"); }
 	public DomainErr mul (DomainErr b) { return new DomainErr ("mul"); }

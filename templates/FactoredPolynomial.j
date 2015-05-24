@@ -107,6 +107,10 @@ public class FactoredPolynomial extends Factored {
 			fm.put (s, f.fm.get(s));
 		}
 	}
+	public FactoredPolynomial (Eqn a) { 
+		Profile.tick("FactoredPolynomial.ctor(Eqn)");
+		System.out.print ("Can't make FactoredFolynomial from Eqn\n");
+	}
 	public FactoredPolynomial (String s) { // Deserialize
 		pm = new HashMap<String,Integer> (); // powers
 		fm = new HashMap<String,Stackable> (); // factors
