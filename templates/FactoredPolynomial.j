@@ -164,6 +164,10 @@ public class FactoredPolynomial extends Factored {
 		return this;
 	}
 	public Polynomial expand () { return new Polynomial (this); }
+	public Stackable addinv () {
+		Polynomial a = expand();
+		return a.addinv().factor();
+	}
 	public String toString () {
 		String o = "";
 		for (String s: pm.keySet()) {

@@ -89,6 +89,7 @@ public class Eqn extends Stackable {
 		Stackable r = rhs.factor();
 		return new Eqn (l, r);
 	}
+	public Eqn addinv () { return new Eqn (lhs.addinv(), rhs.addinv()); }
 	/*
 	public Eqn sqrt () { return new Eqn (Math.sqrt(d)); }
 	public Eqn squared () { return new Eqn (d*d); }

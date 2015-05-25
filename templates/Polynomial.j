@@ -332,6 +332,11 @@ public class Polynomial extends Stackable {
 			c.ts.add (new Term(m.get(e), e));
 		return c;
 	}
+	public Polynomial addinv () {
+		// Flip all coef signs would be faster but...
+ 		Polynomial negone = new Polynomial (new Scalar (-1));
+		return this.mul(negone);
+	}
 	public String toString () {
 		String o = "";
 		for (Term t: ts)
@@ -571,7 +576,7 @@ public class Polynomial extends Stackable {
 		}
 
 		// Lexicographic order on jj
-		Polynomial negone = new Polynomial (new Scalar (-1));
+ 		Polynomial negone = new Polynomial (new Scalar (-1));
 		int i = 0;
 		while (i < divisorCount) {
 			Polynomial p = new Polynomial (new Scalar(1));

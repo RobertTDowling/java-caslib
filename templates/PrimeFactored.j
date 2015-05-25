@@ -179,6 +179,9 @@ public class PrimeFactored extends Factored {
 		return r;
 	}
 	public Stackable expand () { return new Scalar (this); }
+	public PrimeFactored addinv () {
+		return new PrimeFactored (new Scalar(-scalar()));
+	}
 	public String toString () {
 		String o = "";
 		for (String s: pm.keySet()) {
