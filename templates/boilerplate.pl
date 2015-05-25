@@ -87,7 +87,7 @@ $LUT{expand}{Scalar} = "Scalar";
 $LUT{expand}{PrimeFactored} = "Scalar";
 $LUT{expand}{Polynomial} = "Polynomial";
 $LUT{expand}{FactoredPolynomial} = "Polynomial";
-$LUT{factor}{Eqn} = "Eqn";
+$LUT{expand}{Eqn} = "Polynomial";
 $LUT{expand}{DomainErr} = "DomainErr";
 
 sub mklut() {

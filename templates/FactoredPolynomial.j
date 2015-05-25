@@ -1,3 +1,4 @@
+// -*- mode: java; -*-
 package com.rtdti.cas;
 /*****************************************************************************
 Copyright (c) 2015, Robert T Dowling
@@ -159,9 +160,8 @@ public class FactoredPolynomial extends Factored {
 		}
 		return null;
 	}
-	public FactoredPolynomial factor (SFactory t) {
-		Stackable [] r = t.args[0].factorInZ ();
-		return new FactoredPolynomial (r);
+	public FactoredPolynomial factor () {
+		return this;
 	}
 	public Polynomial expand () { return new Polynomial (this); }
 	public String toString () {

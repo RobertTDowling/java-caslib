@@ -156,9 +156,27 @@ public class PrimeFactored extends Factored {
 		}
 		return null;
 	}
-	public PrimeFactored factor (SFactory t) {
-		Stackable [] r = t.args[0].factorInZ ();
-		return new PrimeFactored (r);
+	public PrimeFactored factor () {
+		return this;
+	}
+	public Stackable [] factorInZ () {
+		// We're already factored... so just return factors.
+		// It's silly, but it allows us to use object to
+		// determine method that gets called.
+
+		// Count how many objects we'll need
+		int count = 0;
+		for (String s: pm.keySet())
+			count += pm.get(s);
+		Stackable [] r = new Stackable [count];
+		int i=0, j;
+		for (String s: pm.keySet()) {
+			int p = pm.get(s);
+			for (j=0; j<p; j++) {
+				r[i++] = fm.get(s);
+			}
+		}
+		return r;
 	}
 	public Stackable expand () { return new Scalar (this); }
 	public String toString () {
