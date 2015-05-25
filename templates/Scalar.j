@@ -160,7 +160,7 @@ public class Scalar extends Stackable {
 			a = -a;
 		}
 		if (a == 0 || a == 1) {
-			rl.add (new Scalar(1));
+			rl.add (new Scalar(a));
 		}
 		// Factor
 		long t = 2;  // trial divisor (long will make this have a greater range too)

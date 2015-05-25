@@ -1,3 +1,4 @@
+// -*- mode: java; -*-
 package com.rtdti.cas;
 /*****************************************************************************
 Copyright (c) 2015, Robert T Dowling
@@ -32,9 +33,6 @@ import java.util.TreeSet;
 import java.lang.Math;
 
 public class PrimeFactored extends Factored {
-
-	// boilerplate
-
 	public Stackable copy () { return new PrimeFactored (this); }
 //////////////////////////////////////////////////////////////////////////////
 	public PrimeFactored () {
@@ -195,4 +193,7 @@ public class PrimeFactored extends Factored {
 		}
 		return o;
 	}
+
+	// boilerplate
+
 }
