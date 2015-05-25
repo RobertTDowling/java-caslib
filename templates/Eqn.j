@@ -84,8 +84,12 @@ public class Eqn extends Stackable {
 					  new Eqn (l[1], r[1]) };
 	}
 	public Stackable expand () { return new Polynomial (this); }
+	public Stackable factor () {
+		Stackable l = lhs.factor();
+		Stackable r = rhs.factor();
+		return new Eqn (l, r);
+	}
 	/*
-	public Stackable factor () { return null; // FIXME }
 	public Eqn sqrt () { return new Eqn (Math.sqrt(d)); }
 	public Eqn squared () { return new Eqn (d*d); }
 	public Eqn times2 () { return new Eqn (d*2); }

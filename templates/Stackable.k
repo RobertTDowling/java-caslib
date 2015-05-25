@@ -29,7 +29,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 public abstract class Stackable {
 
-	public final static String version = "java-caslib 1.13b 5/2015";
+	public final static String version = "java-caslib 1.13c 5/2015";
 
 	public abstract Stackable addTo (Stackable x);
 	public abstract Stackable subTo (Stackable x);
