@@ -1,4 +1,4 @@
-1) Got into test folder
+1) cd test
 2) make
 3) the script "intcas" will run StackApp, a simple command line RPN
 calculator that exercises java-caslib.

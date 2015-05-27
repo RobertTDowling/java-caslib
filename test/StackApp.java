@@ -216,10 +216,13 @@ class StackApp {
 				else if (line.equals(":2*")) { stack.push (doUnOp (new Times2(), stack.pop())); }
 				else if (line.equals(":2/")) { stack.push (doUnOp (new Divide2(), stack.pop())); }
 				else if (line.equals("?")) {
-					System.out.print ("+-*/^ Drop dUp Swap Factor :\n");
-					System.out.print (":{gcd,lcm,and,or,xor,ee,hm,md} BinOps\n");
+					System.out.print ("+ - * / % ^ Drop dUp Swap Over\n");
+					System.out.print (":{gcd,lcm,and,or,xor,ee,hm,md} /% = BinOps\n");
 					System.out.print (":{not,addinv,multinv,ln,exp,log2,pow2,floor,ceil,round,sqrt,squared,2*,2/} UnOps\n");
 					System.out.print (":{sin,cos,tan,asin,acos,atan,d2r,r2d} UnOps\n");
+					System.out.print (". Factor eXpand Reduce $erialize &(deserialize) Unops\n");
+					System.out.print ("Express-in Binop\n");
+					System.out.print ("G-eval-at(fun,var,value)\n");
 				}
 				else {
 					Variable x = new Variable (line);
