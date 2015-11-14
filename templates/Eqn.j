@@ -41,8 +41,8 @@ public class Eqn extends Stackable {
 	public Eqn () { lhs = rhs = new Scalar (0); }
 	public Eqn (double a) { lhs = rhs = new Scalar (a); }
 	public Eqn (Scalar a) { lhs = rhs = new Scalar (a); }
-	public Eqn (Eqn a) { // FIXME: need to copy
-		lhs=a.lhs; rhs=a.rhs;
+	public Eqn (Eqn a) { 
+		lhs=a.lhs.copy(); rhs=a.rhs.copy();
 	}
 	public Eqn (PrimeFactored a) { lhs = rhs = new PrimeFactored (a); }
 	public Eqn (FactoredPolynomial a) { lhs = rhs = new FactoredPolynomial (a); }
