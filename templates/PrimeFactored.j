@@ -182,6 +182,11 @@ public class PrimeFactored extends Factored {
 	public PrimeFactored addinv () {
 		return new PrimeFactored (new Scalar(-scalar()));
 	}
+
+	public Stackable evalAt (Variable v, Stackable at) {
+		return new Scalar (this);
+	}
+
 	public String toString () {
 		String o = "";
 		for (String s: pm.keySet()) {

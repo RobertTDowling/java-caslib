@@ -105,6 +105,13 @@ public class Eqn extends Stackable {
 	public String toString () {
 		return lhs.toString() + "=" + rhs.toString(); 
 	}
+
+	public Stackable evalAt (Variable v, Stackable at) {
+		Stackable l = lhs.evalAt (v, at);
+		Stackable r = rhs.evalAt (v, at);
+		return new Eqn (l, r);
+	}
+
 	public String serialize () {
 		String o = String.format ("E%s=%s",
 					  lhs.serialize (),

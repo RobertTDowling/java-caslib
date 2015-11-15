@@ -685,12 +685,8 @@ public class Polynomial extends Stackable {
 		return np;
 	}
 
-	// Convenience for evalAt (v, pi).  Accept pi as if it were v
-	public Stackable evalAt (Polynomial pi, Stackable at) {
-		// Peel off the variable V from pi; v could be null
-		Variable v = pi.vs.var(1);
-		return evalAt (v, at);
-	}
+	public Variable getMyVar () { return vs.var(1); }
+
 	public Stackable evalAt (Variable v, Stackable at) {
 		Stackable r = new Scalar (0);
 		Polynomial [] inV = expressIn (v);

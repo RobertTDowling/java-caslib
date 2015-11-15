@@ -187,6 +187,10 @@ public class Scalar extends Stackable {
 		return ra;
 	}
 
+	public Stackable evalAt (Variable v, Stackable at) {
+		return this;
+	}
+
 	public String serialize () {
 		long l = Double.doubleToRawLongBits(d);
 		String o = String.format ("s%d", l);

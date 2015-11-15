@@ -56,6 +56,8 @@ public class DomainErr extends Stackable {
 	public boolean isZero () { return false; }
 	public boolean isNeg () { return false; }
 	public boolean isNotBad () { return true; }
+	public Stackable evalAt (Variable v, Stackable at) { return new DomainErr ("evalAt"); }
+
 	public double get () { return 0; }
 	public String toString () { return "DomainErr("+msg+")"; }
 

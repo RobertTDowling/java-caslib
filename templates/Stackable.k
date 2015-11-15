@@ -66,6 +66,7 @@ public abstract class Stackable {
 	public abstract String serialize ();
 
 	public Stackable [] factorInZ() { return new Stackable [] { new DomainErr ("factorInZ")}; }
+	public abstract Stackable evalAt (Variable v, Stackable at);
 
 	// boilerplate
 }

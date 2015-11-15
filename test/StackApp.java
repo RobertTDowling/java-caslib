@@ -178,8 +178,9 @@ class StackApp {
 				else if (line.equals("G")) {
 				 	Stackable x = stack.pop();
 					PolynomialFactory P = new PolynomialFactory ();
-				 	Polynomial v = (Polynomial) P.makeFrom (stack.pop());
-				 	Polynomial f = (Polynomial) P.makeFrom (stack.pop());
+				 	Polynomial pv = (Polynomial) P.makeFrom (stack.pop());
+					Variable v = pv.getMyVar ();
+				 	Stackable f = stack.pop();
 				 	Stackable c = f.evalAt (v, x);
 					stack.push (c);
 				}

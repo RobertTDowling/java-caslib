@@ -168,6 +168,11 @@ public class FactoredPolynomial extends Factored {
 		Polynomial a = expand();
 		return a.addinv().factor();
 	}
+	public Stackable evalAt (Variable v, Stackable at) {
+		Polynomial p = new Polynomial (this);
+		return p.evalAt (v, at);
+	}
+
 	public String toString () {
 		String o = "";
 		for (String s: pm.keySet()) {

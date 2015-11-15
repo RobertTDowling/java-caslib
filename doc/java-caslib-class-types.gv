@@ -1,0 +1,58 @@
+digraph foobar {
+  node [ shape=none ]
+//    Stackable
+    Factored
+  node [ shape=box ]
+    Evec
+    EvecMap
+    Term
+    VarMap
+    VarSet
+    Variable
+  node [ shape=ellipse ]
+    DomainErr [ style=filled ]
+    Eqn [ style=filled ]
+    FactoredPolynomial [ style=filled ]
+    Polynomial [ style=filled ]
+    PrimeFactored [ style=filled ]
+    Scalar [ style=filled ]
+
+
+//    Stackable -> Factored
+/*
+    Stackable -> Scalar
+    Stackable -> Polynomial
+    Stackable -> DomainErr
+*/
+
+    Scalar -> Term
+    Scalar -> EvecMap
+    Evec->EvecMap
+    Variable -> VarMap
+    Variable -> VarSet
+    Evec -> Term
+    VarSet -> Evec
+    VarMap -> VarSet
+    Term -> Polynomial
+    VarSet -> Polynomial
+    Factored -> PrimeFactored
+    Factored -> FactoredPolynomial
+    Polynomial -> FactoredPolynomial
+    Scalar -> PrimeFactored
+
+
+    { rank=same FactoredPolynomial DomainErr Eqn }
+}
+
+/*
+------------------------------------------------------------------------------
+
+./cas/Factored.java:public abstract class Factored extends Stackable {
+./templates/DomainErr.j:public class DomainErr extends Stackable {
+./templates/Eqn.j:public class Eqn extends Stackable {
+./templates/Scalar.j:public class Scalar extends Stackable {
+./templates/Polynomial.j:public class Polynomial extends Stackable {
+
+./templates/FactoredPolynomial.j:public class FactoredPolynomial extends Factored {
+./templates/PrimeFactored.j:public class PrimeFactored extends Factored {
+*/
